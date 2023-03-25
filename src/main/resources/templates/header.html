@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header class="header">
+    <img src="/images/logo.png" id="logo" alt="">
+<!--    <span sec:authorize="isAuthenticated()">-->
+    <nav class="navbar">
+        <a href="#">Trang chủ</a>
+        <a href="#">Giới thiệu</a>
+        <a th:href="@{/booking}">Đặt lịch khám</a>
+        <a href="#">gallery</a>
+        <a href="#">Liên hệ</a>
+    </nav>
+
+    <div class="icons">
+        <div id="menubar" class="fas fa-bars"></div>
+        <a th:href="@{/user/login}" >Đăng nhập</a>
+    </div>
+</header>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="vi">
+<head>
+    <title>Đăng nhập</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="login">
+    <div class="container lg-body">
+        <img src="/images/logo.png" id="logo" alt="">
+    </div>
+    <div class="container lg-body">
+        <div class="col-3 col-md-3 col-sm-3">
+
+        </div>
+        <div class="col-6 col-md-6 col-sm-6 login-form"
+             style="border: 1px solid;border-radius: 10px;box-shadow: 0px 25px 20px -20px rgba(0,0,0,0.45)">
+            <h2 class="text-login" style="text-align: center">Đăng nhập</h2>
+            <form method="POST" th:action="@{/user/login}" th:object="${loginRequest}">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" th:field="*{email}" name="email" placeholder="Nhập email" id="email" class="form-control" >
+
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" th:field="*{password}" name="password" placeholder="Nhập mật khẩu" id="input-password"
+                           class="form-control">
+                </div>
+                <span th:text="${error}" style="color:red;"></span>
+                <br>
+                <!--                <p class="lost-password"><a th:href="@{/forgotPassword}">Forgot password?</a></p>-->
+                <input type="submit" value="Đăng nhập" class="return-customer-btn">
+            </form>
+
+            <div class="col-3 col-md-3 col-sm-3"></div>
+            <br>
+            <hr>
+            <span> Bạn chưa có tài khoản?</span><a class="lg-register" th:href="@{/user/register}">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            Đăng ký ngay </a> <br/>
+            <br>
+            <hr>
+            <a class="lg-register" th:href="@{/}"><i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại trang chủ</a> <br/>
+
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Forgotten password??? Please enter your email address to
+                    search for your account.</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label for="input-forgot-password">Email address:</label>
+                    <input id="input-forgot-password" type="email" class="form-control" placeholder="Email...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script th:inline="javascript">
+    var message = [[${success}]];
+
+    function sleep(time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+    }
+
+    sleep(400).then(() => {
+        if (message == null || message == "") {
+        } else alert("Sign Up Success!!");
+    });
+
+</script>
+</html>

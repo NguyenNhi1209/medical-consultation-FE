@@ -119,9 +119,7 @@ button {
     overflow: visible
 }
 
-button, select {
-    /*text-transform: none*/
-}
+
 
 button, html input[type="button"], input[type="reset"], input[type="submit"] {
     -webkit-appearance: button;
@@ -1303,17 +1301,6 @@ mark, .mark {
     white-space: nowrap
 }
 
-.text-lowercase {
-    /*text-transform: lowercase*/
-}
-
-.text-uppercase {
-    /*text-transform: uppercase*/
-}
-
-.text-capitalize {
-    /*text-transform: capitalize*/
-}
 
 .text-muted {
     color: #999999
@@ -1470,10 +1457,7 @@ abbr[title], abbr[data-original-title] {
     border-bottom: 1px dotted #999999
 }
 
-.initialism {
-    font-size: 90%;
-    /*text-transform: uppercase*/
-}
+
 
 blockquote {
     padding: 10px 20px;

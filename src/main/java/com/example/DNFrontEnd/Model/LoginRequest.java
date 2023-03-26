@@ -10,10 +10,8 @@ import javax.validation.constraints.NotNull;
 @Data
 public class LoginRequest {
 
-    @NotNull(message = "không null")
     private String email;
 
-    @NotNull(message = "không null")
     private String password;
 
     public static String convertToString(LoginRequest loginRequest) throws JsonProcessingException {

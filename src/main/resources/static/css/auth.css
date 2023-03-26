@@ -23,7 +23,7 @@ body {
       opacity: 1; }
   .login .lg-body .text-login {
     display: block;
-    /*text-transform: uppercase;*/
+
     margin-bottom: 10px;
     font-size: 16px;
     font-weight: 600; }

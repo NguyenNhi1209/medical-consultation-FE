@@ -1,79 +1,95 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="vi">
 <head>
-  <title>Đặt lịch khám online</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" media="screen and (min-width: 912px)" th:href="@{/css/bootstrap-cerulean.min.css}">
-  <link rel="stylesheet" type="text/css" th:href="@{/content/ETicket-1.0.31.css}">
-  <link rel="stylesheet" media="screen and (max-width: 911px)" th:href="@{/css/bootstrap.min.css}">
+    <title>Đặt lịch khám online</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" media="screen and (min-width: 912px)" th:href="@{/css/bootstrap-cerulean.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/content/ETicket-1.0.31.css}">
+    <link rel="stylesheet" media="screen and (max-width: 911px)" th:href="@{/css/bootstrap.min.css}">
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" th:href="@{/css/style.css}">
-  <link rel="stylesheet" th:href="@{/css/all.min.css}">
-  <link
-          rel="stylesheet"
-          th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"
-  />
 
-  <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/all.min.css}">
+    <link
+            rel="stylesheet"
+            th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"
+    />
 
-    .fix-height {
-      flex: 1;
-    }
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    a, a:hover, a:focus {
-      text-decoration: none;
-    }
+        .fix-height {
+            flex: 1;
+        }
 
-    .title {
-      font-weight: 600;
-      font-size: 22px;
-      display: block;
-      margin: 20px 0;
-      /*text-transform: uppercase;*/
-    }
+        a, a:hover, a:focus {
+            text-decoration: none;
+        }
 
-  </style>
+        .title {
+            font-weight: 600;
+            font-size: 22px;
+            display: block;
+            margin: 20px 0;
+            /*text-transform: uppercase;*/
+        }
+
+    </style>
 </head>
 <body>
+
 <div th:include="header.html"></div>
-<div class="container fix-height">
-  <div class="row">
-    <div class="col-12">
-      <div class="text-center mt-3">
-        <span class="title">Thông tin đặt lịch khám bệnh</span>
-      </div>
-      <input type="text" id="psid" hidden>
-      <div class="form-group">
-        <label for="customerName">Họ và tên:</label>
-        <input type="text" id="customerName" class="form-control" placeholder="Họ và tên...">
-      </div>
-      <div class="form-group">
-        <label for="phone">Số điện thoại (<span style="color: red">*</span>):</label>
-        <input type="text" id="phone" class="form-control" placeholder="Số điện thoại...">
-        <div class="invalid-feedback">Please enter a valid phone number .</div>
-      </div>
-      <div class="form-group">
-        <label for="reason">Lý do kiểm tra(<span style="color: red">*</span>):</label>
-        <textarea rows="3" id="reason" class="form-control" placeholder="Summary of reasons for examination"></textarea>
-        <div class="invalid-feedback">Please enter the reason for the examination.</div>
-      </div>
-      <button class="btn btn-primary" id="btnBooking">Xác nhận</button>
+
+
+
+<div class="background-image">
+    <div class="background-content">
+        <div class="container lg-body">
+            <div class="col-3 col-md-3 col-sm-3">
+
+            </div>
+            <div class="col-6 col-md-6 col-sm-6 login-form">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="text-center mt-3">
+                            <h1 class="title">Thông tin đặt lịch khám bệnh</h1>
+                        </div>
+                        <input type="text" id="psid" hidden>
+                        <div class="form-group">
+                            <label for="customerName">Họ và tên:</label>
+                            <input type="text" id="customerName" class="form-control" placeholder="Họ và tên...">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Số điện thoại (<span style="color: red">*</span>):</label>
+                            <input type="text" id="phone" class="form-control" placeholder="Số điện thoại...">
+                            <div class="invalid-feedback">Please enter a valid phone number .</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="birthday">Ngày khám:</label>
+                            <input type="date"  class="form-control" id="birthday" name="birthday"/>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="reason">Lý do kiểm tra(<span style="color: red">*</span>):</label>
+                            <textarea rows="3" id="reason" class="form-control"
+                                      placeholder="Summary of reasons for examination"></textarea>
+                            <div class="invalid-feedback">Please enter the reason for the examination.</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-register">Xác nhận</button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-3 col-md-3 col-sm-3">
+
+            </div>
+        </div>
     </div>
-
-  </div>
-
 </div>
-<div th:include="footer.html"></div>
 
 <script src="/components/jquery/dist/jquery.min.js"></script>
 <script src="/js/bookingOnline.js"></script>

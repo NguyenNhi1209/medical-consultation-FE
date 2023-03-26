@@ -19,34 +19,52 @@
             <div class="col-6 col-md-6 col-sm-6 login-form"
                  style="border: 1px solid;border-radius: 10px;box-shadow: 0px 25px 20px -20px rgba(0,0,0,0.45)">
                 <h2 class="text-login" style="text-align: center">Đăng ký</h2>
-
-                <form method="POST" action="/register">
+                <div>
+                    <span>(Thông tin có dấu <span style="color: red">*</span> là bắt buộc)</span>
+                </div>
+                <form method="POST" th:action="@{/user/register}"  th:object="${registerRequest}">
                     <div class="form-group">
-                        <label for="name">Họ và tên:</label>
-                        <input type="text" class="form-control" id="name" name="name"
+                        <label for="fullName">Họ và tên:</label>
+                        <input type="text" th:field="*{fullName}" class="form-control" id="fullName" name="fullName"
                                placeholder="Họ và tên...">
                     </div>
                     <div class="form-group">
+                        <label for="birthday">Ngày sinh:</label>
+                        <input type="date" th:field="*{birthday}" class="form-control" id="birthday" name="birthday"/>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại:</label>
+                        <input type="text" th:field="*{phone}" class="form-control" id="phone" name="phone" placeholder="Số điện thoại..."/>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="sex">Giới tính:</label>
+                        <select th:field="*{sex}" id="sex" name="sex">
+                            <option th:value="'M'" th:text="Nam"></option>
+                            <option th:value="'F'" th:text="Nữ"></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="email">Email <span style="color: red">*</span></label>
-                        <input type="email" class="form-control" id="email" name="email"
+                        <input type="email" th:field="*{email}" class="form-control" id="email" name="email"
                                placeholder="Email...">
                     </div>
                     <div class="form-group">
                         <label for="password">Mật khẩu <span style="color: red">*</span></label>
-                        <input type="password" class="form-control" id="password" name="password"
+                        <input type="password" th:field="*{password}" class="form-control" id="password" name="password"
                                placeholder="Mật khẩu...">
 
                     </div>
                     <div class="form-group">
-                        <label for="rg-password-again"> Nhập lại mật khẩu <span style="color: red">*</span></label>
-                        <input type="password" class="form-control" id="rg-password-again" name="passwordConfirm"
+                        <label for="password1"> Nhập lại mật khẩu <span style="color: red">*</span></label>
+                        <input type="password" th:field="*{password1}" class="form-control" id="password1" name="password1"
                                placeholder="Nhập lại mật khẩu...">
 
                     </div>
+                    <span th:text="${error}" style="color:red;"></span>
+                    <br>
 
-                    <div>
-                        <span>(Thông tin có dấu <span style="color: red">*</span> là bắt buộc)</span>
-                    </div>
                     <button type="submit" class="btn btn-primary btn-register">Đăng ký</button>
                 </form>
                 <br>

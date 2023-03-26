@@ -3,6 +3,7 @@ package com.example.DNFrontEnd.Service;
 import com.example.DNFrontEnd.Model.BaseResponse;
 import com.example.DNFrontEnd.Model.LoginRequest;
 import com.example.DNFrontEnd.Model.LoginResponse;
+import com.example.DNFrontEnd.Model.request.RegisterRequestDTO;
 import com.example.DNFrontEnd.Model.response.UserProfileResponse;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -63,6 +64,29 @@ public class AuthService {
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
             baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+            return  baseResponse;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public BaseResponse register(RegisterRequestDTO registerRequest) {
+        BaseResponse baseResponse ;
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/auth/register"))
+                    .header("accept", "application/json")
+//                .header("Authorization", "Bearer ")
+                    .header("content-type", "application/json")
+                    .method("POST", HttpRequest.BodyPublishers.ofString(RegisterRequestDTO.convertToString(registerRequest)))
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+
+            System.out.println(baseResponse);
             return  baseResponse;
         } catch (Exception e){
             e.printStackTrace();

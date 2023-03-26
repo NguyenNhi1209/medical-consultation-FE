@@ -4,6 +4,8 @@ import com.example.DNFrontEnd.Model.AuthMessageCode;
 import com.example.DNFrontEnd.Model.BaseResponse;
 import com.example.DNFrontEnd.Model.LoginRequest;
 import com.example.DNFrontEnd.Model.LoginResponse;
+import com.example.DNFrontEnd.Model.request.RegisterRequest;
+import com.example.DNFrontEnd.Model.request.RegisterRequestDTO;
 import com.example.DNFrontEnd.Model.response.UserProfileResponse;
 import com.example.DNFrontEnd.Service.AuthService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,6 +24,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Controller
 @RequestMapping({ "/user"})
@@ -114,7 +121,109 @@ public class AuthController {
         return "redirect:/";
     }
     @GetMapping("/register")
-    public String register(@RequestParam(required = false) String success, Model model, String error){
+    public String register(@RequestParam(required = false) String success, Model model, @ModelAttribute("registerRequest") RegisterRequest registerRequest, @ModelAttribute(name = "error") String error){
+        if(error!=""&&error!=null){
+            model.addAttribute("registerRequest", registerRequest);
+            model.addAttribute("error", error);
+        }else {
+            model.addAttribute("registerRequest", new RegisterRequest());
+            model.addAttribute("error", "");
+        }
+
         return "register";
     }
+    @PostMapping("/register")
+    public String register(Model model, HttpServletRequest request, RedirectAttributes redirectAttrs,@ModelAttribute("registerRequest") RegisterRequest registerRequest ){
+        if(StringUtils.isEmpty(registerRequest.getEmail())){
+            redirectAttrs.addFlashAttribute("error","Nhập email");
+            redirectAttrs.addFlashAttribute("registerRequest", registerRequest);
+            return "redirect:/user/register";
+        }
+        if(!registerRequest.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")){
+            redirectAttrs.addFlashAttribute("error","Email không hợp lệ");
+            redirectAttrs.addFlashAttribute("registerRequest", registerRequest);
+            return "redirect:/user/register";
+        }
+        if(StringUtils.isEmpty(registerRequest.getPassword())){
+            redirectAttrs.addFlashAttribute("error","Nhập mật khẩu");
+            redirectAttrs.addFlashAttribute("registerRequest", registerRequest);
+            return "redirect:/user/register";
+        }
+        if(StringUtils.isEmpty(registerRequest.getPassword1())){
+            redirectAttrs.addFlashAttribute("error","Nhập lại mật khẩu");
+            redirectAttrs.addFlashAttribute("registerRequest", registerRequest);
+            return "redirect:/user/register";
+        }
+        if(!registerRequest.getPassword1().equalsIgnoreCase(registerRequest.getPassword())){
+            redirectAttrs.addFlashAttribute("error","Nhập lại mật khẩu không chính xác");
+            redirectAttrs.addFlashAttribute("registerRequest", registerRequest);
+            return "redirect:/user/register";
+        }
+        if(!StringUtils.isEmpty(registerRequest.getPhone())
+            && !registerRequest.getPhone().matches("^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$")){
+            redirectAttrs.addFlashAttribute("error","Số điện thoại không hợp lệ");
+            redirectAttrs.addFlashAttribute("registerRequest", registerRequest);
+            return "redirect:/user/register";
+        }
+        if(!StringUtils.isEmpty(registerRequest.getBirthday())){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate birthday = LocalDate.parse(registerRequest.getBirthday(), formatter);
+            if( birthday.isAfter(LocalDate.now())){
+                redirectAttrs.addFlashAttribute("error","Ngày sinh không hợp lệ");
+                redirectAttrs.addFlashAttribute("registerRequest", registerRequest);
+                return "redirect:/user/register";
+            }
+        }
+
+        RegisterRequestDTO user = new RegisterRequestDTO();
+        user.setEmail(request.getParameter("email"));
+        user.setPassword(request.getParameter("password"));
+        user.setPhone(request.getParameter("phone"));
+        user.setFullName(request.getParameter("fullName"));
+        user.setBirthday(request.getParameter("birthday"));
+        user.setSex(request.getParameter("sex"));
+        System.out.println(user.toString());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        try {
+            BaseResponse baseResponse = authService.register(user);
+            System.out.println(baseResponse.toString());
+//            if(baseResponse != null){
+//                if(baseResponse.getCode() == 1){
+//                    LoginResponse loginResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(),LoginResponse.class);
+//                    if(loginResponse != null){
+//                        request.getSession().setAttribute("Authorization", loginResponse.getToken());
+//                        BaseResponse userProfileResponseBaseResponse = authService.getProfileUser(loginResponse.getToken());
+//                        System.out.println(userProfileResponseBaseResponse);
+//                    }
+//                }else{
+//                    System.out.println(baseResponse.getMessage());
+//
+//                    AuthMessageCode authMessageCode = AuthMessageCode.from(baseResponse.getMessageCode());
+//                    if(authMessageCode != null && !authMessageCode.getCode().equalsIgnoreCase("1111.0.Unknown")){
+//                        model.addAttribute("error",authMessageCode.getMessage());
+//                    }else{
+//                        model.addAttribute("error",baseResponse.getMessage());
+//                    }
+//                    return "login";
+//                }
+//            }
+
+//            request.getSession().setAttribute("jwtResponse", (BaseResponse) baseResponse.getBody());
+
+        }
+        catch (HttpClientErrorException ex){
+            ex.printStackTrace();
+            System.out.println("catch roi");
+//            return "home";
+        }
+//        catch (JsonMappingException e) {
+//            e.printStackTrace();
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+        return "redirect:/";
+    }
+
 }

@@ -4,15 +4,7 @@
     --third:#DFE4E0;
     --mainafterclr:hsl(167, 81%, 79%);
 }
-*{
-    margin: 0;
-    padding: 0;
-    outline: none;
-    box-sizing: border-box;
-    transition: .2s;
-    /*text-transform: capitalize;*/
-    text-decoration: none;
-}
+
 html{
     font-size: 62.5%;
     
@@ -439,7 +431,29 @@ html{
         flex-direction: column;
         clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
     }
+    .navbar{
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--secclr);
+        display: flex;
 
+        align-items: center;
+        flex-direction: column;
+        clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    }
+
+
+    .navbar a{
+        display: block;
+        font-size: 3rem;
+        font-weight: bolder;
+        margin: 1rem;
+        padding: 1rem;
+        color: black;
+    }
     
     .navbar a{
         display: block;
@@ -586,11 +600,7 @@ body a {
 
 .sec-fields-title {
     width: 90%; }
-.sec-fields-title a {
-    display: flex;
-    justify-content: flex-end;
-    /*text-transform: uppercase;*/
-}
+
 .sec-fields-title a span {
     cursor: pointer;
     color: #282e41;
@@ -789,9 +799,7 @@ footer span {
     padding: 10px 0;
     font-weight: 600; }
 
-select#day-book {
-    /*text-transform: capitalize;*/
-}
+
 
 .avatar-doctor-modal {
     width: 120px;
@@ -878,9 +886,7 @@ select#day-book {
     background-color: #9dd4e0; }
 .content-specialization .each-doctor-spe .right-content .no-schedule {
     margin-top: 10px; }
-.content-specialization .each-doctor-spe .right-content #day-book-spe {
-    /*text-transform: capitalize; */
-}
+
 .content-specialization .content-description-spe {
     min-height: 150px;
     max-height: 300px;

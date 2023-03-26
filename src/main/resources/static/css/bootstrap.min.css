@@ -118,9 +118,7 @@ button {
     overflow: visible
 }
 
-button, select {
-    /*text-transform: none*/
-}
+
 
 button, html input[type=button], input[type=reset], input[type=submit] {
     -webkit-appearance: button;
@@ -1305,18 +1303,6 @@ mark, .mark {
     white-space: nowrap
 }
 
-.text-lowercase {
-    /*text-transform: lowercase*/
-}
-
-.text-uppercase {
-    /*text-transform: uppercase*/
-}
-
-.text-capitalize {
-    /*text-transform: capitalize*/
-}
-
 .text-muted {
     color: #777
 }
@@ -1472,10 +1458,7 @@ abbr[title], abbr[data-original-title] {
     border-bottom: 1px dotted #777
 }
 
-.initialism {
-    font-size: 90%;
-    /*text-transform: uppercase*/
-}
+
 
 blockquote {
     padding: 10px 20px;
@@ -2693,7 +2676,7 @@ output {
     border-radius: 4px;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -webkit-transition: border-color ease-in-out .15s, transform: scaleY(-1) .15s;
     -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
 }

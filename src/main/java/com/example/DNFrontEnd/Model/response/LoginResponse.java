@@ -1,4 +1,4 @@
-package com.example.DNFrontEnd.Model;
+package com.example.DNFrontEnd.Model.response;
 
 import lombok.Data;
 

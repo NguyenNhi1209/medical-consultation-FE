@@ -1,16 +1,13 @@
 package com.example.DNFrontEnd.Service;
 
 import com.example.DNFrontEnd.Model.BaseResponse;
-import com.example.DNFrontEnd.Model.LoginRequest;
-import com.example.DNFrontEnd.Model.LoginResponse;
+import com.example.DNFrontEnd.Model.request.LoginRequest;
 import com.example.DNFrontEnd.Model.request.RegisterRequestDTO;
-import com.example.DNFrontEnd.Model.response.UserProfileResponse;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -93,5 +90,25 @@ public class AuthService {
         }
         return null;
     }
+    public BaseResponse verify(String code)  {
+        BaseResponse baseResponse;
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/auth/verify-email?code=" + code))
+                    .header("accept", "application/json")
+//                    .header("Authorization", "Bearer " + token)
+                    .header("content-type", "application/json")
+                    .method("GET", HttpRequest.BodyPublishers.noBody())
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+            return  baseResponse;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -1,11 +1,8 @@
-package com.example.DNFrontEnd.Model;
+package com.example.DNFrontEnd.Model.request;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Data
 public class LoginRequest {
@@ -13,6 +10,8 @@ public class LoginRequest {
     private String email;
 
     private String password;
+
+    private Boolean loginWithDoctor;
 
     public static String convertToString(LoginRequest loginRequest) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();

@@ -2,10 +2,12 @@ package com.example.DNFrontEnd.Controller;
 
 import com.example.DNFrontEnd.Model.AuthMessageCode;
 import com.example.DNFrontEnd.Model.BaseResponse;
+import com.example.DNFrontEnd.Model.Contanst;
 import com.example.DNFrontEnd.Model.request.LoginRequest;
 import com.example.DNFrontEnd.Model.response.LoginResponse;
 import com.example.DNFrontEnd.Model.request.RegisterRequest;
 import com.example.DNFrontEnd.Model.request.RegisterRequestDTO;
+import com.example.DNFrontEnd.Model.response.UserProfileResponse;
 import com.example.DNFrontEnd.Service.AuthService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -51,7 +53,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(Model model, HttpServletRequest request, RedirectAttributes redirectAttrs, @ModelAttribute("loginRequest") LoginRequest loginRequest) {
+    public String login(Model model, HttpServletRequest request, RedirectAttributes redirectAttrs, @ModelAttribute("loginRequest") LoginRequest loginRequest,
+                        @ModelAttribute(name = "name") String name, @ModelAttribute(name = "userType") String userType) {
         if (StringUtils.isEmpty(loginRequest.getEmail())) {
             redirectAttrs.addFlashAttribute("error", "Nhập email");
             redirectAttrs.addFlashAttribute("loginRequest", loginRequest);
@@ -82,7 +85,7 @@ public class AuthController {
         }else{
             user.setLoginWithDoctor(false);
         }
-        System.out.println(isDoctor);
+        System.out.println(user.toString());
 
         try {
             BaseResponse baseResponse = authService.login(user);
@@ -92,7 +95,13 @@ public class AuthController {
                     if (loginResponse != null) {
                         request.getSession().setAttribute("Authorization", loginResponse.getToken());
                         BaseResponse userProfileResponseBaseResponse = authService.getProfileUser(loginResponse.getToken());
+                        Contanst.token = loginResponse.getToken();
                         System.out.println(userProfileResponseBaseResponse);
+                        UserProfileResponse userProfileResponse = objectMapper.readValue(objectMapper.writeValueAsString(userProfileResponseBaseResponse.getData()).toString(), UserProfileResponse.class);
+                        redirectAttrs.addFlashAttribute("name", userProfileResponse.getName());
+                        Contanst.name = userProfileResponse.getName();
+                        redirectAttrs.addFlashAttribute("userType", userProfileResponse.getType());
+                        Contanst.userType = userProfileResponse.getType();
                     }
                 } else {
                     System.out.println(baseResponse.getMessage());
@@ -242,5 +251,24 @@ public class AuthController {
 
 
         return "active";
+    }
+
+    @GetMapping("/logout")
+    public String login(Model model,@ModelAttribute(name = "name") String name, @ModelAttribute(name = "userType") String userType) {
+
+        BaseResponse baseResponse = authService.logout(Contanst.token);
+        if(!StringUtils.isEmpty(baseResponse.getMessageCode()) && baseResponse.getMessageCode().equalsIgnoreCase("auth.2.1")){
+            model.addAttribute("name", "");
+            model.addAttribute("userType", "");
+            resetContanst();
+            return "redirect:/";
+        }
+        return "home";
+    }
+
+    private void resetContanst(){
+        Contanst.token = "";
+        Contanst.name = "";
+        Contanst.userType = "";
     }
 }

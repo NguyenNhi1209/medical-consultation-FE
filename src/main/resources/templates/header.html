@@ -13,11 +13,15 @@
         <a th:href="@{/}">Trang chủ</a>
         <a href="#">Giới thiệu</a>
         <a th:href="@{/booking}">Đặt lịch khám</a>
-        <a href="#">gallery</a>
-        <a href="#">Liên hệ</a>
+        <a th:if="${userType != ''}">Quản lý thông tin</a>
+        <a th:href="@{/user/logout}" th:if="${userType != ''}">Đăng xuất</a>
     </nav>
 
-    <div class="icons">
+    <div class="icons" th:if="${name != ''}">
+        <div id="menubar" class="fas fa-bars"></div>
+        <a th:text="${name}"></a>
+    </div>
+    <div class="icons" th:if="${name == ''}">
         <div id="menubar" class="fas fa-bars"></div>
         <a th:href="@{/user/login}" >Đăng nhập</a>
     </div>

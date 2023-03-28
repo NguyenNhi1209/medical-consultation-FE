@@ -111,4 +111,26 @@ public class AuthService {
         }
         return null;
     }
+
+    public BaseResponse logout(String token) {
+        BaseResponse baseResponse;
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/auth/logout"))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .header("content-type", "application/json")
+                    .method("POST", HttpRequest.BodyPublishers.noBody())
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+            return  baseResponse;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

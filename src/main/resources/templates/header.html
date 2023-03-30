@@ -11,9 +11,9 @@
 <!--    <span sec:authorize="isAuthenticated()">-->
     <nav class="navbar" >
         <a th:href="@{/}">Trang chủ</a>
-        <a href="#">Giới thiệu</a>
+        <a th:href="@{/introduce}">Giới thiệu</a>
         <a th:href="@{/booking}">Đặt lịch khám</a>
-        <a th:if="${userType != ''}">Quản lý thông tin</a>
+        <a th:if="${userType != ''}" th:href="@{/updateProfile}">Quản lý thông tin</a>
         <a th:href="@{/user/logout}" th:if="${userType != ''}">Đăng xuất</a>
     </nav>
 

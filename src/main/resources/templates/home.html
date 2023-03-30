@@ -6,19 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/all.min.css}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link
             rel="stylesheet"
             th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"
     />
+    <style>
+        .background-image1{
+            margin: 100px 20px 30px 20px;
+        }
+        .background-content1 img{
+            align-content: center;
+            width: 1460px;
+            height: 552.51px;
+        }
+        .inner-services-content a{
+            color: #0d0b0b;
+            font-size: 15px;
+        }
+    </style>
 </head>
 <body>
 <div th:include="header.html"></div>
-<div class="background-image">
-    <div class="background-content">
-        <h1>provide an exceptional <br> patient experience</h1>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessit<br>atibus reiciendis eos saepe vitae
-            quibusdam corrupti ip<br> ipsa asperiores reprehenderit </p>
-        <a href="#">Read more</a>
+<div class="background-image1">
+    <div class="background-content1">
+        <img src="/images/banner1.jpg" alt="banner">
     </div>
 </div>
 
@@ -26,11 +38,8 @@
     <div class="main-about">
         <div class="inner-about">
             <div class="about-content">
-                <h1>about us</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, consequuntur harum beatae inventore
-                    voluptatem numquam voluptatibus fuga, cupiditate cumque porro perferendis tempora, adipisci culpa
-                    odio molestias dolorem blanditiis quos ad!</p>
-                <a href="#">Read more</a>
+                <h1>Về chúng tôi</h1>
+                <p>Phòng khám đa khoa Đạt Nhi là bệnh viện trực thuộc Sở Y tế thành phố Hồ Chí Minh. </p>
             </div>
 
         </div>
@@ -45,14 +54,12 @@
 <div class="our-services">
     <div class="service-content">
         <div class="left-service-content">
-            <h1>Our special services</h1>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Veritatis animi similique perspiciatis, impedit
-                blanditiis itaque consequuntur laboriosam ipsa asperiores?</p>
+            <h1>Các hình thức hỗ trợ</h1>
         </div>
 
         <div class="right-service-content">
             <div class="right-btn">
-                <a href="#">See all services</a>
+                <a href="#">Các hình thức hỗ trợ</a>
             </div>
         </div>
     </div>
@@ -60,152 +67,146 @@
     <div class="main-services">
         <div class="inner-services-content">
             <div class="service-icon">
-                <i class="fas fa-notes-medical"></i>
+                <i class='bx bx-phone-call'></i>
             </div>
-            <h2>health care</h2>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cum corporis impedit nam quaerat vitae incidunt
-                aspernatur, conseq</p>
+            <h2>Hỗ trợ đặt khám</h2>
+            <a>1900-000</a>
 
         </div>
 
         <div class="inner-services-content">
             <div class="service-icon">
-                <i class="fas fa-hospital-user"></i>
+                <i class='bx bxl-facebook' ></i>
             </div>
-            <h2>health care</h2>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cum corporis impedit nam quaerat vitae incidunt
-                aspernatur, conseq</p>
-
+            <h2>Fanpage Facebook</h2>
+            <a href="#">Bấm vào đây</a>
         </div>
 
         <div class="inner-services-content">
-            <div class="service-icon">
-                <i class="fas fa-user-md"></i>
+            <div class="service-icon" >
+                <a th:href="@{/booking}"><i class='bx bx-calendar'></i></a>
             </div>
-            <h2>health care</h2>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cum corporis impedit nam quaerat vitae incidunt
-                aspernatur, conseq</p>
-
+            <h2>Đặt lịch khám</h2>
+            <a th:href="@{/booking}">Bấm vào đây</a>
         </div>
     </div>
 </div>
 
+<!--<div class="gallery">-->
+<!--    <h1>Gallery</h1>-->
+<!--    <div class="main-gallery">-->
+<!--        <div class="inner-gallery">-->
+<!--            <img src="/images/gal1.jpg" alt="">-->
+<!--        </div>-->
 
-<div class="gallery">
-    <h1>Gallery</h1>
-    <div class="main-gallery">
-        <div class="inner-gallery">
-            <img src="/images/gal1.jpg" alt="">
-        </div>
+<!--        <div class="inner-gallery">-->
+<!--            <img src="/images/gal2.jpg" alt="">-->
+<!--        </div>-->
 
-        <div class="inner-gallery">
-            <img src="/images/gal2.jpg" alt="">
-        </div>
+<!--        <div class="inner-gallery">-->
+<!--            <img src="/images/gal3.jpg" alt="">-->
+<!--        </div>-->
 
-        <div class="inner-gallery">
-            <img src="/images/gal3.jpg" alt="">
-        </div>
+<!--        <div class="inner-gallery">-->
+<!--            <img src="/images/gal4.jpg" alt="">-->
+<!--        </div>-->
 
-        <div class="inner-gallery">
-            <img src="/images/gal4.jpg" alt="">
-        </div>
+<!--        <div class="inner-gallery">-->
+<!--            <img src="/images/gal5.jpg" alt="">-->
+<!--        </div>-->
 
-        <div class="inner-gallery">
-            <img src="/images/gal5.jpg" alt="">
-        </div>
-
-        <div class="inner-gallery">
-            <img src="/images/gal6.jpg" alt="">
-        </div>
-    </div>
-</div>
-
-
-<div class="why-choseus">
-    <div class="main-chose">
-        <div class="inner-chose">
-            <img src="/images/cute.jpg" alt="">
-        </div>
-
-        <div class="inner-chose">
-            <h1>why chose us </h1>
-
-            <div class="inner-chose-content">
-                <div class="main-inner-chose">
-                    <div class="chose-icon">
-                        <i class="fas fa-notes-medical"></i>
-                    </div>
-                    <div class="icon-content">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae error explicabo possimus
-                            fugit fuga inventore tenetur natus, </p>
-                    </div>
-                </div>
-
-                <div class="main-inner-chose">
-                    <div class="chose-icon">
-                        <i class="fas fa-hospital-user"></i>
-
-                    </div>
-                    <div class="icon-content">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae error explicabo possimus
-                            fugit fuga inventore tenetur natus, </p>
-                    </div>
-                </div>
-
-                <div class="main-inner-chose">
-                    <div class="chose-icon">
-                        <i class="fas fa-user-md"></i>
-                    </div>
-                    <div class="icon-content">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae error explicabo possimus
-                            fugit fuga inventore tenetur natus, </p>
-                    </div>
-                </div>
-            </div>
+<!--        <div class="inner-gallery">-->
+<!--            <img src="/images/gal6.jpg" alt="">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 
-        </div>
-    </div>
-</div>
+<!--<div class="why-choseus">-->
+<!--    <div class="main-chose">-->
+<!--        <div class="inner-chose">-->
+<!--            <img src="/images/cute.jpg" alt="">-->
+<!--        </div>-->
+
+<!--        <div class="inner-chose">-->
+<!--            <h1>why chose us </h1>-->
+
+<!--            <div class="inner-chose-content">-->
+<!--                <div class="main-inner-chose">-->
+<!--                    <div class="chose-icon">-->
+<!--                        <i class="fas fa-notes-medical"></i>-->
+<!--                    </div>-->
+<!--                    <div class="icon-content">-->
+<!--                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae error explicabo possimus-->
+<!--                            fugit fuga inventore tenetur natus, </p>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="main-inner-chose">-->
+<!--                    <div class="chose-icon">-->
+<!--                        <i class="fas fa-hospital-user"></i>-->
+
+<!--                    </div>-->
+<!--                    <div class="icon-content">-->
+<!--                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae error explicabo possimus-->
+<!--                            fugit fuga inventore tenetur natus, </p>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="main-inner-chose">-->
+<!--                    <div class="chose-icon">-->
+<!--                        <i class="fas fa-user-md"></i>-->
+<!--                    </div>-->
+<!--                    <div class="icon-content">-->
+<!--                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae error explicabo possimus-->
+<!--                            fugit fuga inventore tenetur natus, </p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
 
-<div class="our-doctors">
-    <h1>Our special doctors</h1>
-
-    <div class="main-doctor">
-        <div class="inner-doctor">
-            <img src="/images/gal3.jpg" alt="">
-            <div class="doc-icons">
-                <div class="fab fa-facebook"></div>
-                <div class="fab fa-twitter"></div>
-                <div class="fab fa-instagram"></div>
-                <div class="fab fa-linkedin"></div>
-            </div>
-        </div>
-
-        <div class="inner-doctor">
-            <img src="/images/gal2.jpg" alt="">
-            <div class="doc-icons">
-                <div class="fab fa-facebook"></div>
-                <div class="fab fa-twitter"></div>
-                <div class="fab fa-instagram"></div>
-                <div class="fab fa-linkedin"></div>
-            </div>
-        </div>
-
-        <div class="inner-doctor">
-            <img src="/images/gal5.jpg" alt="">
-            <div class="doc-icons">
-                <div class="fab fa-facebook"></div>
-                <div class="fab fa-twitter"></div>
-                <div class="fab fa-instagram"></div>
-                <div class="fab fa-linkedin"></div>
-            </div>
-        </div>
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 
-    </div>
-</div>
+<!--<div class="our-doctors">-->
+<!--    <h1>Our special doctors</h1>-->
+
+<!--    <div class="main-doctor">-->
+<!--        <div class="inner-doctor">-->
+<!--            <img src="/images/gal3.jpg" alt="">-->
+<!--            <div class="doc-icons">-->
+<!--                <div class="fab fa-facebook"></div>-->
+<!--                <div class="fab fa-twitter"></div>-->
+<!--                <div class="fab fa-instagram"></div>-->
+<!--                <div class="fab fa-linkedin"></div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="inner-doctor">-->
+<!--            <img src="/images/gal2.jpg" alt="">-->
+<!--            <div class="doc-icons">-->
+<!--                <div class="fab fa-facebook"></div>-->
+<!--                <div class="fab fa-twitter"></div>-->
+<!--                <div class="fab fa-instagram"></div>-->
+<!--                <div class="fab fa-linkedin"></div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="inner-doctor">-->
+<!--            <img src="/images/gal5.jpg" alt="">-->
+<!--            <div class="doc-icons">-->
+<!--                <div class="fab fa-facebook"></div>-->
+<!--                <div class="fab fa-twitter"></div>-->
+<!--                <div class="fab fa-instagram"></div>-->
+<!--                <div class="fab fa-linkedin"></div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+<!--    </div>-->
+<!--</div>-->
 
 <div th:include="footer.html"></div>
 

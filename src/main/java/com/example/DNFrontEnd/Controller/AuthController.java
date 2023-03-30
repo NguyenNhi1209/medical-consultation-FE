@@ -98,6 +98,7 @@ public class AuthController {
                         Contanst.token = loginResponse.getToken();
                         System.out.println(userProfileResponseBaseResponse);
                         UserProfileResponse userProfileResponse = objectMapper.readValue(objectMapper.writeValueAsString(userProfileResponseBaseResponse.getData()).toString(), UserProfileResponse.class);
+                        Contanst.userProfileResponse = userProfileResponse;
                         redirectAttrs.addFlashAttribute("name", userProfileResponse.getName());
                         Contanst.name = userProfileResponse.getName();
                         redirectAttrs.addFlashAttribute("userType", userProfileResponse.getType());
@@ -270,5 +271,6 @@ public class AuthController {
         Contanst.token = "";
         Contanst.name = "";
         Contanst.userType = "";
+        Contanst.userProfileResponse = new UserProfileResponse();
     }
 }

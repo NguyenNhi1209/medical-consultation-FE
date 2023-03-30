@@ -6,6 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        body{
+            background: #F0F8FF;
+        }
+        .login-form{
+            background: white;
+        }
+    </style>
 </head>
 <body>
 <div class="login">
@@ -40,10 +48,12 @@
                     </div>
                     <div class="form-group">
                         <label for="sex">Giới tính:</label>
-                        <select th:field="*{sex}" id="sex" name="sex">
-                            <option th:value="'M'" th:text="Nam"></option>
-                            <option th:value="'F'" th:text="Nữ"></option>
-                        </select>
+                        <input type="radio" name="sex" th:value="M">Nam
+                        <input type="radio" name="sex" th:value="F">Nữ
+<!--                        <select th:field="*{sex}" id="sex" name="sex">-->
+<!--                            <option th:value="'M'" th:text="Nam"></option>-->
+<!--                            <option th:value="'F'" th:text="Nữ"></option>-->
+<!--                        </select>-->
                     </div>
                     <div class="form-group">
                         <label for="email">Email <span style="color: red">*</span></label>
@@ -78,5 +88,7 @@
             </div>
         </div>
     </div>
+</div>
+
 </body>
 </html>

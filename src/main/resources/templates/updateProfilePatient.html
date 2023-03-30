@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/all.min.css}">
+    <link
+            rel="stylesheet"
+            th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"
+    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>Title</title>
+    <style>
+        .update{
+            margin-top: 230px;
+            margin-bottom: 50px;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .fix-height {
+            flex: 1;
+        }
+
+        a, a:hover, a:focus {
+            text-decoration: none;
+            color: white;
+        }
+
+        .title {
+            font-weight: 600;
+            font-size: 22px;
+            display: block;
+            margin: 20px 0;
+            text-transform: uppercase;
+            /*text-transform: uppercase;*/
+        }
+        .navbar {
+            padding-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div th:include="header.html"></div>
+    <div class="update">
+        <div class="container update-body">
+            <div class="container">
+                <div class="col-3 col-md-3 col-sm-3"></div>
+                <div class="col-6 col-md-6 col-sm-6 update-form" >
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text-center mt-3">
+                                <h1 class="title">cập nhật thông tin khách hàng </h1>
+                            </div>
+                            <form method="POST" th:action="@{/}"  th:object="${registerRequest}">
+                                <div class="form-group">
+                                    <label for="fullName">Họ và tên:</label>
+                                    <input type="text" th:field="*{fullName}" class="form-control" id="fullName" name="fullName"
+                                           placeholder="Họ và tên...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="birthday">Ngày sinh:</label>
+                                    <input type="date" th:field="*{birthday}" class="form-control" id="birthday" name="birthday"/>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="sex">Giới tính:</label>
+                                    <input type="radio" name="sex" th:value="M">Nam
+                                    <input type="radio" name="sex" th:value="F">Nữ
+                                    <!--                        <select th:field="*{sex}" id="sex" name="sex">-->
+                                    <!--                            <option th:value="'M'" th:text="Nam"></option>-->
+                                    <!--                            <option th:value="'F'" th:text="Nữ"></option>-->
+                                    <!--                        </select>-->
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Địa chỉ:</label>
+                                    <input type="text"  class="form-control" id="address" name="address"
+                                           placeholder="Địa chỉ...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="job">Địa chỉ:</label>
+                                    <input type="text"  class="form-control" id="job" name="job"
+                                           placeholder="Công việc...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Số điện thoại:</label>
+                                    <input type="text" th:field="*{phone}" class="form-control" id="phone" name="phone" placeholder="Số điện thoại..."/>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="identityNumber">CMND/CCCD:</label>
+                                    <input type="text"  class="form-control" id="identityNumber" name="identityNumber" placeholder="CMND/CCCD..."/>
+                                </div>
+                                <br>
+                                <button type="submit" class="btn btn-primary btn-register">Cập nhật</button>
+                                <br>
+                                <br>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 col-md-3 col-sm-3">
+            </div>
+        </div>
+    </div>
+    </div>
+    <div th:include="footer.html"></div>
+    <script src="script.js"></script>
+</body>
+</html>

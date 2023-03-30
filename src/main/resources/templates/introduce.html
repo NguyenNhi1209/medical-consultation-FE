@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/all.min.css}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link
+            rel="stylesheet"
+            th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"
+    />
+    <title>Title</title>
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            font-family: Averta, serif;
+            color: #12263f;
+
+        }
+        body{
+            margin: 0;
+            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #212529;
+            text-align: left;
+            background-color: #fff;
+        }
+        .style_introduce__2BY0J{
+            position: relative;
+            background: #fff;
+            margin: -50px auto 120px;
+            border-radius: 5px;
+            min-height: 300px;
+            padding: 30px;
+            max-width: 1140px;
+            border: 1px solid #ddd;
+        }
+        *, :after, :before{
+            box-sizing: border-box;
+        }
+        div{
+            display: block;
+        }
+        .background-introduce img{
+            width: 1476px;
+            height: 402.24px;
+        }
+        .row{
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+        .col-md-12{
+            flex: 0 0 100%;
+            max-width: 100%;
+            position: relative;
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+        .mb-4{
+            margin-bottom: 1.5rem!important;
+        }
+        .style_introduce_item__3s59q{
+            min-height: 400px;
+            position: relative;
+        }
+        element.style {
+            text-align: justify;
+            margin-right: 0cm;
+            margin-left: 0cm;
+        }
+        p {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            padding: 10px 20px;
+        }
+        .container{
+            width: 1078.4px;
+            height: 504px;
+        }
+    </style>
+</head>
+<body>
+    <div th:include="header.html"></div>
+    <div class="background-introduce">
+        <img src="/images/introducebg.jpg">
+
+    </div>
+    <div class="style_introduce__2BY0J">
+        <div data-test="container" class="container">
+            <div data-test="row" class="row">
+                <div data-test="col" class="col-md-12 mb-4">
+                    <div class="style_introduce_item__3s59q">
+                        <div>
+                            <div class="stackedit">
+                                <div class="stackedit__html">
+                                    <p style="text-align:justify; margin-right:0cm; margin-left:0cm">
+                                        <span style="font-size:16px;">
+                                            Chào mừng bạn đến với <strong>phần mềm đăng ký khám bệnh theo hẹn </strong>
+                                            tại <strong>phòng khám đa khoa Đạt Nhi</strong> hiện tại phòng khám có các chuyên khoa sau:
+                                        </span>
+                                    </p>
+                                    <ul>
+                                        <li style="text-align: justify; margin-right: 0cm; margin-left: 0cm;">
+                                            <span style="font-size:16px;">
+                                                Mắt
+                                            </span>
+                                        </li>
+                                        <li style="text-align: justify; margin-right: 0cm; margin-left: 0cm;">
+                                            <span style="font-size:16px;">
+                                                Da liễu
+                                            </span>
+                                        </li>
+                                        <li style="text-align: justify; margin-right: 0cm; margin-left: 0cm;">
+                                            <span style="font-size:16px;">
+                                                Chấn thương chỉnh hình
+                                            </span>
+                                        </li>
+                                        <li style="text-align: justify; margin-right: 0cm; margin-left: 0cm;">
+                                            <span style="font-size:16px;">
+                                                Nha khoa
+                                            </span>
+                                        </li>
+                                        <li style="text-align: justify; margin-right: 0cm; margin-left: 0cm;">
+                                            <span style="font-size:16px;">
+                                                Tai mũi họng
+                                            </span>
+                                        </li>
+                                    </ul>
+                                    <p style="text-align:justify; margin-right:0cm; margin-left:0cm">
+                                        <span style="font-size:16px;">
+                                           Tại đây, chúng tôi chú trọng xây dựng và phát triển đội ngũ bác sĩ và nhân viên có trình
+                                            độ chuyên môn cao, giàu kinh nghiệm, chuyên nghiệp, tận tình, thân thiện. Các bác sĩ của chúng tôi
+                                            là những người có nhiều năm kinh nghiệm.
+                                        </span>
+                                    </p>
+                                    <p style="text-align:justify; margin-right:0cm; margin-left:0cm">
+                                        <span style="font-size:16px;">
+                                            Thông qua phần mềm, chúng tôi hy vọng có thể tư vấn kịp thời tình trạng của bệnh nhân,
+                                            giúp bệnh nhân giảm phần nào lo lắng về triệu chứng bệnh khi không có thời gian đến phòng khám.
+                                        </span>
+                                    </p>
+                                    <p style="text-align:justify; margin-right:0cm; margin-left:0cm">
+                                        <span style="font-size:16px;">
+                                            Từ đó làm tăng thêm sự hài lòng của bệnh nhân đối với chất lượng dịch vụ của phòng khám.
+                                        </span>
+                                    </p>
+                                    <p style="text-align:justify; margin-right:0cm; margin-left:0cm">
+                                        <span style="font-size:16px;">
+                                           Trân trọng!
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:include="footer.html"></div>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -114,7 +114,7 @@ public class AuthController {
                     System.out.println(baseResponse.getMessage());
 
                     AuthMessageCode authMessageCode = AuthMessageCode.from(baseResponse.getMessageCode());
-                    if (authMessageCode != null && !authMessageCode.getCode().equalsIgnoreCase("1111.0.Unknown")) {
+                    if (authMessageCode != null && !authMessageCode.getCode().equalsIgnoreCase(AuthMessageCode.UNKNOWN.getCode())) {
                         model.addAttribute("error", authMessageCode.getMessage());
                     } else {
                         model.addAttribute("error", baseResponse.getMessage());
@@ -264,7 +264,7 @@ public class AuthController {
     public String login(Model model,HttpSession session) {
 
         BaseResponse baseResponse = authService.logout(session.getAttribute("token").toString());
-        if(!StringUtils.isEmpty(baseResponse.getMessageCode()) && baseResponse.getMessageCode().equalsIgnoreCase("auth.2.1")){
+        if(!StringUtils.isEmpty(baseResponse.getMessageCode()) && baseResponse.getMessageCode().equalsIgnoreCase(AuthMessageCode.AUTH_2_1.getCode())){
             session.invalidate();
             return "redirect:/";
         }

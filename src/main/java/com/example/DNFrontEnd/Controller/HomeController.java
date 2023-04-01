@@ -87,6 +87,7 @@ public class HomeController {
         System.out.println("vô nè");
 
         SavePatientRequest savePatientRequest = new SavePatientRequest();
+        savePatientRequest.setId(patientResponse.getId());
         savePatientRequest.setFullName(patientResponse.getFullName());
         savePatientRequest.setBirthday(patientResponse.getBirthday());
         savePatientRequest.setSex(patientResponse.getSex());

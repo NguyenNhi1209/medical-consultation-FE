@@ -47,7 +47,7 @@ public class HomeController {
         }
         model.addAttribute("patientProfileResponse",patientProfileResponse);
         model.addAttribute("listFreeSchedule",listFreeSchedule);
-//        session.setAttribute("chooseTime",false);
+
         return "booking";
     }
     @PostMapping("/booking")
@@ -178,6 +178,7 @@ public class HomeController {
         model.addAttribute("saveScheduleRequest", saveScheduleRequest);
         model.addAttribute("departmentName", departmentName);
         model.addAttribute("price", price);
+        session.setAttribute("chooseTime",false);
 
 //        String deparmentName = request.getParameter("deparmentId");
 //        String date = request.getParameter("scheduleDate");

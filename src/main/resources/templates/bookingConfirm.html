@@ -15,15 +15,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script type="text/javascript" async=""
-            src="https://www.googletagmanager.com/gtag/js?id=G-VX2HGS37BS&amp;l=dataLayer&amp;cx=c"></script>
-    <script async="" charset="UTF-8" src="https://co.medpro.com.vn/static/js/webchat.js"></script>
-    <script src="https://zjs.zdn.vn/zalo/sdk.js" async=""></script>
-    <script src="https://www.googletagmanager.com/gtag/js?id=UA-148064018-1" async=""></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" defer="defer"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-analytics.js"></script>
-    <script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js"></script>
+
     <style>
         body {
             display: flex;
@@ -112,7 +104,7 @@
                                         <td>1</td>
                                         <td><span th:text="${departmentName}"></span></td>
                                         <td><span th:text="${saveScheduleRequest.medicalDate}"></span></td>
-                                        <td><span th:text="${saveScheduleRequest.hours}"></span></td>
+                                        <td><span th:text="${saveScheduleRequest.hours+':00'}"></span></td>
                                         <td><span th:text="${price}"></span></td>
                                     </tr>
                                     </tbody>
@@ -127,35 +119,35 @@
                         <div data-test="card-body" class="card-body">
                             <ul data-test="list-group" class="list-group">
                                 <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <i class="fas fa-user"></i>Họ và tên &nbsp;
+                                    <i class="fas fa-user"></i>&nbsp;Họ và tên &nbsp;
                                     
                                     <span th:text="${patientResponse.fullName}"></span>
                                 </li>
                                 <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <i class="fas fa-venus-mars"></i>Giới tính
+                                    <i class="fas fa-venus-mars"></i>&nbsp;Giới tính
                                         &nbsp;
                                     
                                     <span th:text="${patientResponse.sex}"></span>
                                 </li>
                                 <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <i class="fas fa-calendar-alt"></i>Ngày sinh
+                                    <i class="fas fa-calendar-alt"></i>&nbsp;Ngày sinh
                                         &nbsp;
                                     
                                     <span th:text="${patientResponse.birthday}"></span>
                                 </li>
                                 <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <i class="fas fa-id-card"></i>CMND &nbsp;
+                                    <i class="fas fa-id-card"></i>&nbsp;CMND &nbsp;
                                     
                                     <span th:text="${patientResponse.identityNumber}"></span>
                                 </li>
                                 <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <i class="fas fa-credit-card"></i>Nghề nghiệp
+                                    <i class="fas fa-credit-card"></i>&nbsp;Nghề nghiệp
                                         &nbsp;
                                     
                                     <span th:text="${patientResponse.job}"></span>
                                 </li>
                                 <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <i class="fas fa-map-marker"></i>Địa chỉ
+                                    <i class="fas fa-map-marker"></i>&nbsp;Địa chỉ
                                         &nbsp;
                                     
                                     <span th:text="${patientResponse.address}"></span>

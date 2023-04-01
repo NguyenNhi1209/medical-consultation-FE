@@ -4,6 +4,8 @@ import com.example.DNFrontEnd.Model.BaseResponse;
 import com.example.DNFrontEnd.Model.request.CreatePatientProfileRequest;
 import com.example.DNFrontEnd.Model.request.FetchDepartmentRequest;
 import com.example.DNFrontEnd.Model.request.SavePatientRequest;
+import com.example.DNFrontEnd.Model.request.SaveScheduleRequest;
+import com.example.DNFrontEnd.Model.response.DetailScheduleResponse;
 import com.example.DNFrontEnd.Model.response.ListFreeSchedule;
 import com.example.DNFrontEnd.Model.response.PatientProfileResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -133,5 +135,38 @@ public class PatientService {
             throw new RuntimeException(e);
         }
         return listFreeSchedule;
+    }
+    public DetailScheduleResponse saveSchedule(SaveScheduleRequest request, String token) {
+        BaseResponse baseResponse;
+        DetailScheduleResponse detailScheduleResponse = null;
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/schedule/save"))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .header("content-type", "application/json")
+                    .method("POST", HttpRequest.BodyPublishers.ofString(SaveScheduleRequest.convertToString(request)))
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+            detailScheduleResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), DetailScheduleResponse.class);
+            System.out.println(detailScheduleResponse);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return detailScheduleResponse;
     }
 }

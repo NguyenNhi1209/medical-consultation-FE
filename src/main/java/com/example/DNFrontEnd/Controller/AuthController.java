@@ -109,6 +109,7 @@ public class AuthController {
                         redirectAttrs.addFlashAttribute("userType", userProfileResponse.getType());
 //                        Contanst.userType = userProfileResponse.getType();
                         session.setAttribute("userType",userProfileResponse.getType());
+                        session.setAttribute("phone",userProfileResponse.getPhone());
                     }
                 } else {
                     System.out.println(baseResponse.getMessage());

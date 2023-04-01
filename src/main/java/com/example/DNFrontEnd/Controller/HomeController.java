@@ -1,13 +1,10 @@
 package com.example.DNFrontEnd.Controller;
 
 import com.example.DNFrontEnd.Model.BaseResponse;
-import com.example.DNFrontEnd.Model.Contanst;
-import com.example.DNFrontEnd.Model.request.LoginRequest;
-import com.example.DNFrontEnd.Model.request.RegisterRequest;
-import com.example.DNFrontEnd.Model.request.SavePatientRequest;
+import com.example.DNFrontEnd.Model.request.*;
+import com.example.DNFrontEnd.Model.response.ListFreeSchedule;
+import com.example.DNFrontEnd.Model.response.PatientProfileResponse;
 import com.example.DNFrontEnd.Model.response.PatientResponse;
-import com.example.DNFrontEnd.Model.response.UserProfileResponse;
-import com.example.DNFrontEnd.Service.AuthService;
 import com.example.DNFrontEnd.Service.PatientService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -21,11 +18,6 @@ import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping({"/", "/home"})
@@ -45,12 +37,42 @@ public class HomeController {
     }
 
     @GetMapping("/booking")
-    public String booking(Model model, HttpSession session) {
+    public String booking(Model model, HttpSession session ,@ModelAttribute("patientProfileResponse")PatientProfileResponse patientProfileResponse,
+                          @ModelAttribute("listFreeSchedule") ListFreeSchedule listFreeSchedule) {
         if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())) {
             model.addAttribute("loginRequest", new LoginRequest());
             return "login";
         }
+        model.addAttribute("patientProfileResponse",patientProfileResponse);
+        model.addAttribute("listFreeSchedule",listFreeSchedule);
+//        session.setAttribute("chooseTime",false);
         return "booking";
+    }
+    @PostMapping("/booking")
+    public String postBooking(Model model, HttpSession session,RedirectAttributes redirectAttrs, HttpServletRequest servletRequest, @ModelAttribute("patientProfileResponse")PatientProfileResponse patientProfileResponse,
+                              @ModelAttribute("listFreeSchedule") ListFreeSchedule listFreeSchedule ) {
+        String date = servletRequest.getParameter("scheduleDate");
+        String symptom = servletRequest.getParameter("symptom");
+        System.out.println(date + " " + symptom);
+
+        CreatePatientProfileRequest request = new CreatePatientProfileRequest();
+        request.setSymptom(servletRequest.getParameter("symptom"));
+        patientProfileResponse = patientService.createPatientProfile(request, session.getAttribute("token").toString());
+
+        redirectAttrs.addFlashAttribute("patientProfileResponse", patientProfileResponse);
+        FetchDepartmentRequest request1 = new FetchDepartmentRequest();
+        request1.setScheduleDate(date);
+        request1.setPatientProfileId(patientProfileResponse.getId());
+        listFreeSchedule = patientService.fetchDepartment(request1,session.getAttribute("token").toString());
+
+        if(listFreeSchedule != null){
+            session.setAttribute("chooseTime",true);
+            redirectAttrs.addFlashAttribute("listFreeSchedule", listFreeSchedule);
+        }
+        System.out.println(listFreeSchedule);
+
+
+        return "redirect:/booking";
     }
 
     @GetMapping("/updateProfile")

@@ -36,7 +36,9 @@
         .navbar {
             padding-top: 30px;
         }
-
+        .verticalLine {
+          border-left: thick solid #ff0000;
+        }
     </style>
 </head>
 <body>
@@ -46,41 +48,52 @@
 <div class="background-image">
     <div class="background-content">
         <div class="container lg-body">
-            <div class="col-3 col-md-3 col-sm-3">
-
-            </div>
-            <div class="col-6 col-md-6 col-sm-6 login-form">
+            <div class="col-6 col-md-6 col-sm-6">
                 <div class="row">
                     <div class="col-12">
                         <div class="text-center mt-3">
                             <h1 class="title">Thông tin đặt lịch khám bệnh</h1>
                         </div>
+                        <form method="POST" th:action="@{/booking}" th:object="${patientProfileResponse}">
                         <input type="text" id="psid" hidden>
                         <div class="form-group">
                             <label for="customerName">Họ và tên</label>
-                            <input type="text" id="customerName" class="form-control" name="fullName" th:value="${name}" placeholder="Họ và tên...">
+                            <input type="text" th:value="${session.name}" id="customerName" class="form-control" name="fullName"  placeholder="Họ và tên..." disabled>
                         </div>
                         <div class="form-group">
                             <label for="phone">Số điện thoại</label>
-                            <input type="text" id="phone" class="form-control" name="phone" placeholder="Số điện thoại...">
-                        </div>
-                        <div class="form-group">
-                            <label for="scheduleDate">Ngày khám:</label>
-                            <input type="date" class="form-control" id="scheduleDate" name="scheduleDate"/>
-
+                            <input type="text" th:value="${session.phone}" id="phone" class="form-control" name="phone" placeholder="Số điện thoại..." disabled>
                         </div>
                         <div class="form-group">
                             <label for="reason">Các triệu chứng</label>
                             <textarea rows="3" id="reason" class="form-control" name = "symptom"
-                                      placeholder="triệu chứng 1, triệu chứng 2, triệu chứng 3, ..."></textarea>
+                                      placeholder="triệu chứng 1, triệu chứng 2, triệu chứng 3, ..." th:field="*{symptom}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="scheduleDate">Chọn ngày khám:</label>
+                            <input type="date" class="form-control" id="scheduleDate" name="scheduleDate"/>
                         </div>
                         <button type="submit" class="btn btn-primary btn-register">Xác nhận</button>
+                        </form>
                     </div>
 
                 </div>
             </div>
-            <div class="col-3 col-md-3 col-sm-3">
+            <div class="verticalLine">
 
+            </div>
+            <div class="col-6 col-md-6 col-sm-6" th:if="${session.chooseTime == true}">
+                <form method="POST" th:action="@{/}" th:object="${listFreeSchedule}">
+                    <div class="form-group">
+                        <label for="departmentName">Khoa khám bệnh: </label>
+                        <input id="departmentName" class="form-control" th:field="*{departmentName}" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduleDate">Chọn giờ khám:</label>
+                        <input type="date" class="form-control"  name="scheduleDate"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-register">Xác nhận</button>
+                </form>
             </div>
         </div>
     </div>

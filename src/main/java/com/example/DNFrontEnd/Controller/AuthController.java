@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -54,7 +55,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(Model model, HttpServletRequest request, RedirectAttributes redirectAttrs, @ModelAttribute("loginRequest") LoginRequest loginRequest,
-                        @ModelAttribute(name = "name") String name, @ModelAttribute(name = "userType") String userType) {
+                        HttpSession session) {
+
         if (StringUtils.isEmpty(loginRequest.getEmail())) {
             redirectAttrs.addFlashAttribute("error", "Nhập email");
             redirectAttrs.addFlashAttribute("loginRequest", loginRequest);
@@ -95,14 +97,18 @@ public class AuthController {
                     if (loginResponse != null) {
                         request.getSession().setAttribute("Authorization", loginResponse.getToken());
                         BaseResponse userProfileResponseBaseResponse = authService.getProfileUser(loginResponse.getToken());
-                        Contanst.token = loginResponse.getToken();
+                        session.setAttribute("token", loginResponse.getToken());
+//                        Contanst.token = loginResponse.getToken();
                         System.out.println(userProfileResponseBaseResponse);
                         UserProfileResponse userProfileResponse = objectMapper.readValue(objectMapper.writeValueAsString(userProfileResponseBaseResponse.getData()).toString(), UserProfileResponse.class);
-                        Contanst.userProfileResponse = userProfileResponse;
+
+//                        Contanst.userProfileResponse = userProfileResponse;
                         redirectAttrs.addFlashAttribute("name", userProfileResponse.getName());
-                        Contanst.name = userProfileResponse.getName();
+//                        Contanst.name = userProfileResponse.getName();
+                        session.setAttribute("name",userProfileResponse.getName());
                         redirectAttrs.addFlashAttribute("userType", userProfileResponse.getType());
-                        Contanst.userType = userProfileResponse.getType();
+//                        Contanst.userType = userProfileResponse.getType();
+                        session.setAttribute("userType",userProfileResponse.getType());
                     }
                 } else {
                     System.out.println(baseResponse.getMessage());
@@ -255,13 +261,11 @@ public class AuthController {
     }
 
     @GetMapping("/logout")
-    public String login(Model model,@ModelAttribute(name = "name") String name, @ModelAttribute(name = "userType") String userType) {
+    public String login(Model model,HttpSession session) {
 
-        BaseResponse baseResponse = authService.logout(Contanst.token);
+        BaseResponse baseResponse = authService.logout(session.getAttribute("token").toString());
         if(!StringUtils.isEmpty(baseResponse.getMessageCode()) && baseResponse.getMessageCode().equalsIgnoreCase("auth.2.1")){
-            model.addAttribute("name", "");
-            model.addAttribute("userType", "");
-            resetContanst();
+            session.invalidate();
             return "redirect:/";
         }
         return "home";

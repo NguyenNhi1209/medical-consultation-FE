@@ -142,6 +142,7 @@ public class HomeController {
         savePatientRequest.setAddress(patientResponse.getAddress());
         savePatientRequest.setJob(patientResponse.getJob());
         savePatientRequest.setIdentityNumber(patientResponse.getIdentityNumber());
+        savePatientRequest.setPhoneNumber(patientResponse.getPhoneNumber());
         System.out.println(savePatientRequest.toString());
         BaseResponse baseResponse = patientService.savePatient(savePatientRequest, session.getAttribute("token").toString());
         patientResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), PatientResponse.class);

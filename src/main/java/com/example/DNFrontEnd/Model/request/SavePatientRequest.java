@@ -14,6 +14,7 @@ public class SavePatientRequest {
     private String address;
     private String job;
     private String identityNumber;
+    private String phoneNumber;
     public static String convertToString(SavePatientRequest savePatientRequest) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String result = objectMapper.writeValueAsString(savePatientRequest);

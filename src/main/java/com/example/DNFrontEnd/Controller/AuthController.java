@@ -110,7 +110,7 @@ public class AuthController {
                         redirectAttrs.addFlashAttribute("userType", userProfileResponse.getType());
 //                        Contanst.userType = userProfileResponse.getType();
                         session.setAttribute("userType",userProfileResponse.getType());
-                        session.setAttribute("phone",userProfileResponse.getPhone());
+                        session.setAttribute("phone",userProfileResponse.getPhoneNumber());
                     }
                 } else {
                     System.out.println(baseResponse.getMessage());
@@ -179,8 +179,8 @@ public class AuthController {
             redirectAttrs.addFlashAttribute("registerRequest", registerRequest);
             return "redirect:/user/register";
         }
-        if (!StringUtils.isEmpty(registerRequest.getPhone())
-                && !registerRequest.getPhone().matches("^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$")) {
+        if (!StringUtils.isEmpty(registerRequest.getPhoneNumber())
+                && !registerRequest.getPhoneNumber().matches("^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$")) {
             redirectAttrs.addFlashAttribute("error", "Số điện thoại không hợp lệ");
             redirectAttrs.addFlashAttribute("registerRequest", registerRequest);
             return "redirect:/user/register";
@@ -198,7 +198,7 @@ public class AuthController {
         RegisterRequestDTO user = new RegisterRequestDTO();
         user.setEmail(request.getParameter("email"));
         user.setPassword(request.getParameter("password"));
-        user.setPhone(request.getParameter("phone"));
+        user.setPhoneNumber(request.getParameter("phoneNumber"));
         user.setFullName(request.getParameter("fullName"));
         user.setBirthday(request.getParameter("birthday"));
         user.setSex(request.getParameter("sex"));

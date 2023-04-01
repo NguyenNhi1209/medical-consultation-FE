@@ -10,7 +10,7 @@
             rel="stylesheet"
             th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"
     />
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <style>
         body {
             display: flex;
@@ -37,8 +37,26 @@
             padding-top: 30px;
         }
         .verticalLine {
-          border-left: thick solid #ff0000;
+          border-left: thick solid black;
         }
+        .icons {
+            padding: 10px 5px 10px 5px;
+            hover: red
+        }
+        .chooseTime{
+            body: center;
+            margin-left: 20px;
+        }
+        .chooseTime button{
+<!--            border: 1px solid black;-->
+<!--            margin-right: 30px;-->
+            border-radius: 7px;
+<!--            padding: 10px 5px 10px 5px;-->
+        }
+        .chooseTime button:hover:not([disabled]) {
+            background-color: #239f85;
+        }
+
     </style>
 </head>
 <body>
@@ -55,44 +73,86 @@
                             <h1 class="title">Thông tin đặt lịch khám bệnh</h1>
                         </div>
                         <form method="POST" th:action="@{/booking}" th:object="${patientProfileResponse}">
-                        <input type="text" id="psid" hidden>
-                        <div class="form-group">
-                            <label for="customerName">Họ và tên</label>
-                            <input type="text" th:value="${session.name}" id="customerName" class="form-control" name="fullName"  placeholder="Họ và tên..." disabled>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Số điện thoại</label>
-                            <input type="text" th:value="${session.phone}" id="phone" class="form-control" name="phone" placeholder="Số điện thoại..." disabled>
-                        </div>
-                        <div class="form-group">
-                            <label for="reason">Các triệu chứng</label>
-                            <textarea rows="3" id="reason" class="form-control" name = "symptom"
-                                      placeholder="triệu chứng 1, triệu chứng 2, triệu chứng 3, ..." th:field="*{symptom}"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="scheduleDate">Chọn ngày khám:</label>
-                            <input type="date" class="form-control" id="scheduleDate" name="scheduleDate"/>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-register">Xác nhận</button>
+                            <div class="form-group">
+                                <label for="customerName">Họ và tên</label>
+                                <input type="text" th:value="${session.name}" id="customerName" class="form-control"
+                                       name="fullName" placeholder="Họ và tên..." disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Số điện thoại</label>
+                                <input type="text" th:value="${session.phone}" id="phone" class="form-control"
+                                       name="phone" placeholder="Số điện thoại..." disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="reason">Các triệu chứng</label>
+                                <textarea rows="3" id="reason" class="form-control" name="symptom"
+                                          placeholder="triệu chứng 1, triệu chứng 2, triệu chứng 3, ..."
+                                          th:field="*{symptom}"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="scheduleDate">Chọn ngày khám:</label>
+                                <input type="date" th:value="${scheduleDate}" class="form-control" id="scheduleDate"
+                                       name="scheduleDate"/>
+                            </div>
+                            <span th:text="${error}" style="color:red;"></span>
+                            <br>
+                            <button th:if="${session.chooseTime != true}" type="submit"
+                                    class="btn btn-primary btn-register">Xác nhận
+                            </button>
                         </form>
                     </div>
 
                 </div>
             </div>
             <div class="verticalLine">
-
+                <hr style="width:10px">
             </div>
             <div class="col-6 col-md-6 col-sm-6" th:if="${session.chooseTime == true}">
-                <form method="POST" th:action="@{/}" th:object="${listFreeSchedule}">
+                <form th:action="@{/}" th:object="${listFreeSchedule}">
                     <div class="form-group">
                         <label for="departmentName">Khoa khám bệnh: </label>
-                        <input id="departmentName" class="form-control" th:field="*{departmentName}" disabled />
+                        <input id="departmentName" class="form-control" th:field="*{departmentName}" name="departmentName" disabled/>
                     </div>
                     <div class="form-group">
                         <label for="scheduleDate">Chọn giờ khám:</label>
-                        <input type="date" class="form-control"  name="scheduleDate"/>
+                        <br>
+                        <span>Buổi sáng: </span> <br>
+                        <div class="chooseTime" >
+                            <div class="col-3 col-md-3 col-sm-3">
+                                <a th:href="@{/booking/confirm(free=${free1},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId})}" th:if="${free1 != null}">7:00 - 8:00</a>
+                                <button type="submit" th:if="${free1 == null}" disabled>7:00 - 8:00</button>
+                            </div>
+                            <div class="col-3 col-md-3 col-sm-3">
+                                <button type="submit" >8:00 - 9:00</button>
+                            </div>
+                            <div class="col-3 col-md-3 col-sm-3">
+                                <button type="submit" >9:00 - 10:00</button>
+                            </div>
+                            <div class="col-3 col-md-3 col-sm-3">
+                                <button type="submit" >10:00 - 11:00</button>
+                            </div>
+                        </div>
+                        <span>Buổi chiều: </span> <br>
+
+                        <div class="chooseTime" >
+                            <div class="col-3 col-md-3 col-sm-3">
+                                <button type="submit" >13:00 - 14:00</button>
+                            </div>
+                            <div class="col-3 col-md-3 col-sm-3">
+                                <button type="submit" >14:00 - 15:00</button>
+                            </div>
+                            <div class="col-3 col-md-3 col-sm-3">
+                                <button type="submit" >15:00 - 16:00</button>
+                            </div>
+                            <div class="col-3 col-md-3 col-sm-3">
+                                <button type="submit"  disabled>16:00 - 17:00</button>
+                            </div>
+                        </div>
+
                     </div>
-                    <button type="submit" class="btn btn-primary btn-register">Xác nhận</button>
+
+                    <br>
+
                 </form>
             </div>
         </div>

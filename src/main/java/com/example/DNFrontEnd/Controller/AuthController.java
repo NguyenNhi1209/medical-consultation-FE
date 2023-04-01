@@ -38,7 +38,8 @@ public class AuthController {
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
     @GetMapping("/login")
-    public String login(@RequestParam(required = false) String success, Model model, @ModelAttribute("loginRequest") LoginRequest loginRequest, @ModelAttribute(name = "error") String error) {
+    public String login(@RequestParam(required = false) String success, Model model,
+                        @ModelAttribute("loginRequest") LoginRequest loginRequest, @ModelAttribute(name = "error") String error) {
 //        model.addAttribute("loginRequest", new LoginRequest());
 //        return "login";
 

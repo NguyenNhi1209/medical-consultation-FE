@@ -209,6 +209,11 @@ public class AuthController {
         try {
             BaseResponse baseResponse = authService.register(user);
             System.out.println(baseResponse.toString());
+            if(baseResponse != null){
+                if(baseResponse.getCode() == 1){
+                    return "register-success";
+                }
+            }
 //            if(baseResponse != null){
 //                if(baseResponse.getCode() == 1){
 //                    LoginResponse loginResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(),LoginResponse.class);

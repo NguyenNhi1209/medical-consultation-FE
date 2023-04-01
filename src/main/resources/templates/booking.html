@@ -119,7 +119,7 @@
                         <span>Buổi sáng: </span> <br>
                         <div class="chooseTime" >
                             <div class="col-3 col-md-3 col-sm-3">
-                                <a th:href="@{/booking/confirm(free=${free1},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId})}" th:if="${free1 != null}">7:00 - 8:00</a>
+                                <a th:href="@{/booking/confirm(free=${free1},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${departmentName})}" th:if="${free1 != null}">7:00 - 8:00</a>
                                 <button type="submit" th:if="${free1 == null}" disabled>7:00 - 8:00</button>
                             </div>
                             <div class="col-3 col-md-3 col-sm-3">

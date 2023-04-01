@@ -12,6 +12,18 @@
             th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" async=""
+            src="https://www.googletagmanager.com/gtag/js?id=G-VX2HGS37BS&amp;l=dataLayer&amp;cx=c"></script>
+    <script async="" charset="UTF-8" src="https://co.medpro.com.vn/static/js/webchat.js"></script>
+    <script src="https://zjs.zdn.vn/zalo/sdk.js" async=""></script>
+    <script src="https://www.googletagmanager.com/gtag/js?id=UA-148064018-1" async=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" defer="defer"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-analytics.js"></script>
+    <script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js"></script>
     <style>
         body {
             display: flex;
@@ -31,13 +43,26 @@
             font-weight: 600;
             font-size: 22px;
             display: block;
-            margin: 20px 0;
+<!--            margin: 20px 0;-->
             /*text-transform: uppercase;*/
         }
         .navbar {
             padding-top: 30px;
         }
-
+        .card {
+            text-align:justify;
+        }
+        .card-header{
+            text-align:center;
+            background-color: #239f85;
+            margin-top: 30px;
+            border-radius: 3px;
+        }
+        .card-body{
+            border: 1px solid;
+            text-align:justify;
+            border-radius: 3px;
+        }
 
     </style>
 
@@ -47,43 +72,37 @@
 <div class="background-image">
     <div class="background-content">
         <div class="container">
-
                 <div data-test="col" class="col-md-12 col-lg-3 col-3 col-md-3 col-sm-3">
-                    <div data-test="card" class="card style_panels__2gmyd">
-                        <div data-test="card-header" class="card-header style_panels_header__1OJJj">Thông tin bệnh
-                            nhân
+                    <div data-test="card" class="card">
+                        <div data-test="card-header" class="card-header"><h2>
+                                <span> Thông tin bệnh
+                            nhân</span></h2>
                         </div>
-                        <div data-test="card-body" class="card-body mb-4 style_card_body__l8Kpi">
+                        <div data-test="card-body" class="card-body">
                             <ul data-test="list-group" class="list-group style_list_group__12VsQ">
-                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined"><i
-                                        class="far fa-user-circle"></i>NGUYỄN THỊ HOÀNG NHI
+                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
+                                    <i class="far fa-user-circle"></i>&nbsp;<span th:text="${patientResponse.fullName}"></span>
                                 </li>
                                 <li data-test="list-group-item" class="list-group-item list-group-item-undefined"><i
-                                        class="far fa-mobile-alt"></i>0915984908
-                                </li>
-                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined"><i
-                                        class="far fa-map-marker"></i>60/12 Thích Bửu Đăng, Phường 01, Quận Gò Vấp,
-                                    Thành phố Hồ Chí
-                                    Minh
+                                        class="far fa-mobile-alt"></i>&nbsp;<p th:text="${patientResponse.phone}"></p>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div data-test="col" class="col-md-12 col-lg-9 col-9 col-md-9 col-sm-9">
-                    <div data-test="card" class="card style_panels__1RLy2 style_panel_mobile__2KgRN">
-                        <div data-test="card-header" class="card-header style_panels_header__3MJJI"><h2
-                                class="style_title_component__3jzrX style_title_choose_date__85sRK style_space_between__qFVTd style_title_header_mobile__23s4W">
+                    <div data-test="card" class="card">
+                        <div data-test="card-header" class="card-header">
+                            <h2>
                             <span> Xác nhận thông tin khám</span></h2></div>
-                        <div data-test="card-body" class="card-body style_card_body__3zg4B">
+                        <div data-test="card-body" class="card-body">
                             <div data-test="table" class="table-responsive">
                                 <table class="table style_tableResponsive__3EsiM">
                                     <thead data-test="table-head" class="">
                                     <tr>
                                         <th>#</th>
                                         <th>Chuyên khoa</th>
-                                        <th>Dịch vụ</th>
-                                        <th>Bác sĩ</th>
+                                        <th>Ngày khám</th>
                                         <th>Giờ khám</th>
                                         <th>Tiền khám</th>
                                     </tr>
@@ -91,105 +110,71 @@
                                     <tbody data-test="table-body">
                                     <tr>
                                         <td>1</td>
-                                        <td>PHỔI</td>
-                                        <td>Khám dịch vụ</td>
-                                        <td>Âu Thanh Tùng</td>
-                                        <td>07/04 13:30</td>
-                                        <td>150.000 đ</td>
-                                        <td class="d-none">0 đ</td>
-                                        <td>
-                                            <button data-test="button" type="button"
-                                                    class="btn-flat btn Ripple-parent style_button__bKNrt">
-                                                <div><i class="far fa-trash-alt"></i>Xoá</div>
-                                                <div data-test="waves" class="Ripple Ripple-outline "
-                                                     style="top: 0px; left: 0px; width: 0px; height: 0px;"></div>
-                                            </button>
-                                        </td>
+                                        <td><span th:text="${departmentName}"></span></td>
+                                        <td><span th:text="${saveScheduleRequest.medicalDate}"></span></td>
+                                        <td><span th:text="${saveScheduleRequest.hours}"></span></td>
+                                        <td><span th:text="${price}"></span></td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div data-test="card-header"
-                             class="card-header style_panels_header__3MJJI mt-3 d-none d-lg-block">
-                            <div>Thông tin bệnh nhân</div>
+                        <div data-test="card-header" class="card-header">
+                            <h2>
+                                <span> Thông tin bệnh
+                            nhân</span></h2>
                         </div>
-                        <div data-test="card-body" class="card-body style_card_body__3zg4B d-none d-lg-block">
-                            <ul data-test="list-group" class="list-group style_list_group__nBG8R">
+                        <div data-test="card-body" class="card-body">
+                            <ul data-test="list-group" class="list-group">
                                 <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <div class="style_column1__2c7_l"><i class="fal fa-user"></i>Họ và tên &nbsp;
-                                    </div>
-                                    <div class="style_column2__1gWf_"><strong>NGUYỄN THỊ HOÀNG NHI</strong></div>
+                                    <i class="fas fa-user"></i>Họ và tên &nbsp;
+                                    
+                                    <span th:text="${patientResponse.fullName}"></span>
                                 </li>
                                 <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <div class="style_column1__2c7_l"><i class="fal fa-venus-mars"></i>Giới tính
+                                    <i class="fas fa-venus-mars"></i>Giới tính
                                         &nbsp;
-                                    </div>
-                                    <div class="style_column2__1gWf_">Nữ</div>
+                                    
+                                    <span th:text="${patientResponse.sex}"></span>
                                 </li>
                                 <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <div class="style_column1__2c7_l"><i class="fal fa-calendar-alt"></i>Ngày sinh
+                                    <i class="fas fa-calendar-alt"></i>Ngày sinh
                                         &nbsp;
-                                    </div>
-                                    <div class="style_column2__1gWf_">12/09/2000</div>
+                                    
+                                    <span th:text="${patientResponse.birthday}"></span>
                                 </li>
                                 <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <div class="style_column1__2c7_l"><i class="fal fa-id-card"></i>CMND &nbsp;
-                                    </div>
-                                    <div class="style_column2__1gWf_">Chưa cập nhật</div>
+                                    <i class="fas fa-id-card"></i>CMND &nbsp;
+                                    
+                                    <span th:text="${patientResponse.identityNumber}"></span>
                                 </li>
                                 <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <div class="style_column1__2c7_l"><i class="fal fa-at"></i>Email &nbsp;</div>
-                                    <div class="style_column2__1gWf_">Chưa cập nhật</div>
-                                </li>
-                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <div class="style_column1__2c7_l"><i class="fal fa-users"></i>Dân tộc &nbsp;
-                                    </div>
-                                    <div class="style_column2__1gWf_">Kinh</div>
-                                </li>
-                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <div class="style_column1__2c7_l"><i class="fal fa-credit-card"></i>Mã số BHYT
+                                    <i class="fas fa-credit-card"></i>Nghề nghiệp
                                         &nbsp;
-                                    </div>
-                                    <div class="style_column2__1gWf_">Chưa cập nhật</div>
+                                    
+                                    <span th:text="${patientResponse.job}"></span>
                                 </li>
                                 <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <div class="style_column1__2c7_l"><i class="fal fa-map-marker"></i>Địa chỉ
+                                    <i class="fas fa-map-marker"></i>Địa chỉ
                                         &nbsp;
-                                    </div>
-                                    <div class="style_column1__2c7_l">60/12 Thích Bửu Đăng, Phường 01, Quận Gò Vấp,
-                                        Thành phố Hồ Chí
-                                        Minh
-                                    </div>
+                                    
+                                    <span th:text="${patientResponse.address}"></span>
+                                    
                                 </li>
                             </ul>
+                            <div>
+                                <form method="POST" th:action="@{/saveSchedule}"  th:object="${saveScheduleRequest}">
+                                    <input type="hidden" th:field="*{departmentId}" class="form-control" id="departmentId" name="departmentId">
+                                    <input type="hidden" th:field="*{doctorId}" class="form-control" id="doctorId" name="doctorId">
+                                    <input type="hidden" th:field="*{symptom}" class="form-control" id="symptom" name="symptom">
+                                    <input type="hidden" th:field="*{medicalDate}" class="form-control" id="medicalDate" name="medicalDate">
+                                    <input type="hidden" th:field="*{hours}" class="form-control" id="hours" name="hours">
+                                    <button type="submit" class="btn btn-primary btn-register">Xác nhận</button>
+                                </form>
+
+                            </div>
                         </div>
-                        <div class="style_next_prev__3XrPl">
-                            <button data-test="button" type="button"
-                                    class="btn-flat btn Ripple-parent style_button__bKNrt">
-                                <div>Quay lại</div>
-                                <div data-test="waves" class="Ripple Ripple-outline "
-                                     style="top: 0px; left: 0px; width: 0px; height: 0px;"></div>
-                            </button>
-                            <ul class=" list-unstyled list-inline m-0 p-0 ">
-                                <li class="list-inline-item m-0 pr-3">
-                                    <button data-test="button" type="button"
-                                            class="btn-flat btn Ripple-parent style_button__bKNrt style_create__1hfMN">
-                                        <div>Thêm chuyên khoa</div>
-                                        <div data-test="waves" class="Ripple Ripple-outline "
-                                             style="top: 0px; left: 0px; width: 0px; height: 0px;"></div>
-                                    </button>
-                                </li>
-                                <li class="list-inline-item m-0">
-                                    <button data-test="button" type="button"
-                                            class="btn-flat btn Ripple-parent style_button__bKNrt style_create__1hfMN style_buttonArrow__yB4G_">
-                                        <div>Xác nhận<i class="fal fa-long-arrow-right"></i></div>
-                                        <div data-test="waves" class="Ripple Ripple-outline "
-                                             style="top: 0px; left: 0px; width: 0px; height: 0px;"></div>
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
+
                     </div>
                 </div>
 

@@ -2,6 +2,7 @@ package com.example.DNFrontEnd.Controller;
 
 import com.example.DNFrontEnd.Model.BaseResponse;
 import com.example.DNFrontEnd.Model.request.*;
+import com.example.DNFrontEnd.Model.response.DetailScheduleResponse;
 import com.example.DNFrontEnd.Model.response.ListFreeSchedule;
 import com.example.DNFrontEnd.Model.response.PatientProfileResponse;
 import com.example.DNFrontEnd.Model.response.PatientResponse;
@@ -129,7 +130,8 @@ public class HomeController {
     }
 
     @PostMapping("/updateProfile")
-    public String updateProfile(Model model, HttpServletRequest request, RedirectAttributes redirectAttrs, HttpSession session, @ModelAttribute("patientResponse") PatientResponse patientResponse) throws JsonProcessingException {
+    public String updateProfile(Model model, HttpServletRequest request, RedirectAttributes redirectAttrs, HttpSession session,
+                                @ModelAttribute("patientResponse") PatientResponse patientResponse) throws JsonProcessingException {
         System.out.println("vô nè");
 
         SavePatientRequest savePatientRequest = new SavePatientRequest();
@@ -154,8 +156,27 @@ public class HomeController {
     }
 
     @GetMapping("/booking/confirm")
-    public  String bookingConfirm(Model model, @RequestParam String free,@RequestParam String scheduleDate,@RequestParam String departmentId,@RequestParam String symptom,HttpServletRequest request ){
+    public  String bookingConfirm(Model model,HttpSession session, @RequestParam String free,@RequestParam String scheduleDate,
+                                  @RequestParam String departmentId,@RequestParam String departmentName,@RequestParam String symptom,HttpServletRequest request,
+                                  @ModelAttribute("patientResponse") PatientResponse patientResponse,
+                                  @ModelAttribute("saveScheduleRequest") SaveScheduleRequest saveScheduleRequest) throws JsonProcessingException {
         System.out.println("nhi" + free +" "+ scheduleDate +" "+ symptom +" "+ departmentId );
+        BaseResponse baseResponse = patientService.getPatient(session.getAttribute("token").toString());
+        patientResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), PatientResponse.class);
+        model.addAttribute("patientResponse", patientResponse);
+        String[] a = free.split("-");
+        String doctorId = a[0];
+        String hours = a[1];
+        String price = a[2];
+        saveScheduleRequest.setHours(hours);
+        saveScheduleRequest.setSymptom(symptom);
+        saveScheduleRequest.setDepartmentId(Long.parseLong(departmentId));
+        saveScheduleRequest.setDoctorId(Long.parseLong(doctorId));
+        saveScheduleRequest.setMedicalDate(scheduleDate);
+        saveScheduleRequest.setSymptom(symptom);
+        model.addAttribute("saveScheduleRequest", saveScheduleRequest);
+        model.addAttribute("departmentName", departmentName);
+        model.addAttribute("price", price);
 
 //        String deparmentName = request.getParameter("deparmentId");
 //        String date = request.getParameter("scheduleDate");
@@ -163,4 +184,17 @@ public class HomeController {
 //        System.out.println("nhi" + deparmentName + date + symptom);
         return "bookingConfirm";
     }
+    @PostMapping("/saveSchedule")
+    public String saveSchedule(Model model, HttpServletRequest request, HttpSession session,
+                                @ModelAttribute("saveScheduleRequest") SaveScheduleRequest saveScheduleRequest) throws JsonProcessingException {
+        System.out.println("vô nè");
+        System.out.println(saveScheduleRequest.toString());
+        DetailScheduleResponse detailScheduleResponse = patientService.saveSchedule(saveScheduleRequest,session.getAttribute("token").toString());
+        if(detailScheduleResponse != null){
+            return "test";
+        }
+        return "redirect:/";
+
+    }
+
 }

@@ -18,6 +18,7 @@ import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping({"/", "/home"})
@@ -38,7 +39,7 @@ public class HomeController {
 
     @GetMapping("/booking")
     public String booking(Model model, HttpSession session ,@ModelAttribute("patientProfileResponse")PatientProfileResponse patientProfileResponse,
-                          @ModelAttribute("listFreeSchedule") ListFreeSchedule listFreeSchedule) {
+                          @ModelAttribute("listFreeSchedule") ListFreeSchedule listFreeSchedule,@ModelAttribute(name = "error") String error) {
         if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())) {
             model.addAttribute("loginRequest", new LoginRequest());
             return "login";
@@ -49,26 +50,49 @@ public class HomeController {
         return "booking";
     }
     @PostMapping("/booking")
-    public String postBooking(Model model, HttpSession session,RedirectAttributes redirectAttrs, HttpServletRequest servletRequest, @ModelAttribute("patientProfileResponse")PatientProfileResponse patientProfileResponse,
+    public String postBooking(Model model, HttpSession session,RedirectAttributes redirectAttrs, HttpServletRequest servletRequest,
+                              @ModelAttribute("patientProfileResponse")PatientProfileResponse patientProfileResponse,
                               @ModelAttribute("listFreeSchedule") ListFreeSchedule listFreeSchedule ) {
+        if (StringUtils.isEmpty(servletRequest.getParameter("symptom"))) {
+            redirectAttrs.addFlashAttribute("error", "Nhập triệu chứng");
+            redirectAttrs.addFlashAttribute("patientProfileResponse", patientProfileResponse);
+            redirectAttrs.addFlashAttribute("listFreeSchedule", listFreeSchedule);
+            return "redirect:/booking";
+        }
+        if (StringUtils.isEmpty(servletRequest.getParameter("scheduleDate"))) {
+            redirectAttrs.addFlashAttribute("error", "Nhập ngày khám ");
+            redirectAttrs.addFlashAttribute("patientProfileResponse", patientProfileResponse);
+            redirectAttrs.addFlashAttribute("listFreeSchedule", listFreeSchedule);
+            return "redirect:/booking";
+        }
         String date = servletRequest.getParameter("scheduleDate");
         String symptom = servletRequest.getParameter("symptom");
         System.out.println(date + " " + symptom);
 
-        CreatePatientProfileRequest request = new CreatePatientProfileRequest();
-        request.setSymptom(servletRequest.getParameter("symptom"));
-        patientProfileResponse = patientService.createPatientProfile(request, session.getAttribute("token").toString());
-
+//        CreatePatientProfileRequest request = new CreatePatientProfileRequest();
+//        request.setSymptom(servletRequest.getParameter("symptom"));
+//        patientProfileResponse = patientService.createPatientProfile(request, session.getAttribute("token").toString());
+        patientProfileResponse.setSymptom(symptom);
         redirectAttrs.addFlashAttribute("patientProfileResponse", patientProfileResponse);
         FetchDepartmentRequest request1 = new FetchDepartmentRequest();
         request1.setScheduleDate(date);
-        request1.setPatientProfileId(patientProfileResponse.getId());
+        request1.setSymptom(symptom);
+        System.out.println(request1);
         listFreeSchedule = patientService.fetchDepartment(request1,session.getAttribute("token").toString());
 
         if(listFreeSchedule != null){
             session.setAttribute("chooseTime",true);
             redirectAttrs.addFlashAttribute("listFreeSchedule", listFreeSchedule);
+
         }
+
+        List<ListFreeSchedule.DetailSchedule> detailSchedules = listFreeSchedule.getDetailSchedules();
+        for (int i= 1; i <=  detailSchedules.size(); i++) {
+            redirectAttrs.addFlashAttribute("free" + i ,detailSchedules.get(i-1).getDoctorId() != null ? detailSchedules.get(i-1).getDoctorId()+"-"+detailSchedules.get(i-1).getScheduleTime()+"-"+detailSchedules.get(i-1).getPrice() : null);
+        }
+        redirectAttrs.addFlashAttribute("scheduleDate",date);
+        redirectAttrs.addFlashAttribute("symptom",symptom);
+        redirectAttrs.addFlashAttribute("departmentId",listFreeSchedule.getDepartmentId());
         System.out.println(listFreeSchedule);
 
 
@@ -127,5 +151,16 @@ public class HomeController {
     @GetMapping("/introduce")
     public String introduce(Model model) {
         return "introduce";
+    }
+
+    @GetMapping("/booking/confirm")
+    public  String bookingConfirm(Model model, @RequestParam String free,@RequestParam String scheduleDate,@RequestParam String departmentId,@RequestParam String symptom,HttpServletRequest request ){
+        System.out.println("nhi" + free +" "+ scheduleDate +" "+ symptom +" "+ departmentId );
+
+//        String deparmentName = request.getParameter("deparmentId");
+//        String date = request.getParameter("scheduleDate");
+//        String symptom = request.getParameter("symptom");
+//        System.out.println("nhi" + deparmentName + date + symptom);
+        return "bookingConfirm";
     }
 }

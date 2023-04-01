@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class FetchDepartmentRequest {
-    private Long patientProfileId;
+    private String symptom;
     private String scheduleDate;
     public static String convertToString(FetchDepartmentRequest fetchDepartmentRequest) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();

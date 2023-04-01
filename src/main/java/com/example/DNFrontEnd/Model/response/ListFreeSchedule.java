@@ -8,7 +8,6 @@ import java.util.List;
 public class ListFreeSchedule {
     private Long departmentId;
     private String departmentName;
-    private Long patientProfileId;
     private String medicalDate;
     private List<DetailSchedule> detailSchedules;
 

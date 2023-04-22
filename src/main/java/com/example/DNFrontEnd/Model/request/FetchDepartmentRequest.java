@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class FetchDepartmentRequest {
     private String symptom;
-    private String scheduleDate;
+    private String medicalDate;
     public static String convertToString(FetchDepartmentRequest fetchDepartmentRequest) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String result = objectMapper.writeValueAsString(fetchDepartmentRequest);

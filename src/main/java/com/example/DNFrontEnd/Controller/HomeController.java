@@ -7,6 +7,7 @@ import com.example.DNFrontEnd.Model.response.ListFreeSchedule;
 import com.example.DNFrontEnd.Model.response.PatientProfileResponse;
 import com.example.DNFrontEnd.Model.response.PatientResponse;
 import com.example.DNFrontEnd.Service.PatientService;
+import com.example.DNFrontEnd.Service.PaymentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +20,7 @@ import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -26,6 +28,9 @@ import java.util.List;
 public class HomeController {
     @Autowired
     PatientService patientService;
+
+    @Autowired
+    PaymentService paymentService;
 
     ObjectMapper objectMapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
@@ -91,7 +96,7 @@ public class HomeController {
         patientProfileResponse.setSymptom(symptom);
         redirectAttrs.addFlashAttribute("patientProfileResponse", patientProfileResponse);
         FetchDepartmentRequest request1 = new FetchDepartmentRequest();
-        request1.setScheduleDate(date);
+        request1.setMedicalDate(date);
         request1.setSymptom(symptom);
         System.out.println(request1);
         listFreeSchedule = patientService.fetchDepartment(request1,session.getAttribute("token").toString());
@@ -209,7 +214,20 @@ public class HomeController {
         System.out.println(saveScheduleRequest.toString());
         DetailScheduleResponse detailScheduleResponse = patientService.saveSchedule(saveScheduleRequest,session.getAttribute("token").toString());
         if(detailScheduleResponse != null){
-            return "test";
+            String vnp_BankCode  = request.getParameter("bankCode");
+            if(!StringUtils.isEmpty(vnp_BankCode) && vnp_BankCode.equalsIgnoreCase("M")){
+                return "test";
+            }
+            if(!StringUtils.isEmpty(vnp_BankCode) && !vnp_BankCode.equalsIgnoreCase("M")){
+                PaymentDTO paymentDTO = new PaymentDTO();
+                paymentDTO.setVnp_BankCode(vnp_BankCode);
+                String price = request.getParameter("price");
+                paymentDTO.setVnp_Amount(price.replace(".0", ""));
+                paymentDTO.setVnp_OrderInfo(session.getAttribute("name") + " thanh toán đặt lịch khám bệnh " + saveScheduleRequest.getMedicalDate());
+                System.out.println(paymentDTO.toString());
+                boolean is_pay = paymentService.payment(paymentDTO,session.getAttribute("token").toString() );
+            }
+
         }
         return "redirect:/";
 

@@ -154,7 +154,7 @@ public class PatientService {
 
             baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
             detailScheduleResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), DetailScheduleResponse.class);
-            System.out.println(detailScheduleResponse);
+            System.out.println(response);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

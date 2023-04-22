@@ -132,71 +132,11 @@
                         </table>
                     </div>
                 </div>
-
-                <!--<div data-test="card-header" class="card-header">
-                    <h2>
-                                <span> Thông tin bệnh
-                            nhân</span></h2>
-                </div>
-                <div data-test="card-body" class="card-body">
-                    <ul data-test="list-group" class="list-group">
-                        <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                            <i class="fas fa-user"></i>&nbsp;Họ và tên &nbsp;
-
-                            <span th:text="${patientResponse.fullName}"></span>
-                        </li>
-                        <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                            <i class="fas fa-venus-mars"></i>&nbsp;Giới tính
-                            &nbsp;
-
-                            <span th:text="${patientResponse.sex}"></span>
-                        </li>
-                        <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                            <i class="fas fa-calendar-alt"></i>&nbsp;Ngày sinh
-                            &nbsp;
-
-                            <span th:text="${patientResponse.birthday}"></span>
-                        </li>
-                        <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                            <i class="fas fa-id-card"></i>&nbsp;CMND &nbsp;
-
-                            <span th:text="${patientResponse.identityNumber}"></span>
-                        </li>
-                        <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                            <i class="fas fa-credit-card"></i>&nbsp;Nghề nghiệp
-                            &nbsp;
-
-                            <span th:text="${patientResponse.job}"></span>
-                        </li>
-                        <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                            <i class="fas fa-map-marker"></i>&nbsp;Địa chỉ
-                            &nbsp;
-
-                            <span th:text="${patientResponse.address}"></span>
-
-                        </li>
-                    </ul>
-                    <div>
-                        <form method="POST" th:action="@{/saveSchedule}" th:object="${saveScheduleRequest}">
-                            <input type="hidden" th:field="*{departmentId}" class="form-control" id="departmentId"
-                                   name="departmentId">
-                            <input type="hidden" th:field="*{doctorId}" class="form-control" id="doctorId"
-                                   name="doctorId">
-                            <input type="hidden" th:field="*{symptom}" class="form-control" id="symptom" name="symptom">
-                            <input type="hidden" th:field="*{medicalDate}" class="form-control" id="medicalDate"
-                                   name="medicalDate">
-                            <input type="hidden" th:field="*{hours}" class="form-control" id="hours" name="hours">
-                            <button type="submit" class="btn btn-primary btn-register">Xác nhận</button>
-                        </form>
-
-                    </div>
-                </div>-->
-
             </div>
         </div>
         <br>
         <hr>
-        <div class="col-md-12 col-lg-9 col-9 col-md-9 col-sm-9" th:if="${session.chooseTime != true}">
+        <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
                     <h4> <span> Chọn phương thức thanh toán </span></h4>
@@ -204,11 +144,14 @@
                 <div class="card-body">
                     <form method="POST" th:action="@{/saveSchedule}" th:object="${saveScheduleRequest}">
                         <div class="form-group">
-                            <label>Giới tính:</label>
-                            <input type="radio" name="sex" th:value="VISA"> Thẻ Visa
-                            <input type="radio" name="sex" th:value="NCB"> Ngân hàng NCB
-                            <input type="radio" name="sex" th:value="M"> Tiền mặt
-
+                            <br>
+                            <input type="radio" name="bankCode" th:value="VISA"> Thẻ Visa
+                            <br>
+                            <input type="radio" name="bankCode" th:value="NCB"> Ngân hàng NCB
+                            <br>
+                            <input type="radio" name="bankCode" th:value="M"> Tiền mặt
+                            <input type="hidden" th:value="${price}" class="form-control" id="price"
+                                   name="price">
                         </div>
                         <input type="hidden" th:field="*{departmentId}" class="form-control" id="departmentId"
                                name="departmentId">

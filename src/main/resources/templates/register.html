@@ -7,31 +7,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
     <style>
         body{
-            background: #F0F8FF;
+<!--            background: #F0F8FF;-->
+background: linear-gradient(#141e30, #243b55);
+        background-image: url(../images/doctor-g024485840_1920.jpg);
+        height: auto;
+        background-size: 100%;
+        background-repeat: no-repeat;
         }
         .login-form{
-            background: white;
+            border: 1px solid rgba(192,192,192,0.3);
+            box-shadow: 0 15px 25px rgba(0,0,0,.6);
+            border-radius: 10px;
+            background: rgba(192,192,192,0.3);
+            position: relative;
+            margin-bottom: 50px;
+            margin-left: auto;
+            margin-right: auto;
+
+            margin-top: 50px;
+            margin-bottom: 50px;
+
+        }
+        .lg-body{
+        border: none;
+        }
+        .dn img{
+            align-items: center;
+            width: 300px;
+            display: flex;
+            flex-content: auto;
+
+            margin-right: auto;
+            max-height: 150px;
+            margin-top: 200px;
+            margin-bottom: 50px;
+        }
+        .btn-primary {
+     color: #fff;
+        background-color: #09d066;
+        border-color: #09d066;
+        width: -webkit-fill-available
+}
+        p{
+            font-family: "Sofia", sans-serif;
+            font-size: 30px;
+            text-shadow: 3px 3px 3px #ababab;
         }
     </style>
 </head>
 <body>
+
 <div class="login">
     <div class="container lg-body">
-        <img src="/images/logo.png" id="logo" alt="">
-    </div>
-    <div class="container lg-body">
         <div class="container d-flex flex-row">
-            <div class="col-3 col-md-3 col-sm-3"></div>
+            <div class="col-6 col-md-6 col-sm-6">
+                <div class="dn">
+                    <img th:src="@{/images/dn-1.png}">
+                    <p>Phòng khám Đạt Nhi xin chào !!!</p>
+                </div>
 
-            <div class="col-6 col-md-6 col-sm-6 login-form"
-                 style="border: 1px solid;border-radius: 10px;box-shadow: 0px 25px 20px -20px rgba(0,0,0,0.45)">
+            </div>
+
+            <div class="col-6 col-md-6 col-sm-6 login-form">
                 <h2 class="text-login" style="text-align: center">Đăng ký</h2>
                 <div>
                     <span>(Thông tin có dấu <span style="color: red">*</span> là bắt buộc)</span>
                 </div>
                 <form method="POST" th:action="@{/user/register}"  th:object="${registerRequest}">
+
                     <div class="form-group">
                         <label for="fullName">Họ và tên:</label>
                         <input type="text" th:field="*{fullName}" class="form-control" id="fullName" name="fullName"
@@ -43,12 +89,12 @@
 
                     </div>
                     <div class="form-group">
-                        <label for="phone">Số điện thoại:</label>
+                        <label for="phoneNumber">Số điện thoại:</label>
                         <input type="text" th:field="*{phoneNumber}" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Số điện thoại..."/>
 
                     </div>
                     <div class="form-group">
-                        <label for="sex">Giới tính:</label>
+                        <label>Giới tính:</label>
                         <input type="radio" name="sex" th:value="M">Nam
                         <input type="radio" name="sex" th:value="F">Nữ
 <!--                        <select th:field="*{sex}" id="sex" name="sex">-->
@@ -79,14 +125,12 @@
                     <button type="submit" class="btn btn-primary btn-register">Đăng ký</button>
                 </form>
                 <br>
-                <hr>
+
                 <span>Đã có tài khoản? <a class="lg-register" th:href="@{/user/login}">Đăng nhập</a></span>
                 <br>
-                <hr>
                 <a class="lg-register" th:href="@{/}"><i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại trang chủ</a> <br/>
             </div>
-            <div class="col-3 col-md-3 col-sm-3">
-            </div>
+
         </div>
     </div>
 </div>

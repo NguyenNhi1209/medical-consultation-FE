@@ -1,8 +1,11 @@
 package com.example.DNFrontEnd.Service;
 
 import com.example.DNFrontEnd.Model.BaseResponse;
+import com.example.DNFrontEnd.Model.ERROR;
+import com.example.DNFrontEnd.Model.request.ForgotPasswordRequest;
 import com.example.DNFrontEnd.Model.request.LoginRequest;
 import com.example.DNFrontEnd.Model.request.RegisterRequestDTO;
+import com.example.DNFrontEnd.Model.request.ResetPasswordRequest;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -132,5 +135,50 @@ public class AuthService {
             e.printStackTrace();
         }
         return null;
+    }
+    public boolean forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
+        BaseResponse baseResponse ;
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/auth/forgot-password"))
+                    .header("accept", "application/json")
+//                .header("Authorization", "Bearer ")
+                    .header("content-type", "application/json")
+                    .method("POST", HttpRequest.BodyPublishers.ofString(ForgotPasswordRequest.convertToString(forgotPasswordRequest)))
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+            System.out.println(baseResponse);
+            return baseResponse.getCode() == ERROR.SUCCESS.getCode();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        BaseResponse baseResponse ;
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/auth/reset-password"))
+                    .header("accept", "application/json")
+//                .header("Authorization", "Bearer ")
+                    .header("content-type", "application/json")
+                    .method("POST", HttpRequest.BodyPublishers.ofString(ResetPasswordRequest.convertToString(resetPasswordRequest)))
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+
+            System.out.println(baseResponse);
+            return baseResponse.getCode() == ERROR.SUCCESS.getCode();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }

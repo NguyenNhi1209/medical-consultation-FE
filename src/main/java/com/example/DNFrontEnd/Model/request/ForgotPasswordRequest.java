@@ -1,0 +1,15 @@
+package com.example.DNFrontEnd.Model.request;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
+
+@Data
+public class ForgotPasswordRequest {
+    private String email;
+    public static String convertToString(ForgotPasswordRequest forgotPasswordRequest) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String result = objectMapper.writeValueAsString(forgotPasswordRequest);
+        return result;
+    }
+}

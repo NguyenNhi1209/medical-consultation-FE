@@ -3,10 +3,8 @@ package com.example.DNFrontEnd.Controller;
 import com.example.DNFrontEnd.Model.AuthMessageCode;
 import com.example.DNFrontEnd.Model.BaseResponse;
 import com.example.DNFrontEnd.Model.Contanst;
-import com.example.DNFrontEnd.Model.request.LoginRequest;
+import com.example.DNFrontEnd.Model.request.*;
 import com.example.DNFrontEnd.Model.response.LoginResponse;
-import com.example.DNFrontEnd.Model.request.RegisterRequest;
-import com.example.DNFrontEnd.Model.request.RegisterRequestDTO;
 import com.example.DNFrontEnd.Model.response.UserProfileResponse;
 import com.example.DNFrontEnd.Service.AuthService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -175,7 +173,7 @@ public class AuthController {
             return "redirect:/user/register";
         }
         if (!registerRequest.getPassword1().equalsIgnoreCase(registerRequest.getPassword())) {
-            redirectAttrs.addFlashAttribute("error", "Nhập lại mật khẩu không chính xác");
+            redirectAttrs.addFlashAttribute("error", "Nhập lại mật khẩu không khớp");
             redirectAttrs.addFlashAttribute("registerRequest", registerRequest);
             return "redirect:/user/register";
         }
@@ -284,4 +282,88 @@ public class AuthController {
         Contanst.userType = "";
         Contanst.userProfileResponse = new UserProfileResponse();
     }
+
+    @GetMapping("/forgotPassword")
+    public String forgotPassword(){
+        return "forgotPassword";
+    }
+    @PostMapping("/forgotPassword")
+    public String forgotPassword(Model model, HttpServletRequest request, RedirectAttributes redirectAttrs){
+        if (StringUtils.isEmpty(request.getParameter("email"))) {
+            redirectAttrs.addFlashAttribute("error", "Nhập email");
+            return "redirect:/user/forgotPassword";
+        }
+        if (!request.getParameter("email").matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            redirectAttrs.addFlashAttribute("error", "Email không hợp lệ");
+            return "redirect:/user/forgotPassword";
+        }
+        ForgotPasswordRequest forgotPasswordRequest = new ForgotPasswordRequest();
+        forgotPasswordRequest.setEmail(request.getParameter("email"));
+        boolean result = authService.forgotPassword(forgotPasswordRequest);
+        if(result){
+            redirectAttrs.addFlashAttribute("error", "Đã gửi email xác thực, kiểm tra email của bạn");
+            redirectAttrs.addFlashAttribute("code", "1");
+            return "redirect:/user/forgotPassword";
+        }else{
+            redirectAttrs.addFlashAttribute("error", "Không tìm thấy email trong hệ thống");
+            return "redirect:/user/forgotPassword";
+        }
+
+//        return "forgotPassword";
+    }
+    @GetMapping("/auth/reset-password")
+    public String resetPassword(@RequestParam("code") String code, @RequestParam("email") String email,Model model, @ModelAttribute("resetPasswordRequest") ResetPasswordRequest resetPasswordRequest) {
+
+        try {
+            resetPasswordRequest.setCode(code);
+            System.out.println(code);
+            model.addAttribute("resetPasswordRequest", resetPasswordRequest);
+        } catch (HttpClientErrorException ex) {
+            ex.printStackTrace();
+            System.out.println("catch roi");
+            return "home";
+        }
+        return "resetPassword";
+    }
+    @GetMapping("/resetPassword")
+    public String resetPassword1(Model model, @ModelAttribute("resetPasswordRequest") ResetPasswordRequest resetPasswordRequest) {
+        try {
+            model.addAttribute("resetPasswordRequest", resetPasswordRequest);
+        } catch (HttpClientErrorException ex) {
+            ex.printStackTrace();
+            System.out.println("catch roi");
+            return "home";
+        }
+        return "resetPassword";
+    }
+    @PostMapping("/resetPassword")
+    public String resetPassword(Model model, HttpServletRequest request, RedirectAttributes redirectAttrs, @ModelAttribute("resetPasswordRequest") ResetPasswordRequest resetPasswordRequest) {
+        if (StringUtils.isEmpty(resetPasswordRequest.getPassword())) {
+            redirectAttrs.addFlashAttribute("error", "Nhập mật khẩu");
+            redirectAttrs.addFlashAttribute("resetPasswordRequest", resetPasswordRequest);
+            return "redirect:/user/resetPassword";
+        }
+        if (StringUtils.isEmpty(request.getParameter("password1"))) {
+            redirectAttrs.addFlashAttribute("error", "Nhập lại mật khẩu");
+            redirectAttrs.addFlashAttribute("resetPasswordRequest", resetPasswordRequest);
+            return "redirect:/user/resetPassword";
+        }
+        if (!request.getParameter("password1").equalsIgnoreCase(resetPasswordRequest.getPassword())) {
+            redirectAttrs.addFlashAttribute("error", "Nhập lại mật khẩu không khớp");
+            redirectAttrs.addFlashAttribute("resetPasswordRequest", resetPasswordRequest);
+            return "redirect:/user/resetPassword";
+        }
+        System.out.println(resetPasswordRequest.toString());
+        boolean result = authService.resetPassword(resetPasswordRequest);
+        if(result){
+            redirectAttrs.addFlashAttribute("error", "Đặt lại mật khẩu thành công, đăng nhập lại để sử dụng ứng dụng");
+            return "redirect:/user/login";
+        }else{
+            redirectAttrs.addFlashAttribute("resetPasswordRequest", resetPasswordRequest);
+            redirectAttrs.addFlashAttribute("error", "Lỗi server");
+            return "redirect:/user/resetPassword";
+        }
+
+    }
+
 }

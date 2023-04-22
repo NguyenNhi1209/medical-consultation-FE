@@ -1,29 +1,69 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" lang="vi">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" lang="vi">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .header{
+            background-color: #303137
+        }
+        .navbar{
+            color: #ffffff;
+            font-family: Monospace
+        }
+        .btnDN{
+            border: 2px solid #09d066;
+            padding: 10px;
+            border-radius: 25px;
+            background-color: #09d066;
+            width: 100%;
+            text-align: center;
+         }
+         .btnDN{
+            border: 2px solid #09d066;
+            padding: 10px;
+            border-radius: 25px;
+            background-color: #09d066;
+            width: 100%;
+            text-align: center;
+         }
+        .icons a{
+            width: 100%;
+            min-width: 100px;
+            float: left;
+            font-size: 14px;
+            background-color: #09d066;
+            color: #ffffff;
+            text-align: center;
+            border: 2px solid #09d066;
+            padding: 10px;
+            border-radius: 25px;
+        }
+        .icons a:hover{
+            background-color: #303036;
+            color: #ffffff;
+        }
+
+    </style>
 
 </head>
 <body>
 <header class="header">
-    <img src="/images/logo.png" id="logo" alt="">
-<!--    <span sec:authorize="isAuthenticated()">-->
-    <nav class="navbar" >
+    <img src="/images/logo1.png" id="logo" alt="">
+    <nav class="navbar">
         <a th:href="@{/}">Trang chủ</a>
         <a th:href="@{/introduce}">Giới thiệu</a>
         <a th:href="@{/booking}">Đặt lịch khám</a>
         <a th:if="${session.userType != null}" th:href="@{/updateProfile}">Quản lý thông tin</a>
-        <a th:href="@{/user/logout}" th:if="${session.userType != null}" >Đăng xuất</a>
+        <a th:href="@{/user/logout}" th:if="${session.userType != null}">Đăng xuất</a>
     </nav>
 
     <div class="icons" th:if="${session.name != null}">
-        <div id="menubar" class="fas fa-bars"></div>
         <a th:text="${session.name}"></a>
     </div>
     <div class="icons" th:if="${session.name == null}">
-        <div id="menubar" class="fas fa-bars"></div>
-        <a th:href="@{/user/login}" >Đăng nhập</a>
+        <a class="btnDN" th:href="@{/user/login}">Đăng nhập</a>
     </div>
 </header>
 </body>

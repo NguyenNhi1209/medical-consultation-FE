@@ -3387,8 +3387,6 @@ readers do not read off random characters that represent icons */
 .fa-scribd:before {
   content: "\f28a"; }
 
-.fa-scroll:before {
-  content: "\f70e"; }
 
 .fa-sd-card:before {
   content: "\f7c2"; }

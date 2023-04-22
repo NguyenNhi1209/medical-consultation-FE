@@ -16021,11 +16021,8 @@ scribd:
     - brands
   unicode: f28a
   voted: false
-scroll:
-  changes:
-    - 5.4.0
-    - 5.10.2
-  label: Scroll
+
+
   search:
     terms:
       - Dungeons & Dragons
@@ -19309,7 +19306,7 @@ torah:
       - jewish
       - judaism
       - religion
-      - scroll
+
   styles:
     - solid
   unicode: f6a0

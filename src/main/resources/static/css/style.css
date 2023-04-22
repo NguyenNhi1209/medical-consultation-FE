@@ -1,9 +1,4 @@
-:root{
-    --mainclr:#239f85;
-    --secclr:#ff5d22;
-    --third:#DFE4E0;
-    --mainafterclr:hsl(167, 81%, 79%);
-}
+
 
 html{
     font-size: 62.5%;
@@ -90,7 +85,6 @@ html{
     transform: translate(-80%);
 }
 .background-content h1{
-    color: black;
     font-size: 40px;
     margin-bottom: 20px;
 }
@@ -110,7 +104,7 @@ html{
 .background-content a:hover{
     background: transparent;
     border: 1px solid var(--secclr);
-    color: black;
+    /*color: black;*/
 }
 .about{
     padding: 6rem 7%;
@@ -151,11 +145,11 @@ html{
 .about-content a:hover{
     background: transparent;
     border: 1px solid var(--secclr);
-    color: black;
+    /*color: black;*/
 }
-.our-services{
+/*.our-services{
     padding: 4rem 7%;
-}
+}*/
 .service-content{
     display: flex;
     justify-content: space-between;
@@ -175,6 +169,7 @@ html{
 .left-service-content h1{
     font-size: 40px;
     margin-bottom: 15px;
+    padding: 1.5rem 3rem;
 }
 .left-service-content p{
     font-size: 1.5rem;
@@ -188,7 +183,7 @@ html{
 .right-service-content .right-btn a:hover{
     border: 1px solid var(--secclr);
     background: transparent;
-    color: black;
+    /*color: black;*/
 }
 .main-services{
     padding-top: 4rem;
@@ -223,9 +218,10 @@ html{
     margin-bottom: 15px;
     cursor: pointer;
     transition: .3s;
+    background-color:#A2EBEB
 }
 .service-icon i:hover{
-    color: white;
+    background-color:#0EEDED
     background: var(--mainclr);
 }
 .gallery{
@@ -346,7 +342,7 @@ html{
 }
 .footer{
     padding: 6rem 7%;
-    background: var(--third);
+    /*background: var(--third);*/
 }
 .main-footer{
     display: flex;
@@ -360,12 +356,12 @@ html{
 }
 .inner-footer h2{
     font-size: 2rem;
-    color: black;
+    /*color: black;*/
 }
 .inner-footer a{
     font-size: 1.5rem;
     font-weight: bolder;
-    color: black;
+    /*color: black;*/
     display: block;
     margin-top: 1rem;
     padding-top: 1rem;
@@ -376,26 +372,16 @@ html{
 
 
 /* width */
-::-webkit-scrollbar {
-    width: 20px;
-  }
+
   
   /* Track */
-  ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px var(--mainclr); 
-    background: var(--mainclr);
-  }
+
    
   /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: var(--secclr); 
-    border-radius: 10px;
-  }
+
   
   /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--third); 
-  }
+
 
 
 
@@ -495,7 +481,7 @@ html{
     overflow: hidden; }
 
 body {
-    font-family: Montserrat, sans-serif; }
+    font-family:courier,arial,helvetica; }
 body a {
     text-decoration: none; }
 
@@ -915,16 +901,14 @@ body {
     margin-top: -5px;
     cursor: pointer; }
 
-.CodeMirror, .CodeMirror-scroll {
-    min-height: 200px;
-    max-height: 300px; }
+
 
 .img-preview-clinic-create {
     height: 200px;
     width: 300px; }
 
 pre {
-    font-family: Montserrat, sans-serif;
+    font-family:courier,arial,helvetica;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;

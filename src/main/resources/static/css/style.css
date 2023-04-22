@@ -73,7 +73,7 @@ html{
     height: 100vh;
     background-size: cover;
     background-repeat: no-repeat;
-    padding-top: 6%;
+    /*padding-top: 6%;*/
     position: relative;
 
 }

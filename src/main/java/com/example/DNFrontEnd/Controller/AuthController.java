@@ -249,20 +249,17 @@ public class AuthController {
     }
 
     @GetMapping("/auth/verify-email")
-    public String active(@RequestParam("code") String code, @RequestParam("email") String email) {
-
+    public String active(@RequestParam("code") String code,RedirectAttributes redirectAttrs, @RequestParam("email") String email) {
         try {
             BaseResponse baseResponse = authService.verify(code);
             System.out.println(baseResponse.toString());
-
+            redirectAttrs.addFlashAttribute("error", "Xác thực tài khoản thành công! Mời đăng nhập");
+            return "redirect:/user/login";
         } catch (HttpClientErrorException ex) {
             ex.printStackTrace();
             System.out.println("catch roi");
-//            return "home";
+            return "home";
         }
-
-
-        return "active";
     }
 
     @GetMapping("/logout")
@@ -312,18 +309,19 @@ public class AuthController {
 //        return "forgotPassword";
     }
     @GetMapping("/auth/reset-password")
-    public String resetPassword(@RequestParam("code") String code, @RequestParam("email") String email,Model model, @ModelAttribute("resetPasswordRequest") ResetPasswordRequest resetPasswordRequest) {
-
+    public String resetPassword(@RequestParam("code") String code, RedirectAttributes redirectAttrs, @RequestParam("email") String email,Model model, @ModelAttribute("resetPasswordRequest") ResetPasswordRequest resetPasswordRequest) {
         try {
             resetPasswordRequest.setCode(code);
             System.out.println(code);
-            model.addAttribute("resetPasswordRequest", resetPasswordRequest);
+//            model.addAttribute("resetPasswordRequest", resetPasswordRequest);
+            redirectAttrs.addFlashAttribute("resetPasswordRequest", resetPasswordRequest);
+            return "redirect:/user/resetPassword";
         } catch (HttpClientErrorException ex) {
             ex.printStackTrace();
             System.out.println("catch roi");
             return "home";
         }
-        return "resetPassword";
+//        return "resetPassword";
     }
     @GetMapping("/resetPassword")
     public String resetPassword1(Model model, @ModelAttribute("resetPasswordRequest") ResetPasswordRequest resetPasswordRequest) {

@@ -115,6 +115,7 @@ public class PatientService {
                     .method("POST", HttpRequest.BodyPublishers.ofString(FetchDepartmentRequest.convertToString(request)))
                     .build();
             HttpResponse response = HttpClient.newHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.body().toString());
             ObjectMapper objectMapper = new ObjectMapper()
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 

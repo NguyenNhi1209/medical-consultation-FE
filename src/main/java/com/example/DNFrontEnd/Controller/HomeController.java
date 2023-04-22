@@ -37,7 +37,20 @@ public class HomeController {
 
         return "home";
     }
-
+    @GetMapping("/redirectBooking")
+    public String redirectBooking(Model model, HttpServletRequest request, HttpSession session ,RedirectAttributes redirectAttrs, @ModelAttribute("patientProfileResponse")PatientProfileResponse patientProfileResponse,
+                                  @RequestParam("symptom") String symptom, @RequestParam("scheduleDate") String scheduleDate) {
+        if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())) {
+            model.addAttribute("loginRequest", new LoginRequest());
+            return "login";
+        }
+        session.setAttribute("chooseTime",false);
+         redirectAttrs.addFlashAttribute("scheduleDate",scheduleDate);
+        redirectAttrs.addFlashAttribute("symptom",symptom);
+        patientProfileResponse.setSymptom(symptom);
+        redirectAttrs.addFlashAttribute("patientProfileResponse", patientProfileResponse);
+        return "redirect:/booking";
+    }
     @GetMapping("/booking")
     public String booking(Model model, HttpSession session ,@ModelAttribute("patientProfileResponse")PatientProfileResponse patientProfileResponse,
                           @ModelAttribute("listFreeSchedule") ListFreeSchedule listFreeSchedule,@ModelAttribute(name = "error") String error) {
@@ -45,9 +58,11 @@ public class HomeController {
             model.addAttribute("loginRequest", new LoginRequest());
             return "login";
         }
+        if(listFreeSchedule != null && listFreeSchedule.getDepartmentId() == null){
+            session.setAttribute("chooseTime",false);
+        }
         model.addAttribute("patientProfileResponse",patientProfileResponse);
         model.addAttribute("listFreeSchedule",listFreeSchedule);
-
         return "booking";
     }
     @PostMapping("/booking")
@@ -178,6 +193,7 @@ public class HomeController {
         model.addAttribute("saveScheduleRequest", saveScheduleRequest);
         model.addAttribute("departmentName", departmentName);
         model.addAttribute("price", price);
+        model.addAttribute("symptom", symptom);
         session.setAttribute("chooseTime",false);
 
 //        String deparmentName = request.getParameter("deparmentId");

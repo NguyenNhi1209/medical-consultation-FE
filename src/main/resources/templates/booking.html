@@ -11,11 +11,20 @@
             th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <style>
         body {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            height: auto;
+            font-family: "Times New Roman", Times, serif;
+            position: relative;
+            line-height: 1.5;
+            font-size: 15px;
         }
 
         .fix-height {
@@ -49,11 +58,11 @@
         }
         .chooseTime a{
             border: 1px solid black;
-            margin: 20px 20px 20px 20px;
-            border-radius: 3px;
+            margin: 10px 10px 10px 10px;
+            border-radius: 1px;
             background-color: #EEEEEE;
             color: #000000;
-<!--            padding: 10px 5px 10px 5px;-->
+            padding: 10px 5px 10px 5px;
         }
         .chooseTime a:hover{
         background-color: #239f85;
@@ -64,134 +73,195 @@
 
         }
 
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+ height: 30%;
+ margin-top: 20px ;
+}
+header{
+margin-bottom: 100px ;
+}
+.container{
+ height: 70%;
+ min-height: 80vh;
+}
+.our-services{
+ margin-top: 110px ;
+}
+        .card {
+            text-align:justify;
+        }
+        .card-header{
+            text-align:left;
+            background-color: #09d066;
+            padding: 3px 3px 3px 6px;
+            border-radius: 1px;
+
+        }
+        .card-body{
+            border: 1px solid #D3D3D3;
+            text-align:justify;
+            border-radius: 1px;
+            text-align:justify;
+            padding:10px;
+        }
 
     </style>
 </head>
 <body>
-
 <div th:include="header.html"></div>
-
-<div class="background-image">
-    <div class="background-content">
-        <div class="container lg-body">
-            <div class="col-6 col-md-6 col-sm-6">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="text-center mt-3">
-                            <h1 class="title">Thông tin đặt lịch khám bệnh</h1>
-                        </div>
-                        <form method="POST" th:action="@{/booking}" th:object="${patientProfileResponse}">
-                            <div class="form-group">
-                                <label for="customerName">Họ và tên</label>
-                                <input type="text" th:value="${session.name}" id="customerName" class="form-control"
-                                       name="fullName" placeholder="Họ và tên..." disabled>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Số điện thoại</label>
-                                <input type="text" th:value="${session.phone}" id="phone" class="form-control"
-                                       name="phone" placeholder="Số điện thoại..." disabled>
-                            </div>
-                            <div class="form-group">
-                                <label for="reason">Các triệu chứng</label>
-                                <textarea rows="3" id="reason" class="form-control" name="symptom"
-                                          placeholder="triệu chứng 1, triệu chứng 2, triệu chứng 3, ..."
-                                          th:field="*{symptom}"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="scheduleDate">Chọn ngày khám:</label>
-                                <input type="date" th:value="${scheduleDate}" class="form-control" id="scheduleDate"
-                                       name="scheduleDate"/>
-                            </div>
-                            <span th:text="${error}" style="color:red;"></span>
-                            <br>
-                            <button th:if="${session.chooseTime != true}" type="submit"
-                                    class="btn btn-primary btn-register">Xác nhận
-                            </button>
-                        </form>
-                    </div>
-
+<div class="our-services">
+    <div class="container lg-body">
+        <div>
+            <br><br>
+            <p><b><i>Nhập triệu chứng, ngày khám bệnh</i><i th:if="${session.chooseTime == true}"> > Chọn giờ khám</i></b></p>
+            <br><br>
+        </div>
+        <div class="col-md-12 col-lg-3 col-3 col-md-3 col-sm-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4> <span> Hồ sơ bệnh nhân </span></h4>
+                </div>
+                <div class="card-body">
+                    <i class="fa fa-user-circle-o"></i>&nbsp;<span>Tên bệnh nhân:</span>&nbsp;<span th:text="${session.name}"></span>
+                    <br>
+                    <i class="fas fa-phone"></i>&nbsp;<span>Số điện thoại:</span>&nbsp;<span th:text="${session.phone}"></span>
+                    <br>
+                    <span th:if="${session.chooseTime == true}">
+                    <i class="fas fa-bed" ></i>&nbsp;<span>Các triệu chứng:</span>&nbsp;<span th:text="${symptom}"></span></span>
+                    <br>
+                    <span th:if="${session.chooseTime == true}">
+                    <i class="fas fa-calendar-day" ></i>&nbsp;<span >Ngày khám:</span>&nbsp;<span th:text="${scheduleDate}"></span></span>
                 </div>
             </div>
-            <div class="verticalLine">
-                <hr style="width:10px">
-            </div>
-            <div class="col-6 col-md-6 col-sm-6" th:if="${session.chooseTime == true}">
-                <form th:action="@{/}" th:object="${listFreeSchedule}">
-                    <div class="form-group">
-                        <label for="departmentName">Khoa khám bệnh: </label>
-                        <input id="departmentName" class="form-control" th:field="*{departmentName}"
-                               name="departmentName" disabled/>
-                    </div>
-                    <div class="form-group">
-                        <label for="scheduleDate">Chọn giờ khám:</label>
+        </div>
+
+        <div class="col-md-12 col-lg-9 col-9 col-md-9 col-sm-9" th:if="${session.chooseTime != true}">
+            <div class="card">
+                <div class="card-header">
+                    <h4> <span> Vui lòng nhập thông tin bên dưới </span></h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" th:action="@{/booking}" th:object="${patientProfileResponse}">
+                        <div class="form-group">
+                            <label for="reason">Các triệu chứng</label>
+                            <textarea rows="3" id="reason" class="form-control" name="symptom"
+                                      placeholder="triệu chứng 1, triệu chứng 2, triệu chứng 3, ..."
+                                      th:field="*{symptom}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="scheduleDate">Chọn ngày khám:</label>
+                            <input type="date" th:value="${scheduleDate}" class="form-control" id="scheduleDate"
+                                   name="scheduleDate"/>
+                        </div>
+                        <span th:text="${error}" style="color:red;"></span>
                         <br>
-                        <span>Buổi sáng: </span> <br>
-                        <div class="chooseTime">
-                            <div class="row">
-                                <div class="col-6 col-md-6 col-sm-6 ">
-                                    <a th:href="@{/booking/confirm(free=${free1},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
-                                       th:if="${free1 != null}" class="chooseTimea">07:00 - 08:00</a>
-                                    <a th:if="${free1 == null}" style="pointer-events: none;color: #FFFFFF;">07:00 - 08:00</a>
-                                </div>
-                                <div class="col-6 col-md-6 col-sm-6 ">
-                                    <a th:href="@{/booking/confirm(free=${free2},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
-                                       th:if="${free2 != null}" class="chooseTimea">08:00 - 09:00</a>
-                                    <a th:if="${free2 == null}" style="pointer-events: none;color: #FFFFFF;">08:00 - 09:00</a>
-                                </div>
-                            </div>
-                            <div class="row" style=" margin-top: 50px ;">
-                                <div class="col-6 col-md-6 col-sm-6 ">
-                                    <a th:href="@{/booking/confirm(free=${free3},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
-                                       th:if="${free3 != null}" class="chooseTimea">09:00 - 10:00</a>
-                                    <a th:if="${free3 == null}" style="pointer-events: none;color: #FFFFFF;">09:00 - 10:00</a>
-                                </div>
-                                <div class="col-6 col-md-6 col-sm-6 ">
-                                    <a th:href="@{/booking/confirm(free=${free4},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
-                                       th:if="${free4 != null}" class="chooseTimea">10:00 - 11:00</a>
-                                    <a th:if="${free4 == null}" style="pointer-events: none;color: #FFFFFF;">10:00 - 11:00</a>
-                                </div>
-                            </div>
-                        </div>
-                        <br><br>
-                        <span >Buổi chiều: </span> <br>
-
-                        <div class="chooseTime">
-                            <div class="row">
-                                <div class="col-6 col-md-6 col-sm-6 ">
-                                    <a th:href="@{/booking/confirm(free=${free5},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
-                                       th:if="${free5 != null}" class="chooseTimea">13:00 - 14:00</a>
-                                    <a th:if="${free5 == null}" style="pointer-events: none;color: #FFFFFF;">13:00 - 14:00</a>
-                                </div>
-                                <div class="col-6 col-md-6 col-sm-6 ">
-                                    <a th:href="@{/booking/confirm(free=${free6},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
-                                       th:if="${free6 != null}" class="chooseTimea">14:00 - 15:00</a>
-                                    <a th:if="${free6 == null}" style="pointer-events: none;color: #FFFFFF;">14:00 - 15:00</a>
-                                </div>
-                            </div>
-                            <div class="row" style=" margin-top: 50px ;">
-                                <div class="col-6 col-md-6 col-sm-6 ">
-                                    <a th:href="@{/booking/confirm(free=${free7},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
-                                       th:if="${free7 != null}" class="chooseTimea">15:00 - 16:00</a>
-                                    <a th:if="${free7 == null}" style="pointer-events: none;color: #FFFFFF;">15:00 - 16:00</a>
-                                </div>
-                                <div class="col-6 col-md-6 col-sm-6 ">
-                                    <a th:href="@{/booking/confirm(free=${free8},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
-                                       th:if="${free8 != null}" class="chooseTimea">16:00 - 17:00</a>
-                                    <a th:if="${free8 == null}" style="pointer-events: none;color: #FFFFFF;">16:00 - 17:00</a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <br>
-
-                </form>
+                        <button th:if="${session.chooseTime != true}" type="submit"
+                                class="btn btn-primary btn-register">Xác nhận
+                        </button>
+                    </form>
+                </div>
             </div>
+        </div>
+
+
+        <div class="col-md-12 col-lg-9 col-9 col-md-9 col-sm-9" th:if="${session.chooseTime == true}">
+            <div class="card">
+                <div class="card-header">
+                    <h4> <span> Vui lòng chọn giờ khám </span></h4>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/}" th:object="${listFreeSchedule}">
+                        <div class="form-group">
+                            <label for="departmentName">Khoa khám bệnh đề xuất: </label>
+                            <input id="departmentName" class="form-control" th:field="*{departmentName}"
+                                   name="departmentName" disabled/>
+                        </div>
+                        <div class="form-group">
+                            <label for="scheduleDate">Chọn giờ khám:</label>
+                            <br>
+                            <span>Buổi sáng: </span> <br>
+                            <div class="chooseTime">
+
+                                    <div class="col-3 col-md-3 col-sm-3 ">
+                                        <a th:href="@{/booking/confirm(free=${free1},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
+                                           th:if="${free1 != null}" class="chooseTimea">07:00 - 08:00</a>
+                                        <a th:if="${free1 == null}" style="pointer-events: none;color: #FFFFFF;">07:00 -
+                                            08:00</a>
+                                    </div>
+                                    <div class="col-3 col-md-3 col-sm-3 ">
+                                        <a th:href="@{/booking/confirm(free=${free2},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
+                                           th:if="${free2 != null}" class="chooseTimea">08:00 - 09:00</a>
+                                        <a th:if="${free2 == null}" style="pointer-events: none;color: #FFFFFF;">08:00 -
+                                            09:00</a>
+                                    </div>
+
+
+                                    <div class="col-3 col-md-3 col-sm-3 ">
+                                        <a th:href="@{/booking/confirm(free=${free3},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
+                                           th:if="${free3 != null}" class="chooseTimea">09:00 - 10:00</a>
+                                        <a th:if="${free3 == null}" style="pointer-events: none;color: #FFFFFF;">09:00 -
+                                            10:00</a>
+                                    </div>
+                                    <div class="col-3 col-md-3 col-sm-3 ">
+                                        <a th:href="@{/booking/confirm(free=${free4},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
+                                           th:if="${free4 != null}" class="chooseTimea">10:00 - 11:00</a>
+                                        <a th:if="${free4 == null}" style="pointer-events: none;color: #FFFFFF;">10:00 -
+                                            11:00</a>
+                                    </div>
+
+                            </div>
+                            <br><br>
+                            <span>Buổi chiều: </span> <br>
+
+                            <div class="chooseTime">
+
+                                    <div class="col-3 col-md-3 col-sm-3 ">
+                                        <a th:href="@{/booking/confirm(free=${free5},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
+                                           th:if="${free5 != null}" class="chooseTimea">13:00 - 14:00</a>
+                                        <a th:if="${free5 == null}" style="pointer-events: none;color: #FFFFFF;">13:00 -
+                                            14:00</a>
+                                    </div>
+                                    <div class="col-3 col-md-3 col-sm-3 ">
+                                        <a th:href="@{/booking/confirm(free=${free6},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
+                                           th:if="${free6 != null}" class="chooseTimea">14:00 - 15:00</a>
+                                        <a th:if="${free6 == null}" style="pointer-events: none;color: #FFFFFF;">14:00 -
+                                            15:00</a>
+                                    </div>
+
+
+                                    <div class="col-3 col-md-3 col-sm-3 ">
+                                        <a th:href="@{/booking/confirm(free=${free7},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
+                                           th:if="${free7 != null}" class="chooseTimea">15:00 - 16:00</a>
+                                        <a th:if="${free7 == null}" style="pointer-events: none;color: #FFFFFF;">15:00 -
+                                            16:00</a>
+                                    </div>
+                                    <div class="col-3 col-md-3 col-sm-3 ">
+                                        <a th:href="@{/booking/confirm(free=${free8},scheduleDate=${scheduleDate},symptom=${symptom},departmentId=${departmentId},departmentName=${listFreeSchedule.departmentName})}"
+                                           th:if="${free8 != null}" class="chooseTimea">16:00 - 17:00</a>
+                                        <a th:if="${free8 == null}" style="pointer-events: none;color: #FFFFFF;">16:00 -
+                                            17:00</a>
+                                    </div>
+
+                            </div>
+
+                        </div>
+
+                        <br>
+
+                    </form>
+
+                    <a class="lg-register" th:href="@{/redirectBooking(symptom=${symptom},scheduleDate=${scheduleDate})}"><i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại</a> <br/>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 <div th:include="footer.html"></div>
+
 <script src="script.js"></script>
 </body>
 </html>

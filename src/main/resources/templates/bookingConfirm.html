@@ -21,6 +21,10 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            font-family: "Times New Roman", Times, serif;
+            position: relative;
+            line-height: 1.5;
+            font-size: 15px;
         }
 
         .fix-height {
@@ -46,7 +50,7 @@
         }
         .card-header{
             text-align:center;
-            background-color: #239f85;
+            background-color: #09d066;
             margin-top: 30px;
             border-radius: 3px;
         }
@@ -55,124 +59,173 @@
             text-align:justify;
             border-radius: 3px;
         }
+        .our-services{
+         margin-top: 110px ;
+          min-height: 80vh;
+        }
+        .card {
+            text-align:justify;
+        }
+        .card-header{
+            text-align:left;
+            background-color: #09d066;
+            padding: 3px 3px 3px 6px;
+            border-radius: 1px;
+
+        }
+        .card-body{
+            border: 1px solid #D3D3D3;
+            text-align:justify;
+            border-radius: 1px;
+            text-align:justify;
+            padding:10px;
+        }
 
     </style>
 
 </head>
 <body>
 <div th:include="header.html"></div>
-<div class="background-image">
-    <div class="background-content">
-        <div class="container">
-                <div data-test="col" class="col-md-12 col-lg-3 col-3 col-md-3 col-sm-3">
-                    <div data-test="card" class="card">
-                        <div data-test="card-header" class="card-header"><h2>
-                                <span> Thông tin bệnh
-                            nhân</span></h2>
-                        </div>
-                        <div data-test="card-body" class="card-body">
-                            <ul data-test="list-group" class="list-group style_list_group__12VsQ">
-                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <i class="far fa-user-circle"></i>&nbsp;<span th:text="${patientResponse.fullName}"></span>
-                                </li>
-                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined"><i
-                                        class="far fa-mobile-alt"></i>&nbsp;<p th:text="${patientResponse.phoneNumber}"></p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+<div class="our-services">
+
+    <div class="container">
+        <div class="col-md-12 col-lg-3 col-3 col-md-3 col-sm-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4> <span> Hồ sơ bệnh nhân </span></h4>
                 </div>
-                <div data-test="col" class="col-md-12 col-lg-9 col-9 col-md-9 col-sm-9">
-                    <div data-test="card" class="card">
-                        <div data-test="card-header" class="card-header">
-                            <h2>
-                            <span> Xác nhận thông tin khám</span></h2></div>
-                        <div data-test="card-body" class="card-body">
-                            <div data-test="table" class="table-responsive">
-                                <table class="table style_tableResponsive__3EsiM">
-                                    <thead data-test="table-head" class="">
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Chuyên khoa</th>
-                                        <th>Ngày khám</th>
-                                        <th>Giờ khám</th>
-                                        <th>Tiền khám</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody data-test="table-body">
-                                    <tr>
-                                        <td>1</td>
-                                        <td><span th:text="${departmentName}"></span></td>
-                                        <td><span th:text="${saveScheduleRequest.medicalDate}"></span></td>
-                                        <td><span th:text="${saveScheduleRequest.hours+':00'}"></span></td>
-                                        <td><span th:text="${price}"></span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div data-test="card-header" class="card-header">
-                            <h2>
-                                <span> Thông tin bệnh
-                            nhân</span></h2>
-                        </div>
-                        <div data-test="card-body" class="card-body">
-                            <ul data-test="list-group" class="list-group">
-                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <i class="fas fa-user"></i>&nbsp;Họ và tên &nbsp;
-                                    
-                                    <span th:text="${patientResponse.fullName}"></span>
-                                </li>
-                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <i class="fas fa-venus-mars"></i>&nbsp;Giới tính
-                                        &nbsp;
-                                    
-                                    <span th:text="${patientResponse.sex}"></span>
-                                </li>
-                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <i class="fas fa-calendar-alt"></i>&nbsp;Ngày sinh
-                                        &nbsp;
-                                    
-                                    <span th:text="${patientResponse.birthday}"></span>
-                                </li>
-                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <i class="fas fa-id-card"></i>&nbsp;CMND &nbsp;
-                                    
-                                    <span th:text="${patientResponse.identityNumber}"></span>
-                                </li>
-                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <i class="fas fa-credit-card"></i>&nbsp;Nghề nghiệp
-                                        &nbsp;
-                                    
-                                    <span th:text="${patientResponse.job}"></span>
-                                </li>
-                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
-                                    <i class="fas fa-map-marker"></i>&nbsp;Địa chỉ
-                                        &nbsp;
-                                    
-                                    <span th:text="${patientResponse.address}"></span>
-                                    
-                                </li>
-                            </ul>
-                            <div>
-                                <form method="POST" th:action="@{/saveSchedule}"  th:object="${saveScheduleRequest}">
-                                    <input type="hidden" th:field="*{departmentId}" class="form-control" id="departmentId" name="departmentId">
-                                    <input type="hidden" th:field="*{doctorId}" class="form-control" id="doctorId" name="doctorId">
-                                    <input type="hidden" th:field="*{symptom}" class="form-control" id="symptom" name="symptom">
-                                    <input type="hidden" th:field="*{medicalDate}" class="form-control" id="medicalDate" name="medicalDate">
-                                    <input type="hidden" th:field="*{hours}" class="form-control" id="hours" name="hours">
-                                    <button type="submit" class="btn btn-primary btn-register">Xác nhận</button>
-                                </form>
-
-                            </div>
-                        </div>
-
+                <div class="card-body">
+                    <i class="fa fa-user-circle-o"></i>&nbsp;<span>Tên bệnh nhân:</span>&nbsp;<span th:text="${session.name}"></span>
+                    <br>
+                    <i class="fas fa-phone"></i>&nbsp;<span>Số điện thoại:</span>&nbsp;<span th:text="${session.phone}"></span>
+                    <br>
+                    <i class="fas fa-bed" ></i>&nbsp;<span>Các triệu chứng:</span>&nbsp;<span th:text="${symptom}"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-9 col-9 col-md-9 col-sm-9">
+            <div class="card">
+                <div class="card-header">
+                    <h4>
+                        <span> Xác nhận thông tin khám </span></h4></div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table style_tableResponsive__3EsiM">
+                            <thead class="">
+                            <tr>
+                                <th>#</th>
+                                <th>Chuyên khoa</th>
+                                <th>Ngày khám</th>
+                                <th>Giờ khám</th>
+                                <th>Tiền khám</th>
+                            </tr>
+                            </thead>
+                            <tbody data-test="table-body">
+                            <tr>
+                                <td>1</td>
+                                <td><span th:text="${departmentName}"></span></td>
+                                <td><span th:text="${saveScheduleRequest.medicalDate}"></span></td>
+                                <td><span th:text="${saveScheduleRequest.hours+':00'}"></span></td>
+                                <td><span th:text="${price}"></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
+                <!--<div data-test="card-header" class="card-header">
+                    <h2>
+                                <span> Thông tin bệnh
+                            nhân</span></h2>
+                </div>
+                <div data-test="card-body" class="card-body">
+                    <ul data-test="list-group" class="list-group">
+                        <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
+                            <i class="fas fa-user"></i>&nbsp;Họ và tên &nbsp;
+
+                            <span th:text="${patientResponse.fullName}"></span>
+                        </li>
+                        <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
+                            <i class="fas fa-venus-mars"></i>&nbsp;Giới tính
+                            &nbsp;
+
+                            <span th:text="${patientResponse.sex}"></span>
+                        </li>
+                        <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
+                            <i class="fas fa-calendar-alt"></i>&nbsp;Ngày sinh
+                            &nbsp;
+
+                            <span th:text="${patientResponse.birthday}"></span>
+                        </li>
+                        <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
+                            <i class="fas fa-id-card"></i>&nbsp;CMND &nbsp;
+
+                            <span th:text="${patientResponse.identityNumber}"></span>
+                        </li>
+                        <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
+                            <i class="fas fa-credit-card"></i>&nbsp;Nghề nghiệp
+                            &nbsp;
+
+                            <span th:text="${patientResponse.job}"></span>
+                        </li>
+                        <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
+                            <i class="fas fa-map-marker"></i>&nbsp;Địa chỉ
+                            &nbsp;
+
+                            <span th:text="${patientResponse.address}"></span>
+
+                        </li>
+                    </ul>
+                    <div>
+                        <form method="POST" th:action="@{/saveSchedule}" th:object="${saveScheduleRequest}">
+                            <input type="hidden" th:field="*{departmentId}" class="form-control" id="departmentId"
+                                   name="departmentId">
+                            <input type="hidden" th:field="*{doctorId}" class="form-control" id="doctorId"
+                                   name="doctorId">
+                            <input type="hidden" th:field="*{symptom}" class="form-control" id="symptom" name="symptom">
+                            <input type="hidden" th:field="*{medicalDate}" class="form-control" id="medicalDate"
+                                   name="medicalDate">
+                            <input type="hidden" th:field="*{hours}" class="form-control" id="hours" name="hours">
+                            <button type="submit" class="btn btn-primary btn-register">Xác nhận</button>
+                        </form>
+
+                    </div>
+                </div>-->
+
+            </div>
+        </div>
+        <br>
+        <hr>
+        <div class="col-md-12 col-lg-9 col-9 col-md-9 col-sm-9" th:if="${session.chooseTime != true}">
+            <div class="card">
+                <div class="card-header">
+                    <h4> <span> Chọn phương thức thanh toán </span></h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" th:action="@{/saveSchedule}" th:object="${saveScheduleRequest}">
+                        <div class="form-group">
+                            <label>Giới tính:</label>
+                            <input type="radio" name="sex" th:value="VISA"> Thẻ Visa
+                            <input type="radio" name="sex" th:value="NCB"> Ngân hàng NCB
+                            <input type="radio" name="sex" th:value="M"> Tiền mặt
+
+                        </div>
+                        <input type="hidden" th:field="*{departmentId}" class="form-control" id="departmentId"
+                               name="departmentId">
+                        <input type="hidden" th:field="*{doctorId}" class="form-control" id="doctorId"
+                               name="doctorId">
+                        <input type="hidden" th:field="*{symptom}" class="form-control" id="symptom" name="symptom">
+                        <input type="hidden" th:field="*{medicalDate}" class="form-control" id="medicalDate"
+                               name="medicalDate">
+                        <input type="hidden" th:field="*{hours}" class="form-control" id="hours" name="hours">
+                        <button type="submit" class="btn btn-primary btn-register">Xác nhận</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
 <br>
 <div th:include="footer.html"></div>
 </body>

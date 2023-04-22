@@ -20,7 +20,7 @@ public class PaymentService {
     private String adminUrl;
 
     private Logger logger = Logger.getLogger(getClass().getName());
-    public boolean payment(PaymentDTO paymentDTO, String token)  {
+    public String payment(PaymentDTO paymentDTO, String token)  {
         BaseResponse baseResponse;
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -36,10 +36,12 @@ public class PaymentService {
 
             baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
             System.out.println(baseResponse);
-            return  false;
+            if(baseResponse.getData() != null) {
+                return baseResponse.getData().toString();
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
-        return false;
+        return "error";
     }
 }

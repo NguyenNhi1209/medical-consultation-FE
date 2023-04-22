@@ -216,21 +216,31 @@ public class HomeController {
         if(detailScheduleResponse != null){
             String vnp_BankCode  = request.getParameter("bankCode");
             if(!StringUtils.isEmpty(vnp_BankCode) && vnp_BankCode.equalsIgnoreCase("M")){
-                return "test";
+                return "redirect:/paymentSuccess";
             }
             if(!StringUtils.isEmpty(vnp_BankCode) && !vnp_BankCode.equalsIgnoreCase("M")){
                 PaymentDTO paymentDTO = new PaymentDTO();
                 paymentDTO.setVnp_BankCode(vnp_BankCode);
                 String price = request.getParameter("price");
-                paymentDTO.setVnp_Amount(price.replace(".0", ""));
+                paymentDTO.setVnp_Amount(price.replace(".0", "000"));
                 paymentDTO.setVnp_OrderInfo(session.getAttribute("name") + " thanh toán đặt lịch khám bệnh " + saveScheduleRequest.getMedicalDate());
                 System.out.println(paymentDTO.toString());
-                boolean is_pay = paymentService.payment(paymentDTO,session.getAttribute("token").toString() );
+                String payment = paymentService.payment(paymentDTO,session.getAttribute("token").toString() );
+                if(!payment.equalsIgnoreCase("error")){
+                    model.addAttribute("paymentDTO","paymentDTO");
+                    model.addAttribute("payment", payment);
+                    return "paymentConfirm";
+                }
             }
-
         }
-        return "redirect:/";
+        return "redirect:/paymentSuccess";
 
     }
+
+    @GetMapping("/paymentSuccess")
+    public String paymentSuccess(Model model, HttpSession session, @ModelAttribute("patientResponse") PatientResponse patientResponse, @ModelAttribute(name = "error") String error) throws JsonProcessingException {
+        return "success";
+    }
+
 
 }

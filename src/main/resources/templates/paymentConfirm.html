@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Thanh toán</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/all.min.css}">
+    <link
+            rel="stylesheet"
+            th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: "Times New Roman", Times, serif;
+            position: relative;
+            line-height: 1.5;
+            font-size: 15px;
+        }
+
+        .fix-height {
+            flex: 1;
+        }
+
+        a, a:hover, a:focus {
+            text-decoration: none;
+        }
+
+        .title {
+            font-weight: 600;
+            font-size: 22px;
+            display: block;
+<!--            margin: 20px 0;-->
+            /*text-transform: uppercase;*/
+        }
+        .navbar {
+            padding-top: 30px;
+        }
+        .card {
+            text-align:justify;
+        }
+        .card-header{
+            text-align:center;
+            background-color: #09d066;
+            margin-top: 30px;
+            border-radius: 3px;
+        }
+        .card-body{
+            border: 1px solid;
+            text-align:justify;
+            border-radius: 3px;
+        }
+        .our-services{
+         margin-top: 110px ;
+          min-height: 80vh;
+        }
+        .card {
+            text-align:justify;
+        }
+        .card-header{
+            text-align:left;
+            background-color: #09d066;
+            padding: 3px 3px 3px 6px;
+            border-radius: 1px;
+
+        }
+        .card-body{
+            border: 1px solid #D3D3D3;
+            text-align:justify;
+            border-radius: 1px;
+            text-align:justify;
+            padding:10px;
+        }
+
+    </style>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div class="our-services">
+    <div class="container lg-body">
+        <br><br>
+        <p><b><i>Nhập triệu chứng, ngày khám bệnh > Chọn giờ khám > Chọn phương thức thanh toán > Xác nhận thanh toán</i></b></p>
+        <br><br>
+    </div>
+    <div class="container">
+        <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4> <span> Thanh toán </span></h4>
+                </div>
+                <div class="card-body">
+                    <a th:href="${payment}">link thanh toán</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<div th:include="footer.html"></div>
+
+
+</body>
+</html>

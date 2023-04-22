@@ -222,7 +222,7 @@ public class HomeController {
                 PaymentDTO paymentDTO = new PaymentDTO();
                 paymentDTO.setVnp_BankCode(vnp_BankCode);
                 String price = request.getParameter("price");
-                paymentDTO.setVnp_Amount(price.replace(".0", "000"));
+                paymentDTO.setVnp_Amount(price.replace(".0", ""));
                 paymentDTO.setVnp_OrderInfo(session.getAttribute("name") + " thanh toán đặt lịch khám bệnh " + saveScheduleRequest.getMedicalDate());
                 System.out.println(paymentDTO.toString());
                 String payment = paymentService.payment(paymentDTO,session.getAttribute("token").toString() );

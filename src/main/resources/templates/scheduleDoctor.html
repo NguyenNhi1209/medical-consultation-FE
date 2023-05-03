@@ -80,10 +80,10 @@
             </div>
             <div class="col-md-4 col-sm-12 text-right">
               <br><br><br>
-<!--              <form th:action=@{/doctor/schedule}" method="GET">-->
-<!--                <input type="date" th:value="${medicalDate1}" class="form-control" id="scheduleDate"-->
-<!--                       name="scheduleDate" th:onchange="submit()"/>-->
-<!--              </form>-->
+              <form th:method="POST" th:action="@{/doctor/schedule}">
+                <input type="date" th:value="${medicalDate1}" class="form-control" id="medicalDate"
+                       name="medicalDate" th:onchange="submit()"/>
+              </form>
 
             </div>
           </div>

@@ -4,7 +4,7 @@ import com.example.DNFrontEnd.Model.BaseResponse;
 import com.example.DNFrontEnd.Model.ERROR;
 import com.example.DNFrontEnd.Model.request.ForgotPasswordRequest;
 import com.example.DNFrontEnd.Model.request.LoginRequest;
-import com.example.DNFrontEnd.Model.request.RegisterRequestDTO;
+import com.example.DNFrontEnd.Model.DTO.RegisterRequestDTO;
 import com.example.DNFrontEnd.Model.request.ResetPasswordRequest;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,8 +1,7 @@
 package com.example.DNFrontEnd.Service;
 
 import com.example.DNFrontEnd.Model.BaseResponse;
-import com.example.DNFrontEnd.Model.request.PaymentDTO;
-import com.example.DNFrontEnd.Model.request.SavePatientRequest;
+import com.example.DNFrontEnd.Model.DTO.PaymentDTO;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;

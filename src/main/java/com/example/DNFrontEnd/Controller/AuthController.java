@@ -3,6 +3,7 @@ package com.example.DNFrontEnd.Controller;
 import com.example.DNFrontEnd.Model.AuthMessageCode;
 import com.example.DNFrontEnd.Model.BaseResponse;
 import com.example.DNFrontEnd.Model.Contanst;
+import com.example.DNFrontEnd.Model.DTO.RegisterRequestDTO;
 import com.example.DNFrontEnd.Model.request.*;
 import com.example.DNFrontEnd.Model.response.LoginResponse;
 import com.example.DNFrontEnd.Model.response.UserProfileResponse;
@@ -109,6 +110,7 @@ public class AuthController {
 //                        Contanst.userType = userProfileResponse.getType();
                         session.setAttribute("userType",userProfileResponse.getType());
                         session.setAttribute("phone",userProfileResponse.getPhoneNumber());
+                        session.setAttribute("id",userProfileResponse.getId());
                     }
                 } else {
                     System.out.println(baseResponse.getMessage());

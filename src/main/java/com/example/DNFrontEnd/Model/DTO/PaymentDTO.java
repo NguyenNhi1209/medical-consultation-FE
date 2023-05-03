@@ -1,10 +1,8 @@
-package com.example.DNFrontEnd.Model.request;
+package com.example.DNFrontEnd.Model.DTO;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
-
-import java.math.BigDecimal;
 
 @Data
 public class PaymentDTO {

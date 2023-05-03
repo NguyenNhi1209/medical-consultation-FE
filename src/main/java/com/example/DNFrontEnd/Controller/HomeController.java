@@ -1,6 +1,7 @@
 package com.example.DNFrontEnd.Controller;
 
 import com.example.DNFrontEnd.Model.BaseResponse;
+import com.example.DNFrontEnd.Model.DTO.PaymentDTO;
 import com.example.DNFrontEnd.Model.request.*;
 import com.example.DNFrontEnd.Model.response.DetailScheduleResponse;
 import com.example.DNFrontEnd.Model.response.ListFreeSchedule;
@@ -20,7 +21,6 @@ import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Controller

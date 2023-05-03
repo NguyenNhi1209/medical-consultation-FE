@@ -22,8 +22,8 @@ public class PaymentController {
                                       @RequestParam("vnp_TxnRef") String vnpTxnRef,
                                       @RequestParam("vnp_Amount") String vnpAmount,
                                       @RequestParam("vnp_OrderInfo") String vnpOrderInfo) {
-        System.out.println(vnpResponseCode);
-        if(vnpResponseCode.equalsIgnoreCase("00")){
+        System.out.println(vnpTransactionStatus);
+        if(vnpTransactionStatus.equalsIgnoreCase("00")){
             return "redirect:/paymentSuccess";
         }
 

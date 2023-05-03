@@ -362,13 +362,13 @@ td, th {
     content: "\e014"
 }
 
-.glyphicon-zoom-in:before {
+/*.glyphicon-zoom-in:before {
     content: "\e015"
 }
 
 .glyphicon-zoom-out:before {
     content: "\e016"
-}
+}*/
 
 .glyphicon-off:before {
     content: "\e017"
@@ -1002,9 +1002,7 @@ td, th {
     content: "\e179"
 }
 
-.glyphicon-header:before {
-    content: "\e180"
-}
+
 
 .glyphicon-compressed:before {
     content: "\e181"
@@ -5133,10 +5131,10 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent)
 }
 
-.media, .media-body {
+/*.media, .media-body {
     overflow: hidden;
     zoom: 1
-}
+}*/
 
 .media, .media .media {
     margin-top: 15px

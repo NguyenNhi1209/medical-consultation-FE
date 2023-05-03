@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="vi">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,17 +17,12 @@
 
   <!-- bootstrap css -->
   <link rel="stylesheet" href="@{css/bootstrap.min.css}">
-  <!-- style css -->
-  <link rel="stylesheet" th:href="@{/css/style1.css}">
-  <!-- Responsive-->
-  <link rel="stylesheet" href="@{css/responsive.css}">
+
   <!-- fevicon -->
   <link rel="icon" href="images/fevicon.png" type="image/gif" />
   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-  <!-- owl stylesheets -->
-  <link rel="stylesheet" href="css/owl.carousel.min.css">
-  <link rel="stylesheet" href="css/owl.theme.default.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+
+<!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <style>
@@ -63,6 +57,12 @@
           background-color: white;
           color: #3aabd0;
         }
+        .table-responsive{
+        margin-top:30px
+        }
+        .container{
+        margin-top:30px
+        }
     </style>
 </head>
 
@@ -75,19 +75,17 @@
         <div class="bg-white tm-block h-100">
           <div class="row">
             <div class="col-md-8 col-sm-12">
-              <br><br><br>
               <h2 class="tm-block-title d-inline-block" th:text="'Lịch khám ngày ' + ${medicalDate}">Lịch khám ngày</h2>
             </div>
             <div class="col-md-4 col-sm-12 text-right">
-              <br><br><br>
+              <br>
               <form th:method="POST" th:action="@{/doctor/schedule}">
                 <input type="date" th:value="${medicalDate1}" class="form-control" id="medicalDate"
                        name="medicalDate" th:onchange="submit()"/>
               </form>
-
             </div>
           </div>
-          <br><br><br>
+
           <div class="table-responsive">
             <table class="table table-hover table-striped tm-table-striped-even mt-3">
               <thead>
@@ -109,7 +107,9 @@
                 <td class="tm-product-name" th:text="${item.patientProfile.symptom}"></td>
                 <td class="text-center"  th:if="${item.isPay == 'true'}" >Đã thanh toán</td>
                 <td class="text-center"  th:if="${item.isPay != 'true'}" >Chưa thanh toán</td>
-                <td class="text-center"><i class="material-icons" style="font-size:24px">edit</i></td>
+                <td class="text-center">
+                  <a th:href="@{/doctor/schedule/detail(scheduleId=${item.scheduleId})}">
+                  <i class="material-icons" style="font-size:24px">edit</i></a></td>
               </tr>
               </tbody>
             </table>

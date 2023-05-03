@@ -43186,8 +43186,7 @@
         "enlarge",
         "find",
         "magnify",
-        "preview",
-        "zoom"
+        "preview"
       ]
     },
     "styles": [
@@ -43227,8 +43226,7 @@
         "find",
         "magnify",
         "money",
-        "preview",
-        "zoom"
+        "preview"
       ]
     },
     "styles": [
@@ -43267,8 +43265,7 @@
         "enlarge",
         "find",
         "magnify",
-        "preview",
-        "zoom"
+        "preview"
       ]
     },
     "styles": [
@@ -43307,9 +43304,7 @@
       "terms": [
         "minify",
         "negative",
-        "smaller",
-        "zoom",
-        "zoom out"
+        "smaller"
       ]
     },
     "styles": [
@@ -43348,9 +43343,7 @@
         "bigger",
         "enlarge",
         "magnify",
-        "positive",
-        "zoom",
-        "zoom in"
+        "positive"
       ]
     },
     "styles": [

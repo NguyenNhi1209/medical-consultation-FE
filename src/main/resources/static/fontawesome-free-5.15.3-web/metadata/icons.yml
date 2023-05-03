@@ -16062,7 +16062,6 @@ search:
       - find
       - magnify
       - preview
-      - zoom
   styles:
     - solid
   unicode: f002
@@ -16079,7 +16078,6 @@ search-dollar:
       - magnify
       - money
       - preview
-      - zoom
   styles:
     - solid
   unicode: f688
@@ -16095,7 +16093,6 @@ search-location:
       - find
       - magnify
       - preview
-      - zoom
   styles:
     - solid
   unicode: f689
@@ -16111,8 +16108,6 @@ search-minus:
       - minify
       - negative
       - smaller
-      - zoom
-      - zoom out
   styles:
     - solid
   unicode: f010
@@ -16128,8 +16123,6 @@ search-plus:
       - enlarge
       - magnify
       - positive
-      - zoom
-      - zoom in
   styles:
     - solid
   unicode: f00e

@@ -210,15 +210,13 @@ public class HomeController {
     @PostMapping("/saveSchedule")
     public String saveSchedule(Model model, HttpServletRequest request, HttpSession session,
                                 @ModelAttribute("saveScheduleRequest") SaveScheduleRequest saveScheduleRequest) throws JsonProcessingException {
-        System.out.println("vô nè");
-        System.out.println(saveScheduleRequest.toString());
         DetailScheduleResponse detailScheduleResponse = patientService.saveSchedule(saveScheduleRequest,session.getAttribute("token").toString());
         if(detailScheduleResponse != null){
             String vnp_BankCode  = request.getParameter("bankCode");
-            if(!StringUtils.isEmpty(vnp_BankCode) && vnp_BankCode.equalsIgnoreCase("M")){
+            if(!StringUtils.isEmpty(vnp_BankCode) && vnp_BankCode.equalsIgnoreCase("CASH")){
                 return "redirect:/paymentSuccess";
             }
-            if(!StringUtils.isEmpty(vnp_BankCode) && !vnp_BankCode.equalsIgnoreCase("M")){
+            if(!StringUtils.isEmpty(vnp_BankCode) && !vnp_BankCode.equalsIgnoreCase("CASH")){
                 PaymentDTO paymentDTO = new PaymentDTO();
                 paymentDTO.setVnp_BankCode(vnp_BankCode);
                 String price = request.getParameter("price");

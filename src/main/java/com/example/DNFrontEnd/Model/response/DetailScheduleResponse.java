@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class DetailScheduleResponse {
+    private Long scheduleId;
     private Long departmentId;
     private String departmentName;
     private Long doctorId;

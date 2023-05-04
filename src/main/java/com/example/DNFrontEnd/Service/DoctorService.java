@@ -4,6 +4,7 @@ import com.example.DNFrontEnd.Model.BaseResponse;
 import com.example.DNFrontEnd.Model.request.DetailDoctorScheduleRequest;
 import com.example.DNFrontEnd.Model.request.ListDoctorScheduleRequest;
 import com.example.DNFrontEnd.Model.request.SaveScheduleRequest;
+import com.example.DNFrontEnd.Model.request.UpdateScheduleRequest;
 import com.example.DNFrontEnd.Model.response.BasePaginationResponse;
 import com.example.DNFrontEnd.Model.response.DetailScheduleResponse;
 import com.example.DNFrontEnd.Model.response.SchedulesResponse;
@@ -33,7 +34,7 @@ public class DoctorService {
         List<SchedulesResponse> schedulesResponseList = new ArrayList<>();
         try {
             HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(adminUrl+"/doctor/schedule/list"))
+                    .uri(URI.create(adminUrl+"/doctor/schedules"))
                     .header("accept", "application/json")
                     .header("Authorization", "Bearer " + token)
                     .header("content-type", "application/json")
@@ -92,6 +93,37 @@ public class DoctorService {
             throw new RuntimeException(e);
         }
         return schedulesResponse;
+    }
+
+    public BaseResponse updateScheduleDetail(UpdateScheduleRequest request, String token) {
+        BaseResponse baseResponse = new BaseResponse<>();
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/doctor/schedule/update"))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .header("content-type", "application/json")
+                    .method("POST", HttpRequest.BodyPublishers.ofString(UpdateScheduleRequest.convertToString(request)))
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+            System.out.println(baseResponse);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return baseResponse;
     }
 
 }

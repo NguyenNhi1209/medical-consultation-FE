@@ -177,8 +177,8 @@ public class HomeController {
     }
 
     @GetMapping("/booking/confirm")
-    public  String bookingConfirm(Model model,HttpSession session, @RequestParam String free,@RequestParam String scheduleDate,
-                                  @RequestParam String departmentId,@RequestParam String departmentName,@RequestParam String symptom,HttpServletRequest request,
+    public  String bookingConfirm(Model model,HttpSession session, @RequestParam(required = false) String free,@RequestParam(required = false) String scheduleDate,
+                                  @RequestParam(required = false) String departmentId,@RequestParam(required = false) String departmentName,@RequestParam(required = false) String symptom,HttpServletRequest request,
                                   @ModelAttribute("patientResponse") PatientResponse patientResponse,
                                   @ModelAttribute("saveScheduleRequest") SaveScheduleRequest saveScheduleRequest) throws JsonProcessingException {
         System.out.println("nhi" + free +" "+ scheduleDate +" "+ symptom +" "+ departmentId );
@@ -208,30 +208,40 @@ public class HomeController {
         return "bookingConfirm";
     }
     @PostMapping("/saveSchedule")
-    public String saveSchedule(Model model, HttpServletRequest request, HttpSession session,
+    public String saveSchedule(Model model, HttpServletRequest request, HttpSession session,RedirectAttributes redirectAttrs,
                                 @ModelAttribute("saveScheduleRequest") SaveScheduleRequest saveScheduleRequest) throws JsonProcessingException {
         DetailScheduleResponse detailScheduleResponse = patientService.saveSchedule(saveScheduleRequest,session.getAttribute("token").toString());
         if(detailScheduleResponse != null){
             String vnp_BankCode  = request.getParameter("bankCode");
-            if(!StringUtils.isEmpty(vnp_BankCode) && vnp_BankCode.equalsIgnoreCase("CASH")){
-                return "redirect:/paymentSuccess";
+            PaymentDTO paymentDTO = new PaymentDTO();
+            paymentDTO.setVnp_BankCode(vnp_BankCode);
+            String price = request.getParameter("price");
+            paymentDTO.setVnp_Amount(price.replace(".0", ""));
+            paymentDTO.setVnp_OrderInfo(session.getAttribute("name") + " thanh toán đặt lịch khám bệnh " + saveScheduleRequest.getMedicalDate());
+            paymentDTO.setScheduleId(detailScheduleResponse.getScheduleId());
+            System.out.println(paymentDTO.toString());
+            if(vnp_BankCode.equalsIgnoreCase("CASH")){
+                redirectAttrs.addFlashAttribute("message","Đặt lịch thành công");
+                return "redirect:/patient/schedule/detail1?scheduleId=" + detailScheduleResponse.getScheduleId();
             }
-            if(!StringUtils.isEmpty(vnp_BankCode) && !vnp_BankCode.equalsIgnoreCase("CASH")){
-                PaymentDTO paymentDTO = new PaymentDTO();
-                paymentDTO.setVnp_BankCode(vnp_BankCode);
-                String price = request.getParameter("price");
-                paymentDTO.setVnp_Amount(price.replace(".0", ""));
-                paymentDTO.setVnp_OrderInfo(session.getAttribute("name") + " thanh toán đặt lịch khám bệnh " + saveScheduleRequest.getMedicalDate());
-                System.out.println(paymentDTO.toString());
-                String payment = paymentService.payment(paymentDTO,session.getAttribute("token").toString() );
-                if(!payment.equalsIgnoreCase("error")){
+            String payment = paymentService.payment(paymentDTO,session.getAttribute("token").toString());
+            if(!payment.equalsIgnoreCase("error")){
+                session.setAttribute("scheduleId", detailScheduleResponse.getScheduleId());
+                if(!payment.equalsIgnoreCase("CASH")){
                     model.addAttribute("paymentDTO","paymentDTO");
                     model.addAttribute("payment", payment);
                     return "paymentConfirm";
                 }
             }
         }
-        return "redirect:/paymentSuccess";
+        redirectAttrs.addFlashAttribute("saveScheduleRequest", saveScheduleRequest);
+        redirectAttrs.addFlashAttribute("departmentName", detailScheduleResponse.getDepartmentName());
+        redirectAttrs.addFlashAttribute("price", detailScheduleResponse.getPrice());
+        redirectAttrs.addFlashAttribute("symptom", detailScheduleResponse.getSymptom());
+        session.setAttribute("chooseTime",false);
+        redirectAttrs.addFlashAttribute("message","Xảy ra lỗi, vui lòng thử lại");
+        return "redirect:/booking/confirm";
+
 
     }
 

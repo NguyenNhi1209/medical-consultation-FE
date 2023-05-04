@@ -95,6 +95,7 @@
                 <th scope="col" class="text-center">Giới tính</th>
                 <th scope="col">Triệu chứng</th>
                 <th scope="col" class="text-center">Thanh toán</th>
+                <th scope="col" class="text-center">Trạng thái</th>
                 <th scope="col" class="text-center">&nbsp;</th>
               </tr>
               </thead>
@@ -105,8 +106,10 @@
                 <td class="text-center"  th:if="${item.patientProfile.sex == 'F'}" >Nữ</td>
                 <td class="text-center"  th:if="${item.patientProfile.sex != 'F'}" >Nam</td>
                 <td class="tm-product-name" th:text="${item.patientProfile.symptom}"></td>
-                <td class="text-center"  th:if="${item.isPay == 'true'}" >Đã thanh toán</td>
-                <td class="text-center"  th:if="${item.isPay != 'true'}" >Chưa thanh toán</td>
+                <td class="text-center"  th:if="${item.isPay == true}" >Đã thanh toán</td>
+                <td class="text-center"  th:if="${item.isPay != true}" >Chưa thanh toán</td>
+                <td class="text-center"  th:if="${item.isDone == true}" >Đã khám</td>
+                <td class="text-center"  th:if="${item.isDone != true}" >Chưa khám</td>
                 <td class="text-center">
                   <a th:href="@{/doctor/schedule/detail(scheduleId=${item.scheduleId})}">
                   <i class="material-icons" style="font-size:24px">edit</i></a></td>

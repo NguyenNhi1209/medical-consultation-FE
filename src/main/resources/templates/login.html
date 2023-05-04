@@ -57,6 +57,14 @@ background: linear-gradient(#141e30, #243b55);
         }
     </style>
 
+    <script th:inline="javascript">
+        var registerConfirm = /*[[${registerConfirm}]]*/ "";
+       if(registerConfirm != null){
+       alert(registerConfirm);
+       }
+
+
+    </script>
 </head>
 <body>
 <div class="login">

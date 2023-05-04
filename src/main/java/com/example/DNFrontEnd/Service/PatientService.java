@@ -1,13 +1,8 @@
 package com.example.DNFrontEnd.Service;
 
 import com.example.DNFrontEnd.Model.BaseResponse;
-import com.example.DNFrontEnd.Model.request.CreatePatientProfileRequest;
-import com.example.DNFrontEnd.Model.request.FetchDepartmentRequest;
-import com.example.DNFrontEnd.Model.request.SavePatientRequest;
-import com.example.DNFrontEnd.Model.request.SaveScheduleRequest;
-import com.example.DNFrontEnd.Model.response.DetailScheduleResponse;
-import com.example.DNFrontEnd.Model.response.ListFreeSchedule;
-import com.example.DNFrontEnd.Model.response.PatientProfileResponse;
+import com.example.DNFrontEnd.Model.request.*;
+import com.example.DNFrontEnd.Model.response.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +14,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Service
@@ -154,7 +151,6 @@ public class PatientService {
 
             baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
             detailScheduleResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), DetailScheduleResponse.class);
-            System.out.println(response);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -169,5 +165,71 @@ public class PatientService {
             throw new RuntimeException(e);
         }
         return detailScheduleResponse;
+    }
+
+    public List<SchedulesResponse> getSchedule(ListPatientScheduleRequest request, String token) {
+        BasePaginationResponse basePaginationResponse;
+        List<SchedulesResponse> schedulesResponseList = new ArrayList<>();
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/patient/schedules"))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .header("content-type", "application/json")
+                    .method("POST", HttpRequest.BodyPublishers.ofString(ListPatientScheduleRequest.convertToString(request)))
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+            basePaginationResponse = objectMapper.readValue(response.body().toString(),BasePaginationResponse.class);
+            System.out.println(basePaginationResponse);
+            schedulesResponseList = objectMapper.readValue(objectMapper.writeValueAsString(basePaginationResponse.getData()).toString(), List.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return schedulesResponseList;
+    }
+
+    public SchedulesResponse getScheduleDetail(DetailDoctorScheduleRequest request, String token) {
+        BaseResponse baseResponse;
+        SchedulesResponse schedulesResponse = new SchedulesResponse();
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/patient/schedule/detail"))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .header("content-type", "application/json")
+                    .method("POST", HttpRequest.BodyPublishers.ofString(DetailDoctorScheduleRequest.convertToString(request)))
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+            System.out.println(baseResponse);
+            schedulesResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), SchedulesResponse.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return schedulesResponse;
     }
 }

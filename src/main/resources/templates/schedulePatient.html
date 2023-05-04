@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Xem lịch khám</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/all.min.css}">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link
+          rel="stylesheet"
+          th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"
+  />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+  <!-- bootstrap css -->
+  <link rel="stylesheet" href="@{css/bootstrap.min.css}">
+
+  <!-- fevicon -->
+  <link rel="icon" href="images/fevicon.png" type="image/gif" />
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+
+<!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+        .background-image1{
+            margin: 100px 20px 30px 20px;
+        }
+        .background-content1 img{
+            align-content: center;
+            width: 1460px;
+            height: 552.51px;
+        }
+        .inner-services-content a{
+            color: #0d0b0b;
+            font-size: 15px;
+        }
+        .navbar {
+            padding-top: 30px;
+
+        }
+        body{
+        font-family: Arial, Helvetica, sans-serif;
+        }
+        .our-services{
+         margin-top: 110px ;
+          min-height: 80vh;
+        }
+        .table td, th {
+          padding: 20px 24px;
+        }
+
+        .table-hover tbody tr:hover {
+          background-color: white;
+          color: #3aabd0;
+        }
+        .table-responsive{
+        margin-top:30px
+        }
+        .container{
+        margin-top:30px
+        }
+    </style>
+</head>
+
+<body>
+<div th:include="header.html"></div>
+<div class="our-services" id="home">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-8 col-lg-12 tm-md-12 tm-sm-12 tm-col">
+        <div class="bg-white tm-block h-100">
+          <div class="row">
+            <div class="col-md-8 col-sm-12">
+              <h2 class="tm-block-title d-inline-block" th:if="${medicalDate != ''}" th:text="'Lịch khám ngày ' + ${medicalDate}">Lịch khám ngày</h2>
+              <h2 class="tm-block-title d-inline-block" th:if="${medicalDate == ''}">Tất cả lịch khám</h2>
+            </div>
+            <div class="col-md-4 col-sm-12 text-right">
+              <br>
+              <form th:method="POST" th:action="@{/patient/schedule}">
+                <input type="date" th:value="${medicalDate1}" class="form-control" id="medicalDate"
+                       name="medicalDate" th:onchange="submit()"/>
+              </form>
+              <form th:method="POST" th:action="@{/patient/schedule}">
+                <button type="submit" class="btn btn-primary btn-register"
+                        style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;">Tất cả </a>
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover table-striped tm-table-striped-even mt-3">
+              <thead>
+              <tr class="tm-bg-gray">
+                <th scope="col" class="text-center">Ngày khám</th>
+                <th scope="col" class="text-center">Giờ khám</th>
+                <th scope="col" >Tên người khám</th>
+                <th scope="col" class="text-center">Giới tính</th>
+                <th scope="col">Triệu chứng</th>
+                <th scope="col" class="text-center">Thanh toán</th>
+                <th scope="col" class="text-center">Trạng thái</th>
+                <th scope="col" class="text-center">&nbsp;</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="item : ${schedulesResponseList}">
+                <td class="text-center" th:text="${item.medicalDate}"></td>
+                <td class="text-center" th:text="${item.hours} + ':00'"></td>
+                <td class="tm-product-name" th:text="${item.patientProfile.name}"></td>
+                <td class="text-center"  th:if="${item.patientProfile.sex == 'F'}" >Nữ</td>
+                <td class="text-center"  th:if="${item.patientProfile.sex != 'F'}" >Nam</td>
+                <td class="tm-product-name" th:text="${item.patientProfile.symptom}"></td>
+                <td class="text-center"  th:if="${item.isPay == true}" >Đã thanh toán</td>
+                <td class="text-center"  th:if="${item.isPay != true}" >Chưa thanh toán</td>
+                <td class="text-center"  th:if="${item.isDone == true}" >Đã khám</td>
+                <td class="text-center"  th:if="${item.isDone != true}" >Chưa khám</td>
+                <td class="text-center">
+                  <a th:href="@{/patient/schedule/detail1(scheduleId=${item.scheduleId})}">
+                  <i class="material-icons" style="font-size:24px">edit</i></a></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div th:include="footer.html"></div>
+</body>
+
+</html>

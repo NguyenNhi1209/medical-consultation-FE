@@ -211,32 +211,10 @@ public class AuthController {
             System.out.println(baseResponse.toString());
             if(baseResponse != null){
                 if(baseResponse.getCode() == 1){
-                    return "register-success";
+                    redirectAttrs.addFlashAttribute("registerConfirm", "Đăng ký tài khoản thành công! Vui lòng kiểm tra Email để xác thực tài khoản.");
+                    return "redirect:/user/login";
                 }
             }
-//            if(baseResponse != null){
-//                if(baseResponse.getCode() == 1){
-//                    LoginResponse loginResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(),LoginResponse.class);
-//                    if(loginResponse != null){
-//                        request.getSession().setAttribute("Authorization", loginResponse.getToken());
-//                        BaseResponse userProfileResponseBaseResponse = authService.getProfileUser(loginResponse.getToken());
-//                        System.out.println(userProfileResponseBaseResponse);
-//                    }
-//                }else{
-//                    System.out.println(baseResponse.getMessage());
-//
-//                    AuthMessageCode authMessageCode = AuthMessageCode.from(baseResponse.getMessageCode());
-//                    if(authMessageCode != null && !authMessageCode.getCode().equalsIgnoreCase("1111.0.Unknown")){
-//                        model.addAttribute("error",authMessageCode.getMessage());
-//                    }else{
-//                        model.addAttribute("error",baseResponse.getMessage());
-//                    }
-//                    return "login";
-//                }
-//            }
-
-//            request.getSession().setAttribute("jwtResponse", (BaseResponse) baseResponse.getBody());
-
         } catch (HttpClientErrorException ex) {
             ex.printStackTrace();
             System.out.println("catch roi");

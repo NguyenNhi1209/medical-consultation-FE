@@ -73,23 +73,23 @@
 
         }
 
-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
- height: 30%;
- margin-top: 20px ;
-}
-header{
-margin-bottom: 100px ;
-}
-.container{
- height: 70%;
- min-height: 80vh;
-}
-.our-services{
- margin-top: 110px ;
-}
+        footer {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+         height: 30%;
+         margin-top: 20px ;
+        }
+        header{
+        margin-bottom: 100px ;
+        }
+        .container{
+         height: 70%;
+         min-height: 80vh;
+        }
+        .our-services{
+         margin-top: 110px ;
+        }
         .card {
             text-align:justify;
         }
@@ -141,7 +141,7 @@ margin-bottom: 100px ;
                             <th>Ngày khám</th>
                             <th>Giờ khám</th>
                             <th>Tiền khám</th>
-                            <th>#</th>
+                            <th>Thanh toán</th>
                         </tr>
                         </thead>
                         <tbody data-test="table-body">
@@ -151,8 +151,8 @@ margin-bottom: 100px ;
                             <td><span class="text-center" th:text="${schedulesResponse.hours} + ':00'"></span></td>
                             <td><span class="text-center" th:text="${schedulesResponse.price} + ' đ'"></span></td>
                             <td>
-                                <span class="text-center" th:if="${schedulesResponse.isPay == 'true'}" >Đã thanh toán</span>
-                                <span class="text-center" th:if="${schedulesResponse.isPay != 'true'}" >Chưa thanh toán</span>
+                                <span class="text-center" th:if="${schedulesResponse.isPay == true}" >Đã thanh toán</span>
+                                <span class="text-center" th:if="${schedulesResponse.isPay != true}" >Chưa thanh toán</span>
                             </td>
                         </tr>
                         </tbody>
@@ -225,11 +225,20 @@ margin-bottom: 100px ;
         </div>
         <div class="col-md-12 col-lg-3 col-3 col-md-3 col-sm-3">
             <br><br>
+            <form th:method="POST" th:action="@{/doctor/schedule}" th:if="${schedulesResponse.isDone == false}">
+                <input type="hidden" th:value="${schedulesResponse.medicalDate}" class="form-control"
+                       name="medicalDate"/>
+                <button type="submit" class="btn btn-primary btn-register"
+                        style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;">
+                    <i style='font-size:16px' class='far'>&#xf359;</i> Quay lại danh sách </a>
+                </button>
+            </form>
             <button type="submit" id="confirm1"
                     class="btn btn-primary btn-register" th:attr="onclick=|showContent();|"
                     style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;">
                 Bắt đầu khám <i style='font-size:16px' class='far'>&#xf35a;</i>
             </button>
+
         </div>
         <div class="col-md-12 col-lg-9 col-9 col-md-9 col-sm-9" style="margin-top: 20px;">
             <div class="card" id="content" style="display:none">
@@ -240,11 +249,13 @@ margin-bottom: 100px ;
                     <div class="card-body">
                         <form method="POST" th:action="@{/doctor/schedule/update}">
                             <div class="form-group">
-                                <label for="reason">Chuẩn đoán: </label>
-                                <textarea rows="3" id="reason" class="form-control" name="symptom"
-                                          placeholder="Nhập chuẩn đoán ..."></textarea>
+                                <label for="diagnostic">Chuẩn đoán: </label>
+                                <textarea rows="3" id="diagnostic" class="form-control" name="diagnostic"
+                                          placeholder="Nhập chuẩn đoán ..." th:text="${schedulesResponse.patientProfile.diagnostic}" required></textarea>
                             </div>
-                            <span th:text="${error}" style="color:red;"></span>
+
+                            <input type="hidden" th:value="${schedulesResponse.scheduleId}" class="form-control" id="scheduleId"
+                                   name="scheduleId">
                             <br>
                             <button type="submit" class="btn btn-primary btn-register" style="background-color: #09d066;">Xác nhận </button>
                         </form>
@@ -259,14 +270,50 @@ margin-bottom: 100px ;
                 </div>
             </div>
         </div>
+        <div class="col-md-12 col-lg-3 col-3 col-md-3 col-sm-3" id="content1" style="display:none">
+            <br><br>
+            <form th:method="POST" th:action="@{/doctor/schedule}">
+                <input type="hidden" th:value="${schedulesResponse.medicalDate}" class="form-control" id="medicalDate"
+                       name="medicalDate"/>
+                <button type="submit" class="btn btn-primary btn-register"
+                        style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;">
+                    <i style='font-size:16px' class='far'>&#xf359;</i> Quay lại danh sách </a>
+                </button>
+            </form>
+            <form th:method="POST" th:action="@{/pdf/export}">
+                <input type="hidden" th:value="${schedulesResponse.medicalDate}" class="form-control" id="medicalDate1"
+                       name="medicalDate1"/>
+                <input type="hidden" th:value="${schedulesResponse.scheduleId}" class="form-control" id="scheduleId1"
+                       name="scheduleId1">
+                <button type="submit" id="exportFile"
+                        class="btn btn-primary btn-register"
+                        style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;">
+                    Xuất kết quả <i style='font-size:16px' class='far'>&#xf35a;</i>
+                </button>
+            </form>
+
+        </div>
     </div>
 </div>
 <div th:include="footer.html"></div>
 
 <script th:inline="javascript">
+    var isDone = /*[[${schedulesResponse.isDone}]]*/ "";
+    if(isDone == true){
+        var confirm1 = document.getElementById("confirm1");
+        confirm1.disabled = true;
+
+        document.getElementById("content").style.display = "block"; //show
+        var myDiv = document.getElementById("content");
+        var elements = myDiv.getElementsByTagName("*");
+        for (var i = 0; i < elements.length; i++) {
+          elements[i].disabled = true;
+        }
+
+        document.getElementById("content1").style.display = "block"; //show
+    }
     function showContent() {
         var isPay = /*[[${schedulesResponse.isPay}]]*/ 'undefined';
-        alert(isPay);
         if(isPay == false){
             let text = "Bệnh nhân đã thanh toán?";
             if (confirm(text) == false) {

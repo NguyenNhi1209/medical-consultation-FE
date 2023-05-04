@@ -178,33 +178,50 @@ public class HomeController {
 
     @GetMapping("/booking/confirm")
     public  String bookingConfirm(Model model,HttpSession session, @RequestParam(required = false) String free,@RequestParam(required = false) String scheduleDate,
-                                  @RequestParam(required = false) String departmentId,@RequestParam(required = false) String departmentName,@RequestParam(required = false) String symptom,HttpServletRequest request,
+                                  @RequestParam(required = false) String departmentId,@RequestParam(required = false) String departmentName,
+                                  @RequestParam(required = false) String symptom,HttpServletRequest request,
                                   @ModelAttribute("patientResponse") PatientResponse patientResponse,
-                                  @ModelAttribute("saveScheduleRequest") SaveScheduleRequest saveScheduleRequest) throws JsonProcessingException {
-        System.out.println("nhi" + free +" "+ scheduleDate +" "+ symptom +" "+ departmentId );
-        BaseResponse baseResponse = patientService.getPatient(session.getAttribute("token").toString());
-        patientResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), PatientResponse.class);
-        model.addAttribute("patientResponse", patientResponse);
-        String[] a = free.split("-");
-        String doctorId = a[0];
-        String hours = a[1];
-        String price = a[2];
-        saveScheduleRequest.setHours(hours);
-        saveScheduleRequest.setSymptom(symptom);
-        saveScheduleRequest.setDepartmentId(Long.parseLong(departmentId));
-        saveScheduleRequest.setDoctorId(Long.parseLong(doctorId));
-        saveScheduleRequest.setMedicalDate(scheduleDate);
-        saveScheduleRequest.setSymptom(symptom);
-        model.addAttribute("saveScheduleRequest", saveScheduleRequest);
-        model.addAttribute("departmentName", departmentName);
-        model.addAttribute("price", price);
-        model.addAttribute("symptom", symptom);
+                                  @ModelAttribute("saveScheduleRequest") SaveScheduleRequest saveScheduleRequest,
+                                  @ModelAttribute("symptom") String symptom1,
+                                  @ModelAttribute("departmentName") String departmentName1,
+                                  @ModelAttribute("price") String price1
+                                  ) throws JsonProcessingException {
+        if(patientResponse != null && saveScheduleRequest != null
+                && !StringUtils.isEmpty(departmentName1) && !StringUtils.isEmpty(price1) && !StringUtils.isEmpty(symptom1)){
+            model.addAttribute("patientResponse", patientResponse);
+            model.addAttribute("saveScheduleRequest", saveScheduleRequest);
+            model.addAttribute("departmentName", departmentName1);
+            model.addAttribute("price", price1);
+            model.addAttribute("symptom", symptom1);
+        }else{
+            System.out.println("nhi" + free +" "+ scheduleDate +" "+ symptom +" "+ departmentId );
+            BaseResponse baseResponse = patientService.getPatient(session.getAttribute("token").toString());
+            patientResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), PatientResponse.class);
+            model.addAttribute("patientResponse", patientResponse);
+            String[] a = free.split("-");
+            String doctorId = a[0];
+            String hours = a[1];
+            String price = a[2];
+            saveScheduleRequest.setHours(hours);
+            saveScheduleRequest.setSymptom(symptom);
+            saveScheduleRequest.setDepartmentId(Long.parseLong(departmentId));
+            saveScheduleRequest.setDoctorId(Long.parseLong(doctorId));
+            saveScheduleRequest.setMedicalDate(scheduleDate);
+            saveScheduleRequest.setSymptom(symptom);
+
+            model.addAttribute("saveScheduleRequest", saveScheduleRequest);
+            model.addAttribute("departmentName", departmentName);
+            model.addAttribute("price", price);
+            model.addAttribute("symptom", symptom);
+        }
+
         session.setAttribute("chooseTime",false);
 
 //        String deparmentName = request.getParameter("deparmentId");
 //        String date = request.getParameter("scheduleDate");
 //        String symptom = request.getParameter("symptom");
 //        System.out.println("nhi" + deparmentName + date + symptom);
+
         return "bookingConfirm";
     }
     @PostMapping("/saveSchedule")

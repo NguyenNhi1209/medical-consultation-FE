@@ -57,12 +57,13 @@ public class PatientController {
     }
 
     @GetMapping("/schedule/detail1")
-    public String getScheduleDetail1(RedirectAttributes redirectAttrs, HttpSession session, @RequestParam String scheduleId){
+    public String getScheduleDetail1(RedirectAttributes redirectAttrs, HttpSession session, @RequestParam String scheduleId,@ModelAttribute(name = "message") String message){
         DetailDoctorScheduleRequest detailDoctorScheduleRequest = new DetailDoctorScheduleRequest();
         detailDoctorScheduleRequest.setScheduleId(Long.parseLong(scheduleId));
         SchedulesResponse schedulesResponse = patientService.getScheduleDetail(detailDoctorScheduleRequest, session.getAttribute("token").toString());
         redirectAttrs.addFlashAttribute("schedulesResponse",schedulesResponse);
         System.out.println(schedulesResponse);
+        redirectAttrs.addFlashAttribute("message",message);
         return "redirect:/patient/schedule/detail";
     }
     @GetMapping("/schedule/detail")

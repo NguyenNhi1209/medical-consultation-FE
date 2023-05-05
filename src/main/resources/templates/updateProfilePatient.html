@@ -81,7 +81,12 @@
         .our-services{
          margin-top: 110px ;
         }
-
+        .invalid {
+        border-color: red;
+        }
+        .error{
+        color: red;
+        }
     </style>
 </head>
 <body>
@@ -101,9 +106,9 @@
                                 <tr>
                                     <td colspan="2">
                                         <div class="form-group">
-                                            <label for="fullName">Họ và tên:</label>
-                                            <input type="text" th:field="*{fullName}" class="form-control" id="fullName"
-                                                   name="fullName"
+                                            <label for="fullName">Họ và tên:</label>&nbsp;<span class="error" id="errorName"></span>
+                                            <input type="text" th:field="*{fullName}" class="form-control" id="fullName" name="fullName"
+                                                   pattern="^([a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+)((\s{1,}[a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+|[\s*]){0,})$" oninput="checkPatternName()"
                                                    placeholder="Họ và tên...">
                                         </div>
                                     </td>
@@ -126,17 +131,19 @@
                                 <tr>
                                     <td colspan="2">
                                         <div class="form-group">
-                                            <label for="address">Địa chỉ:</label>
+                                            <label for="address">Địa chỉ:</label>&nbsp;<span class="error" id="errorAddress"></span>
                                             <input type="text" th:field="*{address}" class="form-control" id="address"
                                                    name="address"
+                                                   pattern="^([0-9a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ,-/]+)((\s{1,}[0-9a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ,-/]+|[\s*]){0,})$" oninput="checkPatternAddress()"
                                                    placeholder="Địa chỉ...">
                                         </div>
                                     </td>
                                     <td colspan="2">
                                         <div class="form-group">
-                                            <label for="job">Nghề nghiệp:</label>
+                                            <label for="job">Nghề nghiệp:</label>&nbsp;<span class="error" id="errorJob"></span>
                                             <input type="text" th:field="*{job}" class="form-control" id="job"
                                                    name="job"
+                                                   pattern="^([a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+)((\s{1,}[a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+|[\s*]){0,})$" oninput="checkPatternJob()"
                                                    placeholder="Công việc...">
                                         </div>
                                     </td>
@@ -144,17 +151,19 @@
                                 <tr>
                                     <td colspan="2">
                                         <div class="form-group">
-                                            <label>Số điện thoại:</label>
+                                            <label>Số điện thoại:</label>&nbsp;<span class="error" id="errorPhoneNumber"></span>
                                             <input type="text" th:field="*{phoneNumber}" class="form-control"
+                                                   pattern="^0\d{9}$" oninput="checkPatternPhoneNumber()"
                                                    id="phoneNumber" name="phoneNumber" placeholder="Số điện thoại..."/>
 
                                         </div>
                                     </td>
                                     <td colspan="2">
                                         <div class="form-group">
-                                            <label for="identityNumber">CMND/CCCD:</label>
+                                            <label for="identityNumber">CMND/CCCD:</label>&nbsp;<span class="error" id="errorIdentityNumber"></span>
                                             <input type="text" th:field="*{identityNumber}" class="form-control"
                                                    id="identityNumber" name="identityNumber"
+                                                   pattern="^[0-9]{9}([0-9]{3})?$" oninput="checkPatternIdentityNumber()"
                                                    placeholder="CMND/CCCD..."/>
                                         </div>
                                     </td>
@@ -214,19 +223,30 @@
     var element2 = document.getElementById("confirm2");
     element2.style.display = "none";
 
-    function cancel() {
-        var myDiv1 = document.getElementById("content");
-        var elements1 = myDiv1.getElementsByTagName("*");
-        for (var i = 0; i < elements1.length; i++) {
-          elements1[i].disabled = true;
+    function checkValid(){
+        var element = document.getElementById("confirm");
+        var errorName = document.getElementById("errorName").innerHTML.trim();
+        var errorPhoneNumber = document.getElementById("errorPhoneNumber").innerHTML.trim();
+        var errorJob = document.getElementById("errorJob").innerHTML.trim();
+        var errorAddress= document.getElementById("errorAddress").innerHTML.trim();
+        var errorIdentityNumber = document.getElementById("errorIdentityNumber").innerHTML.trim();
+        var name = document.getElementById("fullName").value.trim();
+        var phoneNumber = document.getElementById("phoneNumber").value.trim();
+        var identityNumber = document.getElementById("identityNumber").value.trim();
+        var job = document.getElementById("job").value.trim();
+        var address= document.getElementById("address").value.trim();
+        if(errorName === "" && errorPhoneNumber === "" && errorPhoneNumber === "" && errorJob === "" && errorAddress === ""){
+            if(name === "" || phoneNumber === "" || identityNumber === "" || job === "" || address === ""){
+                element.disabled = true;
+            }else{
+                element.disabled = false;
+            }
+        }else{
+            element.disabled = true;
         }
-        var element4 = document.getElementById("confirm");
-        element4.style.display = "none";
-        var element5 = document.getElementById("confirm1");
-        element5.style.display = "block";
-        element5.disabled = false;
-        var element6 = document.getElementById("confirm2");
-        element6.style.display = "none";
+    }
+    function cancel() {
+        window.location.href = "http://localhost:8081/updateProfile";
     }
     function update() {
         var myDiv2 = document.getElementById("content");
@@ -240,6 +260,77 @@
         element8.style.display = "none";
         var element9 = document.getElementById("confirm2");
         element9.style.display = "block";
+        checkValid();
+    }
+    function checkPatternName() {
+        var input = document.getElementById("fullName");
+        var pattern = new RegExp(input.pattern);
+        var errorMsg = document.getElementById("errorName");
+
+        if (!pattern.test(input.value)) {
+        errorMsg.innerHTML = "Họ và tên không hợp lệ";
+        input.classList.add("invalid");
+        } else {
+        errorMsg.innerHTML = "";
+        input.classList.remove("invalid");
+        }
+        checkValid();
+    }
+    function checkPatternPhoneNumber() {
+        var input = document.getElementById("phoneNumber");
+        var pattern = new RegExp(input.pattern);
+        var errorMsg = document.getElementById("errorPhoneNumber");
+
+        if (!pattern.test(input.value)) {
+        errorMsg.innerHTML = "Số điện thoại không hợp lệ";
+        input.classList.add("invalid");
+        } else {
+        errorMsg.innerHTML = "";
+        input.classList.remove("invalid");
+        }
+        checkValid();
+    }
+    function checkPatternIdentityNumber() {
+        var input = document.getElementById("identityNumber");
+        var pattern = new RegExp(input.pattern);
+        var errorMsg = document.getElementById("errorIdentityNumber");
+
+        if (!pattern.test(input.value)) {
+        errorMsg.innerHTML = "Số CMND/CCCD không hợp lệ";
+        input.classList.add("invalid");
+        } else {
+        errorMsg.innerHTML = "";
+        input.classList.remove("invalid");
+        }
+        checkValid();
+    }
+    function checkPatternJob() {
+        var input = document.getElementById("job");
+        var pattern = new RegExp(input.pattern);
+        var errorMsg = document.getElementById("errorJob");
+
+        if (!pattern.test(input.value)) {
+        errorMsg.innerHTML = "Công việc không hợp lệ";
+        input.classList.add("invalid");
+        } else {
+        errorMsg.innerHTML = "";
+        input.classList.remove("invalid");
+        }
+        checkValid();
+    }
+    function checkPatternAddress() {
+        var input = document.getElementById("address");
+        var pattern = new RegExp(input.pattern);
+        var errorMsg = document.getElementById("errorAddress");
+
+        if (!pattern.test(input.value)) {
+        errorMsg.innerHTML = "Địa chỉ không hợp lệ";
+        input.classList.add("invalid");
+        } else {
+        errorMsg.innerHTML = "";
+        input.classList.remove("invalid");
+        }
+        checkValid();
     }
 
 </script>

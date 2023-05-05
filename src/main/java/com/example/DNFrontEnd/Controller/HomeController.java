@@ -3,10 +3,8 @@ package com.example.DNFrontEnd.Controller;
 import com.example.DNFrontEnd.Model.BaseResponse;
 import com.example.DNFrontEnd.Model.DTO.PaymentDTO;
 import com.example.DNFrontEnd.Model.request.*;
-import com.example.DNFrontEnd.Model.response.DetailScheduleResponse;
-import com.example.DNFrontEnd.Model.response.ListFreeSchedule;
-import com.example.DNFrontEnd.Model.response.PatientProfileResponse;
-import com.example.DNFrontEnd.Model.response.PatientResponse;
+import com.example.DNFrontEnd.Model.response.*;
+import com.example.DNFrontEnd.Service.DoctorService;
 import com.example.DNFrontEnd.Service.PatientService;
 import com.example.DNFrontEnd.Service.PaymentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,6 +19,9 @@ import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -28,6 +29,9 @@ import java.util.List;
 public class HomeController {
     @Autowired
     PatientService patientService;
+
+    @Autowired
+    DoctorService doctorService;
 
     @Autowired
     PaymentService paymentService;
@@ -68,6 +72,9 @@ public class HomeController {
         }
         model.addAttribute("patientProfileResponse",patientProfileResponse);
         model.addAttribute("listFreeSchedule",listFreeSchedule);
+        DateTimeFormatter format1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate1 = LocalDate.now();//For reference
+        model.addAttribute("toDate",localDate1.format(format1));
         return "booking";
     }
     @PostMapping("/booking")
@@ -109,7 +116,20 @@ public class HomeController {
 
         List<ListFreeSchedule.DetailSchedule> detailSchedules = listFreeSchedule.getDetailSchedules();
         for (int i= 1; i <=  detailSchedules.size(); i++) {
+            //check date and hour
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(listFreeSchedule.getMedicalDate(), format);
+            if(localDate.compareTo(LocalDate.now()) == 0){ //so sanh bang ngay hien tai
+                // check hour: phai dat truoc 30p
+                int time = Integer.parseInt(detailSchedules.get(i-1).getScheduleTime());
+                if((LocalDateTime.now().getHour() >= time)
+                || ((LocalDateTime.now().getHour() == time - 1) && (LocalDateTime.now().getMinute() > 45))){
+                    redirectAttrs.addFlashAttribute("free" + i , null);
+                    continue;
+                }
+            }
             redirectAttrs.addFlashAttribute("free" + i ,detailSchedules.get(i-1).getDoctorId() != null ? detailSchedules.get(i-1).getDoctorId()+"-"+detailSchedules.get(i-1).getScheduleTime()+"-"+detailSchedules.get(i-1).getPrice() : null);
+
         }
         redirectAttrs.addFlashAttribute("scheduleDate",date);
         redirectAttrs.addFlashAttribute("symptom",symptom);
@@ -143,7 +163,9 @@ public class HomeController {
                 return "updateProfilePatient";
             }
             if (session.getAttribute("userType").toString().equalsIgnoreCase("DOCTOR")) {
-                return "updateProfilePatient";
+                DoctorProfileResponse doctorProfileResponse = doctorService.getDoctorProfile(session.getAttribute("token").toString());
+                model.addAttribute("doctorProfileResponse", doctorProfileResponse);
+                return "updateProfileDoctor";
             }
         }
         return "home";
@@ -151,22 +173,35 @@ public class HomeController {
 
     @PostMapping("/updateProfile")
     public String updateProfile(Model model, HttpServletRequest request, RedirectAttributes redirectAttrs, HttpSession session,
-                                @ModelAttribute("patientResponse") PatientResponse patientResponse) throws JsonProcessingException {
-        System.out.println("vô nè");
+                                @ModelAttribute("patientResponse") PatientResponse patientResponse,
+                                @ModelAttribute("doctorProfileResponse") DoctorProfileResponse doctorProfileResponse) throws JsonProcessingException {
+        if (session.getAttribute("userType").toString().equalsIgnoreCase("PATIENT")) {
+            SavePatientRequest savePatientRequest = new SavePatientRequest();
+            savePatientRequest.setId(patientResponse.getId());
+            savePatientRequest.setFullName(patientResponse.getFullName());
+            savePatientRequest.setBirthday(patientResponse.getBirthday());
+            savePatientRequest.setSex(patientResponse.getSex());
+            savePatientRequest.setAddress(patientResponse.getAddress());
+            savePatientRequest.setJob(patientResponse.getJob());
+            savePatientRequest.setIdentityNumber(patientResponse.getIdentityNumber());
+            savePatientRequest.setPhoneNumber(patientResponse.getPhoneNumber());
+            System.out.println(savePatientRequest.toString());
+            BaseResponse baseResponse = patientService.savePatient(savePatientRequest, session.getAttribute("token").toString());
+            patientResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), PatientResponse.class);
+            redirectAttrs.addFlashAttribute("patientResponse", patientResponse);
+            session.setAttribute("name",patientResponse.getFullName());
+        }else{
+            SaveProfileRequest saveProfileRequest = new SaveProfileRequest();
+            saveProfileRequest.setId(doctorProfileResponse.getDoctorId());
+            saveProfileRequest.setSex(doctorProfileResponse.getSex());
+            saveProfileRequest.setFullName(doctorProfileResponse.getFullName());
+            saveProfileRequest.setPhoneNumber(doctorProfileResponse.getPhoneNumber());
+            saveProfileRequest.setIdentityNumber(doctorProfileResponse.getIdentityNumber());
+            BaseResponse baseResponse = doctorService.saveDoctorProfile(saveProfileRequest, session.getAttribute("token").toString());
+            redirectAttrs.addFlashAttribute("patientResponse", patientResponse);
+            session.setAttribute("name",doctorProfileResponse.getFullName());
+        }
 
-        SavePatientRequest savePatientRequest = new SavePatientRequest();
-        savePatientRequest.setId(patientResponse.getId());
-        savePatientRequest.setFullName(patientResponse.getFullName());
-        savePatientRequest.setBirthday(patientResponse.getBirthday());
-        savePatientRequest.setSex(patientResponse.getSex());
-        savePatientRequest.setAddress(patientResponse.getAddress());
-        savePatientRequest.setJob(patientResponse.getJob());
-        savePatientRequest.setIdentityNumber(patientResponse.getIdentityNumber());
-        savePatientRequest.setPhoneNumber(patientResponse.getPhoneNumber());
-        System.out.println(savePatientRequest.toString());
-        BaseResponse baseResponse = patientService.savePatient(savePatientRequest, session.getAttribute("token").toString());
-        patientResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), PatientResponse.class);
-        redirectAttrs.addFlashAttribute("patientResponse", patientResponse);
         return "redirect:/updateProfile";
 
     }

@@ -1,12 +1,10 @@
 package com.example.DNFrontEnd.Service;
 
 import com.example.DNFrontEnd.Model.BaseResponse;
-import com.example.DNFrontEnd.Model.request.DetailDoctorScheduleRequest;
-import com.example.DNFrontEnd.Model.request.ListDoctorScheduleRequest;
-import com.example.DNFrontEnd.Model.request.SaveScheduleRequest;
-import com.example.DNFrontEnd.Model.request.UpdateScheduleRequest;
+import com.example.DNFrontEnd.Model.request.*;
 import com.example.DNFrontEnd.Model.response.BasePaginationResponse;
 import com.example.DNFrontEnd.Model.response.DetailScheduleResponse;
+import com.example.DNFrontEnd.Model.response.DoctorProfileResponse;
 import com.example.DNFrontEnd.Model.response.SchedulesResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -125,5 +123,54 @@ public class DoctorService {
         }
         return baseResponse;
     }
+
+    public DoctorProfileResponse getDoctorProfile(String token)  {
+        BaseResponse baseResponse;
+        DoctorProfileResponse doctorProfileResponse = new DoctorProfileResponse();
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/doctor/profile"))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .header("content-type", "application/json")
+                    .method("GET", HttpRequest.BodyPublishers.noBody())
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+            doctorProfileResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), DoctorProfileResponse.class);
+
+            return  doctorProfileResponse;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return doctorProfileResponse;
+    }
+
+    public BaseResponse saveDoctorProfile(SaveProfileRequest saveProfileRequest, String token)  {
+        BaseResponse baseResponse;
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/doctor/profile/update"))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .header("content-type", "application/json")
+                    .method("POST", HttpRequest.BodyPublishers.ofString(SaveProfileRequest.convertToString(saveProfileRequest)))
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+            System.out.println(baseResponse);
+            return  baseResponse;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

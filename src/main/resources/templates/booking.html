@@ -133,7 +133,7 @@ margin-bottom: 100px ;
                     <i class="fas fa-bed" ></i>&nbsp;<span>Các triệu chứng:</span>&nbsp;<span th:text="${symptom}"></span></span>
                     <br>
                     <span th:if="${session.chooseTime == true}">
-                    <i class="fas fa-calendar-day" ></i>&nbsp;<span >Ngày khám:</span>&nbsp;<span th:text="${scheduleDate}"></span></span>
+                    <i class="fas fa-calendar-day" ></i>&nbsp;<span >Ngày khám:</span>&nbsp;<span th:text="${scheduleDate.substring(8,10)+'-'+scheduleDate.substring(5,7)+'-'+scheduleDate.substring(0,4)}"></span></span>
                 </div>
             </div>
         </div>
@@ -154,7 +154,7 @@ margin-bottom: 100px ;
                         <div class="form-group">
                             <label for="scheduleDate">Chọn ngày khám:</label>
                             <input type="date" th:value="${scheduleDate}" class="form-control" id="scheduleDate"
-                                   name="scheduleDate"/>
+                                   name="scheduleDate" th:min="${toDate}" onkeydown="return false" />
                         </div>
                         <span th:text="${error}" style="color:red;"></span>
                         <br>

@@ -81,6 +81,7 @@
             padding:10px;
         }
 
+
     </style>
 
 </head>
@@ -96,14 +97,17 @@
         <div class="col-md-12 col-lg-3 col-3 col-md-3 col-sm-3">
             <div class="card">
                 <div class="card-header">
-                    <h4> <span> Hồ sơ bệnh nhân </span></h4>
+                    <h4><span> Hồ sơ bệnh nhân </span></h4>
                 </div>
                 <div class="card-body">
-                    <i class="fa fa-user-circle-o"></i>&nbsp;<span>Tên bệnh nhân:</span>&nbsp;<span th:text="${session.name}"></span>
+                    <i class="fa fa-user-circle-o"></i>&nbsp;<span>Tên bệnh nhân:</span>&nbsp;<span
+                        th:text="${session.name}"></span>
                     <br>
-                    <i class="fas fa-phone"></i>&nbsp;<span>Số điện thoại:</span>&nbsp;<span th:text="${session.phone}"></span>
+                    <i class="fas fa-phone"></i>&nbsp;<span>Số điện thoại:</span>&nbsp;<span
+                        th:text="${session.phone}"></span>
                     <br>
-                    <i class="fas fa-bed" ></i>&nbsp;<span>Các triệu chứng:</span>&nbsp;<span th:text="${symptom}"></span>
+                    <i class="fas fa-bed"></i>&nbsp;<span>Các triệu chứng:</span>&nbsp;<span
+                        th:text="${symptom}"></span>
                 </div>
             </div>
         </div>
@@ -128,9 +132,11 @@
                             <tr>
                                 <td>1</td>
                                 <td><span th:text="${departmentName}"></span></td>
-                                <td><span th:text="${saveScheduleRequest.medicalDate}"></span></td>
+                                <td><span
+                                        th:text="${saveScheduleRequest.medicalDate.substring(8,10)+'-'+saveScheduleRequest.medicalDate.substring(5,7)+'-'+saveScheduleRequest.medicalDate.substring(0,4)}"></span>
+                                </td>
                                 <td><span th:text="${saveScheduleRequest.hours+':00'}"></span></td>
-                                <td><span th:text="${price}"></span></td>
+                                <td><span th:text="${price.substring(0, price.length()-5) + '.000 đ'}"></span></td>
                             </tr>
                             </tbody>
                         </table>
@@ -143,17 +149,17 @@
         <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h4> <span> Chọn phương thức thanh toán </span></h4>
+                    <h4><span> Chọn phương thức thanh toán </span></h4>
                 </div>
                 <div class="card-body">
                     <form method="POST" th:action="@{/saveSchedule}" th:object="${saveScheduleRequest}">
                         <div class="form-group">
                             <br>
-                            <input type="radio" name="bankCode" th:value="VISA"> Thẻ Visa
+                            <input type="radio" name="bankCode" th:value="VISA" th:onchange="bankCodeChanged()"> Thẻ Visa
                             <br>
-                            <input type="radio" name="bankCode" th:value="NCB"> Ngân hàng NCB
+                            <input type="radio" name="bankCode" th:value="NCB" th:onchange="bankCodeChanged()"> Ngân hàng NCB
                             <br>
-                            <input type="radio" name="bankCode" th:value="CASH"> Tiền mặt
+                            <input type="radio" name="bankCode" th:value="CASH" th:onchange="bankCodeChanged()"> Tiền mặt
                             <input type="hidden" th:value="${price}" class="form-control" id="price"
                                    name="price">
                         </div>
@@ -165,7 +171,7 @@
                         <input type="hidden" th:field="*{medicalDate}" class="form-control" id="medicalDate"
                                name="medicalDate">
                         <input type="hidden" th:field="*{hours}" class="form-control" id="hours" name="hours">
-                        <button type="submit" class="btn btn-primary btn-register">Xác nhận</button>
+                        <button type="submit" id="submitBankCode" class="btn btn-primary btn-register">Xác nhận</button>
                     </form>
                 </div>
             </div>
@@ -177,11 +183,26 @@
 <div th:include="footer.html"></div>
 </body>
 <script th:inline="javascript">
-        var message = /*[[${message}]]*/ "";
+       var message = /*[[${message}]]*/ "";
        if(message != null){
        alert(message);
        }
+       var submitBankCode = document.getElementById("submitBankCode");
+       submitBankCode.disabled = true;
+        function bankCodeChanged() {
+          var bankCodeRadios = document.getElementsByName('bankCode');
+          var selectedGenderValue = "";
+          for (var i = 0; i < bankCodeRadios.length; i++) {
+            if (bankCodeRadios[i].checked) {
+              selectedGenderValue = bankCodeRadios[i].value;
+              break;
+            }
+          }
+          if (selectedGenderValue !== "") {
+            var submitBankCode = document.getElementById("submitBankCode");
+            submitBankCode.disabled = false;
+          }
+        }
 
-
-    </script>
+</script>
 </html>

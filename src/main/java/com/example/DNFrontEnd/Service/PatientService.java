@@ -167,12 +167,12 @@ public class PatientService {
         return detailScheduleResponse;
     }
 
-    public List<SchedulesResponse> getSchedule(ListPatientScheduleRequest request, String token) {
+    public BasePaginationResponse getSchedule(ListPatientScheduleRequest request, String token, String page) {
         BasePaginationResponse basePaginationResponse;
         List<SchedulesResponse> schedulesResponseList = new ArrayList<>();
         try {
             HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(adminUrl+"/patient/schedules"))
+                    .uri(URI.create(adminUrl+"/patient/schedules?page="+page+"&size=10"))
                     .header("accept", "application/json")
                     .header("Authorization", "Bearer " + token)
                     .header("content-type", "application/json")
@@ -183,7 +183,6 @@ public class PatientService {
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
             basePaginationResponse = objectMapper.readValue(response.body().toString(),BasePaginationResponse.class);
             System.out.println(basePaginationResponse);
-            schedulesResponseList = objectMapper.readValue(objectMapper.writeValueAsString(basePaginationResponse.getData()).toString(), List.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -197,7 +196,7 @@ public class PatientService {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-        return schedulesResponseList;
+        return basePaginationResponse;
     }
 
     public SchedulesResponse getScheduleDetail(DetailDoctorScheduleRequest request, String token) {

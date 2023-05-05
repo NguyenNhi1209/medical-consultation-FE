@@ -63,6 +63,12 @@
         .container{
         margin-top:30px
         }
+        .page {
+            border: 1px solid #3aabd0;
+            padding: 5px 15px 5px 15px;
+            border-radius: 3px;
+            margin-left: 10px;
+        }
     </style>
 </head>
 
@@ -74,21 +80,64 @@
       <div class="col-xl-8 col-lg-12 tm-md-12 tm-sm-12 tm-col">
         <div class="bg-white tm-block h-100">
           <div class="row">
+            <h2 class="tm-block-title d-inline-block text-center" th:if="${medicalDate != ''}" th:text="'Lịch khám ngày ' + ${medicalDate}">Lịch khám ngày</h2>
+            <h2 class="tm-block-title d-inline-block text-center" th:if="${medicalDate == ''}">Tất cả lịch khám</h2>
             <div class="col-md-8 col-sm-12">
-              <h2 class="tm-block-title d-inline-block" th:if="${medicalDate != ''}" th:text="'Lịch khám ngày ' + ${medicalDate}">Lịch khám ngày</h2>
-              <h2 class="tm-block-title d-inline-block" th:if="${medicalDate == ''}">Tất cả lịch khám</h2>
+              <table>
+                <tr>
+                  <td>
+                    <form th:method="POST" th:action="@{/patient/schedule}">
+                      <input type="date" th:value="${medicalDate1}" class="form-control" id="medicalDate"
+                             name="medicalDate" th:onchange="submit()" style="margin: 75px 0px 10px 0px;"/>
+                    </form>
+                  </td>
+                  <td>
+                    <form th:method="POST" th:action="@{/patient/schedule}">
+                      <button type="submit" class="btn btn-primary btn-register"
+                              style="margin: 75px 0px 10px 10px;float: left;background-color: #09d066;">Tất cả </a>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              </table>
             </div>
             <div class="col-md-4 col-sm-12 text-right">
-              <br>
-              <form th:method="POST" th:action="@{/patient/schedule}">
-                <input type="date" th:value="${medicalDate1}" class="form-control" id="medicalDate"
-                       name="medicalDate" th:onchange="submit()"/>
-              </form>
-              <form th:method="POST" th:action="@{/patient/schedule}">
-                <button type="submit" class="btn btn-primary btn-register"
-                        style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;">Tất cả </a>
-                </button>
-              </form>
+              <table>
+                <tr>
+                  <td>
+                    <form th:method="POST" th:action="@{/patient/schedule}">
+                      <input type="hidden" th:value="${medicalDate1}" class="form-control" id="medicalDatePay"
+                             name="medicalDate" th:onchange="submit()"/>
+                      <input type="hidden" th:value="${isDone}" name="isDone">
+                      <!--                      <button type="submit" class="btn btn-primary btn-register"-->
+                      <!--                              style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;">Đã thanh toán </a>-->
+                      <!--                      </button>-->
+                      <select class="form-select" name="isPay" th:onchange="submit()"
+                              style="margin: 75px 0px 10px 10px;float: right;padding: 6px 12px 6px 12px;border-radius: 5px;">
+                        <option value="all">--Thanh toán--</option>
+                        <option value="true" th:selected="${isPay == 'true'}">Đã thanh toán</option>
+                        <option value="false" th:selected="${isPay == 'false'}">Chưa thanh toán</option>
+                      </select>
+                    </form>
+                  </td>
+                  <td>
+                    <form th:method="POST" th:action="@{/patient/schedule}">
+                      <input type="hidden" th:value="${medicalDate1}" class="form-control"
+                             name="medicalDate"/>
+                      <input type="hidden" th:value="${isPay}" name="isPay">
+<!--                      <button type="submit" class="btn btn-primary btn-register"-->
+<!--                              style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;">Đã khám </a>-->
+<!--                      </button>-->
+                      <select class="form-select" name="isDone" th:onchange="submit()"
+                              style="margin: 75px 0px 10px 10px;float: right;padding: 6px 12px 6px 12px;border-radius: 5px;">
+                        <option value="all">--Trạng thái--</option>
+                        <option value="true" th:selected="${isDone == 'true'}">Đã khám</option>
+                        <option value="false" th:selected="${isDone == 'false'}">Chưa khám</option>
+                      </select>
+                    </form>
+                  </td>
+                </tr>
+              </table>
             </div>
           </div>
 
@@ -98,7 +147,7 @@
               <tr class="tm-bg-gray">
                 <th scope="col" class="text-center">Ngày khám</th>
                 <th scope="col" class="text-center">Giờ khám</th>
-                <th scope="col" >Tên người khám</th>
+                <th scope="col" >Tên bác sĩ</th>
                 <th scope="col" class="text-center">Giới tính</th>
                 <th scope="col">Triệu chứng</th>
                 <th scope="col" class="text-center">Thanh toán</th>
@@ -108,11 +157,11 @@
               </thead>
               <tbody>
               <tr th:each="item : ${schedulesResponseList}">
-                <td class="text-center" th:text="${item.medicalDate}"></td>
+                <td class="text-center" th:text="${item.medicalDate.substring(8,10)+'-'+item.medicalDate.substring(5,7)+'-'+item.medicalDate.substring(0,4)}"></td>
                 <td class="text-center" th:text="${item.hours} + ':00'"></td>
-                <td class="tm-product-name" th:text="${item.patientProfile.name}"></td>
-                <td class="text-center"  th:if="${item.patientProfile.sex == 'F'}" >Nữ</td>
-                <td class="text-center"  th:if="${item.patientProfile.sex != 'F'}" >Nam</td>
+                <td class="tm-product-name" th:text="${item.doctor.fullName}"></td>
+                <td class="text-center"  th:if="${item.doctor.sex == 'F'}" >Nữ</td>
+                <td class="text-center"  th:if="${item.doctor.sex != 'F'}" >Nam</td>
                 <td class="tm-product-name" th:text="${item.patientProfile.symptom}"></td>
                 <td class="text-center"  th:if="${item.isPay == true}" >Đã thanh toán</td>
                 <td class="text-center"  th:if="${item.isPay != true}" >Chưa thanh toán</td>
@@ -120,10 +169,32 @@
                 <td class="text-center"  th:if="${item.isDone != true}" >Chưa khám</td>
                 <td class="text-center">
                   <a th:href="@{/patient/schedule/detail1(scheduleId=${item.scheduleId})}">
-                  <i class="material-icons" style="font-size:24px">edit</i></a></td>
+                    <i class="fa fa-eye" style="font-size:18px;color:black"></i></a></td>
               </tr>
               </tbody>
             </table>
+          </div>
+          <div class="table-responsive">
+            <div class="col-md-12 col-sm-12 text-center" >
+              <table style="float:right;">
+                <form th:method="POST" th:action="@{/patient/schedule}">
+                  <input type="hidden" th:value="${medicalDate1}" class="form-control"
+                         name="medicalDate" th:onchange="submit()"/>
+                  <input type="hidden" th:value="${isDone}" name="isDone">
+                  <input type="hidden" th:value="${isPay}" name="isPay">
+                  <tr>
+                    <td th:each="cell : ${pageList}">
+                      <button type="submit" name="page" th:value="${cell}"
+                              class="page"  th:text="${cell}"
+                              th:if="${cell == page}" disabled style="background-color:#09d066"></button>
+                      <button type="submit" name="page" th:value="${cell}"
+                              class="page"  th:text="${cell}"
+                              th:if="${cell != page}"></button>
+                    </td>
+                  </tr>
+                </form>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -133,5 +204,7 @@
 </div>
 <div th:include="footer.html"></div>
 </body>
+<script th:inline="javascript">
 
+</script>
 </html>

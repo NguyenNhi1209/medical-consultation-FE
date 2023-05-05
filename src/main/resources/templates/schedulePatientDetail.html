@@ -147,9 +147,9 @@ margin-bottom: 100px ;
                         <tbody data-test="table-body">
                         <tr>
                             <td style="max-width:250px;"><span th:text="${schedulesResponse.patientProfile.symptom}"></span></td>
-                            <td><span class="text-center" th:text="${schedulesResponse.medicalDate}"></span></td>
+                            <td><span class="text-center" th:text="${schedulesResponse.medicalDate.substring(8,10)+'-'+schedulesResponse.medicalDate.substring(5,7)+'-'+schedulesResponse.medicalDate.substring(0,4)}"></span></td>
                             <td><span class="text-center" th:text="${schedulesResponse.hours} + ':00'"></span></td>
-                            <td><span class="text-center" th:text="${schedulesResponse.price} + ' đ'"></span></td>
+                            <td><span class="text-center" th:text="${schedulesResponse.price.toString.substring(0, schedulesResponse.price.toString.length()-5) + '.000 đ'}"></span></td>
                             <td>
                                 <span class="text-center" th:if="${schedulesResponse.isPay == true}" >Đã thanh toán</span>
                                 <span class="text-center" th:if="${schedulesResponse.isPay != true}" >Chưa thanh toán</span>
@@ -205,7 +205,7 @@ margin-bottom: 100px ;
                             </td>
                             <td><i class="fa fa-birthday-cake"></i><span> Ngày sinh</span></td>
                             <td>
-                                <span th:text="${schedulesResponse.patientProfile.birthday}" ></span>
+                                <span th:text="${schedulesResponse.patientProfile.birthday.substring(8,10)+'-'+schedulesResponse.patientProfile.birthday.substring(5,7)+'-'+schedulesResponse.patientProfile.birthday.substring(0,4)}"></span>
                             </td>
                         </tr>
                         <tr>
@@ -258,8 +258,8 @@ margin-bottom: 100px ;
 
 </body>
 <script th:inline="javascript">
-        var message = /*[[${message}]]*/ "";
-       if(message != null){
+       var message = /*[[${message}]]*/ "";
+       if(message != null && message != ""){
        alert(message);
        }
 

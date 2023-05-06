@@ -9,6 +9,8 @@ import lombok.Data;
 public class ListDoctorScheduleRequest{
     private Long doctorId;
     private String medicalDate;
+    private Boolean isDone;
+    private Boolean isPay;
     public static String convertToString(ListDoctorScheduleRequest listDoctorScheduleRequest) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String result = objectMapper.writeValueAsString(listDoctorScheduleRequest);

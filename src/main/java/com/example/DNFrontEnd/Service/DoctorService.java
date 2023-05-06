@@ -27,12 +27,12 @@ public class DoctorService {
 
     private Logger logger = Logger.getLogger(getClass().getName());
 
-    public List<SchedulesResponse> getSchedule(ListDoctorScheduleRequest request, String token) {
+    public BasePaginationResponse getSchedule(ListDoctorScheduleRequest request, String token, String page) {
         BasePaginationResponse basePaginationResponse;
         List<SchedulesResponse> schedulesResponseList = new ArrayList<>();
         try {
             HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(adminUrl+"/doctor/schedules"))
+                    .uri(URI.create(adminUrl+"/doctor/schedules?page="+page+"&size=10"))
                     .header("accept", "application/json")
                     .header("Authorization", "Bearer " + token)
                     .header("content-type", "application/json")
@@ -57,7 +57,7 @@ public class DoctorService {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-        return schedulesResponseList;
+        return basePaginationResponse;
     }
 
     public SchedulesResponse getScheduleDetail(DetailDoctorScheduleRequest request, String token) {

@@ -3,6 +3,7 @@ package com.example.DNFrontEnd.Controller;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -100,7 +101,8 @@ public class PdfController {
         }
     }
     private void generatePdf(OutputStream outputStream,SchedulesResponse schedulesResponse) throws DocumentException, IOException {
-
+        DateTimeFormatter format1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter format2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         // Load font file
         InputStream inputStream = getClass().getResourceAsStream("/static/fonts/ARIALUNI.TTF");
         BaseFont unicode = BaseFont.createFont("ARIALUNI.TTF", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, BaseFont.CACHED, inputStream.readAllBytes(), null);
@@ -155,7 +157,9 @@ public class PdfController {
         PdfPCell cell3 = new PdfPCell(new Phrase("Ngày sinh", font2));
         cell3.setBorder(0);
         table.addCell(cell3);
-        PdfPCell cell4 = new PdfPCell(new Phrase(schedulesResponse.getPatientProfile().getBirthday(), font1));
+
+        LocalDate birthday = LocalDate.parse(schedulesResponse.getPatientProfile().getBirthday(), format1);
+        PdfPCell cell4 = new PdfPCell(new Phrase(format2.format(birthday), font1));
         cell4.setBorder(0);
         table.addCell(cell4);
 
@@ -204,7 +208,9 @@ public class PdfController {
         PdfPCell cell19 = new PdfPCell(new Phrase("Ngày thực hiện", font2));
         cell19.setBorder(0);
         table.addCell(cell19);
-        PdfPCell cell20 = new PdfPCell(new Phrase(schedulesResponse.getMedicalDate() + " " + LocalDateTime.now().getHour() + ":" + LocalDateTime.now().getMinute(), font1));
+
+        LocalDate medicalDate = LocalDate.parse(schedulesResponse.getMedicalDate(), format1);
+        PdfPCell cell20 = new PdfPCell(new Phrase(format2.format(medicalDate), font1));
         cell20.setBorder(0);
         table.addCell(cell20);
 

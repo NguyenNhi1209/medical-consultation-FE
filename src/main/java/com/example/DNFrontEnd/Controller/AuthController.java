@@ -90,7 +90,7 @@ public class AuthController {
         System.out.println(user.toString());
 
         try {
-            BaseResponse baseResponse = authService.login(user);
+            BaseResponse baseResponse = authService.login(user, false);
             if (baseResponse != null) {
                 if (baseResponse.getCode() == 1) {
                     LoginResponse loginResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), LoginResponse.class);

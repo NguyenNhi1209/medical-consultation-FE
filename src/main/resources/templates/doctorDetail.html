@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/all.min.css}">
+    <link
+            rel="stylesheet"
+            th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"
+    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>Thông tin cá nhân</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .fix-height {
+            flex: 1;
+        }
+
+        a, a:hover, a:focus {
+            text-decoration: none;
+            color: white;
+        }
+
+        .title {
+            font-weight: 600;
+            font-size: 22px;
+            display: block;
+            margin: 20px 0;
+            text-transform: uppercase;
+            /*text-transform: uppercase;*/
+        }
+        .navbar {
+            padding-top: 30px;
+        }
+        .card {
+            text-align:justify;
+        }
+        .card-header{
+            text-align:center;
+<!--            background-color: #09d066;-->
+            padding: 3px 3px 3px 6px;
+        }
+        .card-body{
+
+            text-align:justify;
+
+            text-align:justify;
+            padding:10px;
+        }
+
+        .card-body span{
+        margin-top: 10px ;
+        }
+        table {
+        min-width: 100%
+        }
+        table td{
+        padding: 5px 5px 5px 5px
+        }
+        footer {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+         height: 30%;
+         margin-top: 20px ;
+        }
+        header{
+        margin-bottom: 100px ;
+        }
+        .container{
+         height: 70%;
+         min-height: 80vh;
+        }
+        .our-services{
+         margin-top: 110px ;
+        }
+        .invalid {
+        border-color: red;
+        }
+        .error{
+        color: red;
+        }
+        .header{
+            background-color: #303137
+        }
+        .navbar{
+            color: #ffffff;
+            font-family: Monospace
+        }
+        .btnDN{
+            border: 2px solid #09d066;
+            padding: 10px;
+            border-radius: 25px;
+            background-color: #09d066;
+            width: 100%;
+            text-align: center;
+         }
+         .btnDN{
+            border: 2px solid #09d066;
+            padding: 10px;
+            border-radius: 25px;
+            background-color: #09d066;
+            width: 100%;
+            text-align: center;
+         }
+        .icons a{
+            width: 100%;
+            min-width: 100px;
+            float: left;
+            font-size: 14px;
+            background-color: #09d066;
+            color: #ffffff;
+            text-align: center;
+            border: 2px solid #09d066;
+            padding: 10px;
+            border-radius: 25px;
+        }
+        .icons a:hover{
+            background-color: #303036;
+            color: #ffffff;
+        }
+        .navbar ul li {
+          display: inline-block;
+          position: relative;
+        }
+
+        .navbar ul li ul {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          background-color: #303137;
+          display: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        .navbar ul li ul li {
+          display: block;
+          padding: 5px 0px 5px 0px;
+          min-width: 150px;
+        }
+
+        .navbar ul li ul li:last-child {
+          border-bottom: none;
+        }
+
+        .navbar ul li:hover ul,
+        .navbar ul li:focus-within ul {
+          display: block;
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <img src="/images/logo1.png" id="logo" alt="">
+    <nav class="navbar">
+        <ul>
+            <li><a th:href="@{/admin}">Trang chủ</a></li>
+            <li><a href="#">Khoa/Viện</a>
+                <ul>
+                    <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/patient/schedule}">Quản lý khoa</a></li>
+                    <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/admin/doctors}">Bác sĩ</a></li>
+                </ul>
+            </li>
+            <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/booking}">Quản lý bệnh nhân</a></li>
+            <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/patient/schedule}">Quản lý lịch khám</a></li>
+            <li><a th:href="@{/user/logout}" th:if="${session.userType == 'ADMIN'}">Đăng xuất</a></li>
+        </ul>
+        <!--        <a th:href="@{/admin}">Trang chủ</a>-->
+        <!--        <a th:if="${session.userType != null}" th:href="@{/booking}">Bệnh nhân</a>-->
+        <!--        <a th:if="${session.userType != null}" th:href="@{/updateProfile}">Bác sĩ</a>-->
+        <!--        <a th:if="${session.userType != null}" th:href="@{/patient/schedule}">Lịch khám bệnh</a>-->
+        <!--        <a th:href="@{/user/logout}" th:if="${session.userType != null}">Đăng xuất</a>-->
+    </nav>
+
+    <div class="icons" th:if="${session.name != null}">
+        <a th:text="${session.name}"></a>
+    </div>
+    <div class="icons" th:if="${session.name == null}">
+        <a class="btnDN" th:href="@{/admin/login}">Đăng nhập</a>
+    </div>
+</header>
+<div class="our-services">
+    <div class="container">
+        <div class="container">
+            <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12" style="margin-top: 20px;">
+                <div class="card" id="content">
+                    <div class="card-header">
+                        <h2><p th:if="${doctorResponse.doctor.id != null}"> Cập nhật thông tin bác sĩ</p></h2>
+                        <h2><p th:if="${doctorResponse.doctor.id == null}"> Thêm bác sĩ</p></h2>
+                    </div>
+                    <div class="card-body">
+
+                        <table class="table">
+                            <form method="POST" th:action="@{/admin/doctor/add}" th:object="${doctorResponse}">
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="form-group">
+                                            <label for="fullName">Họ và tên:</label>&nbsp;<span class="error" id="errorName"></span>
+                                            <input type="text" th:field="*{doctor.fullName}" class="form-control" id="fullName"
+                                                   name="fullName" pattern="^([a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+)((\s{1,}[a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+|[\s*]){0,})$" oninput="checkPatternName()"
+                                                   placeholder="Họ và tên...">
+                                        </div>
+                                    </td>
+                                    <td colspan="2">
+                                        <div class="form-group">
+                                            <label>Giới tính:</label><br>
+                                            <input type="radio" th:field="*{doctor.sex}" name="sex" th:value="M">Nam
+                                            <input type="radio" th:field="*{doctor.sex}" name="sex" th:value="F">Nữ
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="form-group">
+                                            <label>Số điện thoại:</label>&nbsp;<span class="error" id="errorPhoneNumber"></span>
+                                            <input type="text" th:field="*{doctor.phoneNumber}" class="form-control"
+                                                   pattern="^0\d{9}$" oninput="checkPatternPhoneNumber()"
+                                                   id="phoneNumber" name="phoneNumber" placeholder="Số điện thoại..."/>
+
+                                        </div>
+                                    </td>
+                                    <td colspan="2">
+                                        <div class="form-group">
+                                            <label for="identityNumber">CMND/CCCD:</label>&nbsp;<span class="error" id="errorIdentityNumber"></span>
+                                            <input type="text" th:field="*{doctor.identityNumber}" class="form-control"
+                                                   id="identityNumber" name="identityNumber"
+                                                   pattern="^[0-9]{9}([0-9]{3})?$" oninput="checkPatternIdentityNumber()"
+                                                   placeholder="CMND/CCCD..."/>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="form-group">
+                                            <label>Email:</label>&nbsp;<span class="error" id="errorEmail"></span>
+                                            <input type="text" th:value="${doctorResponse.user.email}" class="form-control"
+                                                   th:if="${doctorResponse.doctor.id != null}" disabled/>
+                                            <input type="text" th:field="*{user.email}" class="form-control"
+                                                   th:if="${doctorResponse.doctor.id == null}"
+                                                   pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" oninput="checkPatternEmail()"
+                                                   id="email" name="email" placeholder="Email..."/>
+
+                                        </div>
+                                    </td>
+                                    <td colspan="2">
+                                        <div class="form-group">
+                                            <label>Khoa/Viện:</label>
+                                            <br>
+                                            <select class="form-control" name="departmentId"  th:if="${doctorResponse.doctor.id == null}">
+                                                <option value="" >--Khoa--</option>
+                                                <option value="1">Nha Khoa</option>
+                                                <option value="2">Da liễu</option>
+                                                <option value="3">Mắt</option>
+                                                <option value="4">Tai mũi họng</option>
+                                                <option value="5">Tiêu hóa</option>
+                                                <option value="6">Chấn thương chỉnh hình</option>
+                                            </select>
+                                            <input th:if="${doctorResponse.doctor.id != null}"
+                                                    type="text" th:value="${doctorResponse.doctor.department.name}" class="form-control"
+                                                   id="departmentName" name="departmentName" readonly/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="form-group">
+                                            <input type="hidden" th:field="*{doctor.id}" class="form-control" id="doctorId"
+                                                   name="doctorId">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-primary btn-register" id="confirm"
+                                                style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
+                                            Lưu
+                                        </button>
+                                    </td>
+                                </tr>
+                            </form>
+                            <tr style="z-index: -1">
+                                <div class="cancel">
+                                    <form method="POST" th:action="@{/admin/doctors}">
+                                        <input type="hidden" th:value="${doctorResponse.doctor.department.id}" class="form-control"
+                                               id="departmentId" name="departmentId" readonly/>
+                                        <button id="confirm2" type="submit"
+                                                class="btn btn-primary btn-register"
+                                                style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
+                                            Quay lại danh sách
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div th:include="footer.html"></div>
+<script src="script.js"></script>
+</body>
+<script th:inline="javascript">
+<!--    var myDiv = document.getElementById("content");-->
+<!--    var elements = myDiv.getElementsByTagName("*");-->
+<!--    for (var i = 0; i < elements.length; i++) {-->
+<!--      elements[i].disabled = true;-->
+<!--    }-->
+<!--    var element = document.getElementById("confirm");-->
+<!--    element.style.display = "none";-->
+<!--    var element1 = document.getElementById("confirm1");-->
+<!--    element1.style.display = "block";-->
+<!--    element1.disabled = false;-->
+<!--    var element2 = document.getElementById("confirm2");-->
+<!--    element2.style.display = "none";-->
+
+    function checkValid(){
+        var element = document.getElementById("confirm");
+        var errorName = document.getElementById("errorName").innerHTML.trim();
+        var errorPhoneNumber = document.getElementById("errorPhoneNumber").innerHTML.trim();
+        var errorIdentityNumber = document.getElementById("errorIdentityNumber").innerHTML.trim();
+        var name = document.getElementById("fullName").value.trim();
+        var phoneNumber = document.getElementById("phoneNumber").value.trim();
+        var identityNumber = document.getElementById("identityNumber").value.trim();
+        if(errorName === "" && errorPhoneNumber === "" && errorPhoneNumber === ""){
+            if(name === "" || phoneNumber === "" || identityNumber === ""){
+                element.disabled = true;
+            }else{
+                element.disabled = false;
+            }
+        }else{
+            element.disabled = true;
+        }
+    }
+
+    function cancel() {
+        window.location.href = "http://localhost:8081/updateProfile";
+    }
+    function update() {
+        var myDiv2 = document.getElementById("content");
+        var elements2 = myDiv2.getElementsByTagName("*");
+        for (var i = 0; i < elements2.length; i++) {
+          elements2[i].disabled = false;
+        }
+        var element7 = document.getElementById("confirm");
+        element7.style.display = "block";
+        var element8 = document.getElementById("confirm1");
+        element8.style.display = "none";
+        var element9 = document.getElementById("confirm2");
+        element9.style.display = "block";
+        checkValid();
+    }
+    function checkPatternName() {
+        var input = document.getElementById("fullName");
+        var pattern = new RegExp(input.pattern);
+        var errorMsg = document.getElementById("errorName");
+
+        if (!pattern.test(input.value)) {
+        errorMsg.innerHTML = "Họ và tên không hợp lệ";
+        input.classList.add("invalid");
+        } else {
+        errorMsg.innerHTML = "";
+        input.classList.remove("invalid");
+        }
+        checkValid();
+    }
+    function checkPatternPhoneNumber() {
+        var input = document.getElementById("phoneNumber");
+        var pattern = new RegExp(input.pattern);
+        var errorMsg = document.getElementById("errorPhoneNumber");
+
+        if (!pattern.test(input.value)) {
+        errorMsg.innerHTML = "Số điện thoại không hợp lệ";
+        input.classList.add("invalid");
+        } else {
+        errorMsg.innerHTML = "";
+        input.classList.remove("invalid");
+        }
+        checkValid();
+    }
+    function checkPatternIdentityNumber() {
+        var input = document.getElementById("identityNumber");
+        var pattern = new RegExp(input.pattern);
+        var errorMsg = document.getElementById("errorIdentityNumber");
+
+        if (!pattern.test(input.value)) {
+        errorMsg.innerHTML = "Số CMND/CCCD không hợp lệ";
+        input.classList.add("invalid");
+        } else {
+        errorMsg.innerHTML = "";
+        input.classList.remove("invalid");
+        }
+        checkValid();
+    }
+    function checkPatternEmail() {
+        var input = document.getElementById("email");
+        var pattern = new RegExp(input.pattern);
+        var errorMsg = document.getElementById("errorEmail");
+
+        if (!pattern.test(input.value)) {
+        errorMsg.innerHTML = "Email không hợp lệ";
+        input.classList.add("invalid");
+        } else {
+        errorMsg.innerHTML = "";
+        input.classList.remove("invalid");
+        }
+        checkValid();
+    }
+
+    var message = /*[[${message}]]*/ "";
+    if(message != null && message != ""){
+    alert(message);
+    }
+
+
+
+
+
+</script>
+</html>

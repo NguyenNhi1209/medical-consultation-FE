@@ -3,11 +3,13 @@ package com.example.DNFrontEnd.Model.DTO;
 import lombok.Data;
 
 @Data
-public class DoctorDTO {
+public class PatientDTO {
     private Long id;
     private String fullName;
-    private String sex;
-    private String identityNumber;
+    private String birthday;
     private String phoneNumber;
-    private DepartmentDTO department;
+    private String sex;
+    private String address;
+    private String job;
+    private String identityNumber;
 }

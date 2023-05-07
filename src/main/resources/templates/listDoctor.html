@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Quản lý bác sĩ</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/all.min.css}">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link
+          rel="stylesheet"
+          th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"
+  />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+  <!-- bootstrap css -->
+  <link rel="stylesheet" href="@{css/bootstrap.min.css}">
+
+  <!-- fevicon -->
+  <link rel="icon" href="images/fevicon.png" type="image/gif" />
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+
+<!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+        .background-image1{
+            margin: 100px 20px 30px 20px;
+        }
+        .background-content1 img{
+            align-content: center;
+            width: 1460px;
+            height: 552.51px;
+        }
+        .inner-services-content a{
+            color: #0d0b0b;
+            font-size: 15px;
+        }
+        .navbar {
+            padding-top: 30px;
+
+        }
+        body{
+        font-family: Arial, Helvetica, sans-serif;
+        }
+        .our-services{
+         margin-top: 110px ;
+          min-height: 80vh;
+        }
+        .table td, th {
+          padding: 20px 24px;
+        }
+
+        .table-hover tbody tr:hover {
+          background-color: white;
+          color: #3aabd0;
+        }
+        .table-responsive{
+        margin-top:30px
+        }
+        .container{
+        margin-top:30px
+        }
+        .page {
+            border: 1px solid #3aabd0;
+            padding: 5px 15px 5px 15px;
+            border-radius: 3px;
+            margin-left: 10px;
+        }
+        .header{
+            background-color: #303137
+        }
+        .navbar{
+            color: #ffffff;
+            font-family: Monospace
+        }
+        .btnDN{
+            border: 2px solid #09d066;
+            padding: 10px;
+            border-radius: 25px;
+            background-color: #09d066;
+            width: 100%;
+            text-align: center;
+         }
+         .btnDN{
+            border: 2px solid #09d066;
+            padding: 10px;
+            border-radius: 25px;
+            background-color: #09d066;
+            width: 100%;
+            text-align: center;
+         }
+        .icons a{
+            width: 100%;
+            min-width: 100px;
+            float: left;
+            font-size: 14px;
+            background-color: #09d066;
+            color: #ffffff;
+            text-align: center;
+            border: 2px solid #09d066;
+            padding: 10px;
+            border-radius: 25px;
+        }
+        .icons a:hover{
+            background-color: #303036;
+            color: #ffffff;
+        }
+        .navbar ul li {
+          display: inline-block;
+          position: relative;
+        }
+
+        .navbar ul li ul {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          background-color: #303137;
+          display: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        .navbar ul li ul li {
+          display: block;
+          padding: 5px 0px 5px 0px;
+          min-width: 150px;
+        }
+
+        .navbar ul li ul li:last-child {
+          border-bottom: none;
+        }
+
+        .navbar ul li:hover ul,
+        .navbar ul li:focus-within ul {
+          display: block;
+        }
+    </style>
+</head>
+
+<body>
+<header class="header">
+  <img src="/images/logo1.png" id="logo" alt="">
+  <nav class="navbar">
+    <ul>
+      <li><a th:href="@{/admin}">Trang chủ</a></li>
+      <li><a href="#">Khoa/Viện</a>
+        <ul>
+          <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/patient/schedule}">Quản lý khoa</a></li>
+          <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/admin/doctors}">Bác sĩ</a></li>
+        </ul>
+      </li>
+      <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/booking}">Quản lý bệnh nhân</a></li>
+      <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/patient/schedule}">Quản lý lịch khám</a></li>
+      <li><a th:href="@{/user/logout}" th:if="${session.userType == 'ADMIN'}">Đăng xuất</a></li>
+    </ul>
+    <!--        <a th:href="@{/admin}">Trang chủ</a>-->
+    <!--        <a th:if="${session.userType != null}" th:href="@{/booking}">Bệnh nhân</a>-->
+    <!--        <a th:if="${session.userType != null}" th:href="@{/updateProfile}">Bác sĩ</a>-->
+    <!--        <a th:if="${session.userType != null}" th:href="@{/patient/schedule}">Lịch khám bệnh</a>-->
+    <!--        <a th:href="@{/user/logout}" th:if="${session.userType != null}">Đăng xuất</a>-->
+  </nav>
+
+  <div class="icons" th:if="${session.name != null}">
+    <a th:text="${session.name}"></a>
+  </div>
+  <div class="icons" th:if="${session.name == null}">
+    <a class="btnDN" th:href="@{/admin/login}">Đăng nhập</a>
+  </div>
+</header>
+<div class="our-services" id="home">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-8 col-lg-12 tm-md-12 tm-sm-12 tm-col">
+        <div class="bg-white tm-block h-100">
+          <div class="row">
+            <h2 class="tm-block-title d-inline-block text-center">Danh sách bác sĩ</h2>
+            <div class="col-md-8 col-sm-12">
+              <table>
+                <tr>
+                  <td>
+                    <form th:method="POST" th:action="@{/admin/doctors}">
+                      <select class="form-select" name="departmentId" th:onchange="submit()"
+                              style="margin: 75px 0px 10px 10px;float: right;padding: 6px 12px 6px 12px;border-radius: 5px;">
+                        <option value="" >--Khoa--</option>
+                        <option value="1" th:selected="${departmentId == '1'}">Nha Khoa</option>
+                        <option value="2" th:selected="${departmentId == '2'}">Da liễu</option>
+                        <option value="3" th:selected="${departmentId == '3'}">Mắt</option>
+                        <option value="4" th:selected="${departmentId == '4'}">Tai mũi họng</option>
+                        <option value="5" th:selected="${departmentId == '5'}">Tiêu hóa</option>
+                        <option value="6" th:selected="${departmentId == '6'}">Chấn thương chỉnh hình</option>
+                      </select>
+                    </form>
+                  </td>
+                  <td>
+                    <form th:method="POST" th:action="@{/admin/doctors}">
+                      <button type="submit" class="btn btn-primary btn-register"
+                              style="margin: 75px 0px 10px 10px;float: left;background-color: #09d066;">Tất cả </a>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-md-4 col-sm-12 text-right">
+              <table style="float: right;">
+                <tr>
+                    <td>
+                      <button type="button" class="btn btn-primary btn-register" th:attr="onclick=|addDoctor();|"
+                              style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;"> Thêm bác sĩ
+                      </button>
+                    </td>
+
+
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover table-striped tm-table-striped-even mt-3">
+              <thead>
+              <tr class="tm-bg-gray">
+                <th scope="col" >Khoa</th>
+                <th scope="col" >Tên bác sĩ</th>
+                <th scope="col" class="text-center">Giới tính</th>
+                <th scope="col" class="text-center">Số điện thoại</th>
+                <th scope="col" class="text-center">CMND/CCCD</th>
+                <th scope="col" class="text-center">&nbsp;</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="item : ${doctorResponseList}">
+                <td class="tm-product-name" th:text="${item.doctor.department.name}"></td>
+                <td class="tm-product-name" th:text="${item.doctor.fullName}"></td>
+                <td class="text-center"  th:if="${item.doctor.sex == 'F'}" >Nữ</td>
+                <td class="text-center"  th:if="${item.doctor.sex != 'F'}" >Nam</td>
+                <td class="text-center" th:text="${item.doctor.phoneNumber}"></td>
+                <td class="text-center" th:text="${item.doctor.identityNumber}"></td>
+                <td class="text-center">
+                  <form method="POST" th:action="@{/admin/doctor}" id="myForm">
+                    <input type="hidden" th:value="${item.doctor.id}" name="doctorId">
+                  </form>
+                  <a href="#" th:onclick="'document.getElementById(\'myForm\').submit(); return false;'">
+                    <i class="material-icons" style="font-size:24px">edit</i></a>
+                </td>
+
+
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-responsive">
+            <div class="col-md-12 col-sm-12 text-center" >
+              <table style="float:right;">
+                <form th:method="POST" th:action="@{/admin/doctors}">
+                  <input type="hidden" th:value="${department}" name="department">
+                  <tr>
+                    <td th:each="cell : ${pageList}">
+                      <button type="submit" name="page" th:value="${cell}"
+                              class="page"  th:text="${cell}"
+                              th:if="${cell == page}" disabled style="background-color:#09d066"></button>
+                      <button type="submit" name="page" th:value="${cell}"
+                              class="page"  th:text="${cell}"
+                              th:if="${cell != page}"></button>
+                    </td>
+                  </tr>
+                </form>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div th:include="footer.html"></div>
+</body>
+<script th:inline="javascript">
+  function addDoctor() {
+        window.location.href = "http://localhost:8081/admin/doctor";
+    }
+</script>
+</html>

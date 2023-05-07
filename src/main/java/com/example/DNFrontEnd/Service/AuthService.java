@@ -26,9 +26,10 @@ public class AuthService {
     private Logger logger = Logger.getLogger(getClass().getName());
 
 
-    public BaseResponse login(LoginRequest loginRequest) {
+    public BaseResponse login(LoginRequest loginRequest, Boolean isAdmin) {
         BaseResponse baseResponse ;
         try {
+
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(adminUrl+"/auth/login"))
                     .header("accept", "application/json")
@@ -36,6 +37,15 @@ public class AuthService {
                     .header("content-type", "application/json")
                     .method("POST", HttpRequest.BodyPublishers.ofString(LoginRequest.convertToString(loginRequest)))
                     .build();
+            if(isAdmin){
+                request = HttpRequest.newBuilder()
+                        .uri(URI.create(adminUrl+"/admin/login"))
+                        .header("accept", "application/json")
+//                .header("Authorization", "Bearer ")
+                        .header("content-type", "application/json")
+                        .method("POST", HttpRequest.BodyPublishers.ofString(LoginRequest.convertToString(loginRequest)))
+                        .build();
+            }
             HttpResponse response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
             ObjectMapper objectMapper = new ObjectMapper()
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);

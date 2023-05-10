@@ -193,18 +193,18 @@
             <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12" style="margin-top: 20px;">
                 <div class="card" id="content">
                     <div class="card-header">
-                        <h2><p th:if="${doctorResponse.doctor.id != null}"> Cập nhật thông tin bác sĩ</p></h2>
-                        <h2><p th:if="${doctorResponse.doctor.id == null}"> Thêm bác sĩ</p></h2>
+                        <h2><p th:if="${patientResponse.patient.id != null}"> Xem thông tin bệnh nhân</p></h2>
+                        <h2><p th:if="${patientResponse.patient.id == null}"> Thêm bệnh nhân</p></h2>
                     </div>
                     <div class="card-body">
 
                         <table class="table">
-                            <form method="POST" th:action="@{/admin/doctor/add}" th:object="${doctorResponse}">
+                            <form method="POST" th:action="@{/admin/patient/add}" th:object="${patientResponse}">
                                 <tr>
                                     <td colspan="2">
                                         <div class="form-group">
                                             <label for="fullName">Họ và tên:</label>&nbsp;<span class="error" id="errorName"></span>
-                                            <input type="text" th:field="*{doctor.fullName}" class="form-control" id="fullName"
+                                            <input type="text" th:field="*{patient.fullName}" class="form-control" id="fullName"
                                                    name="fullName" pattern="^([a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+)((\s{1,}[a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+|[\s*]){0,})$" oninput="checkPatternName()"
                                                    placeholder="Họ và tên...">
                                         </div>
@@ -212,8 +212,8 @@
                                     <td colspan="2">
                                         <div class="form-group">
                                             <label>Giới tính:</label><br>
-                                            <input type="radio" th:field="*{doctor.sex}" name="sex" th:value="M" th:checked="${doctorResponse.doctor.sex == 'M'}">Nam
-                                            <input type="radio" th:field="*{doctor.sex}" name="sex" th:value="F" th:checked="${doctorResponse.doctor.sex == 'F'}">Nữ
+                                            <input type="radio" th:field="*{patient.sex}" name="sex" th:value="M" th:checked="${patientResponse.patient.sex == 'M'}">Nam
+                                            <input type="radio" th:field="*{patient.sex}" name="sex" th:value="F" th:checked="${patientResponse.patient.sex == 'F'}">Nữ
                                         </div>
                                     </td>
                                 </tr>
@@ -221,7 +221,7 @@
                                     <td colspan="2">
                                         <div class="form-group">
                                             <label>Số điện thoại:</label>&nbsp;<span class="error" id="errorPhoneNumber"></span>
-                                            <input type="text" th:field="*{doctor.phoneNumber}" class="form-control"
+                                            <input type="text" th:field="*{patient.phoneNumber}" class="form-control"
                                                    pattern="^0\d{9}$" oninput="checkPatternPhoneNumber()"
                                                    id="phoneNumber" name="phoneNumber" placeholder="Số điện thoại..."/>
 
@@ -230,7 +230,7 @@
                                     <td colspan="2">
                                         <div class="form-group">
                                             <label for="identityNumber">CMND/CCCD:</label>&nbsp;<span class="error" id="errorIdentityNumber"></span>
-                                            <input type="text" th:field="*{doctor.identityNumber}" class="form-control"
+                                            <input type="text" th:field="*{patient.identityNumber}" class="form-control"
                                                    id="identityNumber" name="identityNumber"
                                                    pattern="^[0-9]{9}([0-9]{3})?$" oninput="checkPatternIdentityNumber()"
                                                    placeholder="CMND/CCCD..."/>
@@ -242,39 +242,24 @@
                                     <td colspan="2">
                                         <div class="form-group">
                                             <label>Email:</label>&nbsp;<span class="error" id="errorEmail"></span>
-                                            <input type="text" th:value="${doctorResponse.user.email}" class="form-control"
-                                                   th:if="${doctorResponse.doctor.id != null}" disabled/>
+                                            <input type="text" th:value="${patientResponse.user.email}" class="form-control"
+                                                   th:if="${patientResponse.patient.id != null}" disabled/>
                                             <input type="text" th:field="*{user.email}" class="form-control"
-                                                   th:if="${doctorResponse.doctor.id == null}"
+                                                   th:if="${patientResponse.patient.id == null}"
                                                    pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" oninput="checkPatternEmail()"
                                                    id="email" name="email" placeholder="Email..."/>
 
                                         </div>
                                     </td>
                                     <td colspan="2">
-                                        <div class="form-group">
-                                            <label>Khoa/Viện:</label>
-                                            <br>
-                                            <select class="form-control" name="departmentId"  th:if="${doctorResponse.doctor.id == null}">
-                                                <option value="" >--Khoa--</option>
-                                                <option value="1">Nha Khoa</option>
-                                                <option value="2">Da liễu</option>
-                                                <option value="3">Mắt</option>
-                                                <option value="4">Tai mũi họng</option>
-                                                <option value="5">Tiêu hóa</option>
-                                                <option value="6">Chấn thương chỉnh hình</option>
-                                            </select>
-                                            <input th:if="${doctorResponse.doctor.id != null}"
-                                                    type="text" th:value="${doctorResponse.doctor.department.name}" class="form-control"
-                                                   id="departmentName" name="departmentName" readonly/>
-                                        </div>
+
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="3">
                                         <div class="form-group">
-                                            <input type="hidden" th:field="*{doctor.id}" class="form-control" id="doctorId"
-                                                   name="doctorId">
+                                            <input type="hidden" th:field="*{patient.id}" class="form-control" id="patientId"
+                                                   name="patientId">
                                         </div>
                                     </td>
                                     <td>
@@ -287,16 +272,13 @@
                             </form>
                             <tr style="z-index: -1">
                                 <div class="cancel">
-                                    <form method="POST" th:action="@{/admin/doctors}">
-                                        <input type="hidden" th:value="${doctorResponse.doctor.department.id}" class="form-control"
-                                               id="departmentId" name="departmentId" readonly/>
+                                    <form method="POST" th:action="@{/admin/patients}">
                                         <button id="confirm2" type="submit"
                                                 class="btn btn-primary btn-register"
                                                 style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
                                             Quay lại danh sách
                                         </button>
                                     </form>
-
                                 </div>
                             </tr>
                         </table>
@@ -304,8 +286,31 @@
                 </div>
             </div>
         </div>
+        <div class="container">
+            <div class="table-responsive">
+                <br>
+                <h2 class="tm-block-title d-inline-block text-center">Danh sách bệnh</h2>
+                <br>
+                <table class="table table-hover table-striped tm-table-striped-even mt-3">
+                    <thead>
+                    <tr class="tm-bg-gray">
+                        <th scope="col" >Triệu chứng</th>
+                        <th scope="col" >Chuẩn đoán của bác sĩ</th>
+                        <th scope="col" class="text-center">Trạng thái</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${patientProfiles}">
+                        <td class="tm-product-name" th:text="${item.symptom}"></td>
+                        <td class="tm-product-name" th:text="${item.diagnostic}"></td>
+                        <td class="text-center"  th:if="${item.isComplete == true}" >Đã khám</td>
+                        <td class="text-center"  th:if="${item.isComplete == false}" >Chưa khám</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-</div>
 </div>
 <div th:include="footer.html"></div>
 <script src="script.js"></script>
@@ -421,9 +426,20 @@
 
     var message = /*[[${message}]]*/ "";
     if(message != null && message != ""){
-    alert(message);
+        alert(message);
+    }
+    var isAdd = /*[[${patientResponse.patient.id}]]*/ "";
+    if(isAdd != null && isAdd != ""){
+        var myDiv = document.getElementById("content");
+        var elements = myDiv.getElementsByTagName("*");
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].disabled = true;
+        }
+        document.getElementById("confirm2").disabled = false;
     }
     checkValid();
+
+
 
 
 

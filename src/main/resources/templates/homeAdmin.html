@@ -126,7 +126,7 @@
                     <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/admin/doctors}">Bác sĩ</a></li>
                 </ul>
             </li>
-            <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/booking}">Quản lý bệnh nhân</a></li>
+            <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/admin/patients}">Quản lý bệnh nhân</a></li>
             <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/patient/schedule}">Quản lý lịch khám</a></li>
             <li><a th:href="@{/user/logout}" th:if="${session.userType == 'ADMIN'}">Đăng xuất</a></li>
         </ul>

@@ -4,6 +4,7 @@ import com.example.DNFrontEnd.Model.AuthMessageCode;
 import com.example.DNFrontEnd.Model.BaseResponse;
 import com.example.DNFrontEnd.Model.DTO.DepartmentDTO;
 import com.example.DNFrontEnd.Model.DTO.DoctorDTO;
+import com.example.DNFrontEnd.Model.DTO.PatientDTO;
 import com.example.DNFrontEnd.Model.DTO.UserDTO;
 import com.example.DNFrontEnd.Model.ERROR;
 import com.example.DNFrontEnd.Model.request.*;
@@ -301,8 +302,8 @@ public class AdminController {
         return "redirect:/admin/doctor";
     }
 
-    @PostMapping("/user/activate")
-    public String activate(HttpServletRequest request, RedirectAttributes redirectAttrs, HttpSession session,
+    @PostMapping("/doctor/activate")
+    public String activateDoctor(HttpServletRequest request, RedirectAttributes redirectAttrs, HttpSession session,
                                 @ModelAttribute(name = "departmentId") String departmentId,
                                 @ModelAttribute(name = "email") String email){
         if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())
@@ -343,5 +344,171 @@ public class AdminController {
         redirectAttrs.addFlashAttribute("email", email);
         redirectAttrs.addFlashAttribute("page", page);
         return "redirect:/admin/doctors";
+    }
+    @PostMapping("/patient/activate")
+    public String activatePatient(HttpServletRequest request, RedirectAttributes redirectAttrs, HttpSession session,
+                           @ModelAttribute(name = "email") String email){
+        if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())
+                || StringUtils.isEmpty(session.getAttribute("userType").toString())
+                || !session.getAttribute("userType").toString().equalsIgnoreCase("ADMIN")) {
+            redirectAttrs.addFlashAttribute("loginRequest", new LoginRequest());
+            return "redirect:/admin";
+        }
+        email = request.getParameter("email");
+        String page = request.getParameter("page");
+        String userId = request.getParameter("userId");
+        String isActive = request.getParameter("isActive");
+        String message = "";
+        ActivateUserRequest activateUserRequest = new ActivateUserRequest();
+        if(!StringUtils.isEmpty(isActive) && !StringUtils.isEmpty(userId)){
+            if(isActive.equalsIgnoreCase("true")){
+                activateUserRequest.setUserId(Long.parseLong(userId));
+                activateUserRequest.setIsActive(false);
+                message = "Vô hiệu hóa thành công";
+            }
+            if(isActive.equalsIgnoreCase("false")){
+                activateUserRequest.setUserId(Long.parseLong(userId));
+                activateUserRequest.setIsActive(true);
+                message = "Kích hoạt thành công";
+            }
+            if(activateUserRequest.getUserId() != null){
+                BaseResponse baseResponse = adminService.activate(activateUserRequest,session.getAttribute("token").toString());
+                if(baseResponse != null && baseResponse.getCode() == ERROR.SUCCESS.getCode()
+                        && baseResponse.getMessage().equalsIgnoreCase(ERROR.SUCCESS.getMessage())){
+                    redirectAttrs.addFlashAttribute("message", message);
+                }else{
+                    redirectAttrs.addFlashAttribute("message", "Thất bại");
+                }
+            }
+        }
+        redirectAttrs.addFlashAttribute("email", email);
+        redirectAttrs.addFlashAttribute("page", page);
+        return "redirect:/admin/patients";
+    }
+
+    @GetMapping("patients")
+    public String getListPatient(Model model,HttpSession session, @ModelAttribute(name = "page") String page,
+                                @ModelAttribute(name = "email") String email,
+                                @ModelAttribute(name = "message") String message) throws JsonProcessingException {
+        if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())
+                || StringUtils.isEmpty(session.getAttribute("userType").toString())
+                || !session.getAttribute("userType").toString().equalsIgnoreCase("ADMIN")) {
+            model.addAttribute("loginRequest", new LoginRequest());
+            return "redirect:/admin";
+        }
+        ListPatientRequest listPatientRequest = new ListPatientRequest();
+        if(!StringUtils.isEmpty(email)){
+            model.addAttribute("email", email);
+            listPatientRequest.setEmail(email);
+        }else{
+            email="";
+            model.addAttribute("email", email);
+            listPatientRequest.setEmail(null);
+        }
+        if(!StringUtils.isEmpty(message)){
+            model.addAttribute("message", message);
+        }else{
+            model.addAttribute("message", "");
+        }
+        page = StringUtils.isEmpty(page) ? "0" : String.valueOf(Integer.parseInt(page) - 1);
+        model.addAttribute("page", String.valueOf(Integer.parseInt(page) + 1));
+        BasePaginationResponse basePaginationResponse = adminService.getPatients(listPatientRequest,session.getAttribute("token").toString(),page);
+        List<AdminPatientResponse> adminPatientResponseList = new ArrayList<>();
+        adminPatientResponseList = objectMapper.readValue(objectMapper.writeValueAsString(basePaginationResponse.getData()).toString(), List.class);
+        System.out.println(adminPatientResponseList);
+        List<String> pageList = new ArrayList<>();
+        if(basePaginationResponse.getTotalPages() > 1){
+            for (int i = 1; i <= basePaginationResponse.getTotalPages(); i++){
+                pageList.add(String.valueOf(i));
+            }
+        }
+        model.addAttribute("pageList", pageList );
+        model.addAttribute("adminPatientResponseList", adminPatientResponseList );
+        return "listPatient";
+    }
+    @PostMapping("patients")
+    public String getListPatient(HttpServletRequest request, RedirectAttributes redirectAttrs, HttpSession session,
+                                @ModelAttribute(name = "email") String email){
+        email = request.getParameter("email");
+        String page = request.getParameter("page");
+        redirectAttrs.addFlashAttribute("email", email);
+        redirectAttrs.addFlashAttribute("page", page);
+        return "redirect:/admin/patients";
+    }
+
+    @GetMapping("patient")
+    public String getPatient(Model model,HttpSession session,
+                            @ModelAttribute(name = "patientId") String patientId,
+                            @ModelAttribute(name = "message") String message,
+                            @ModelAttribute(name = "patientResponse") AdminPatientResponse patientResponse){
+        if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())
+                || StringUtils.isEmpty(session.getAttribute("userType").toString())
+                || !session.getAttribute("userType").toString().equalsIgnoreCase("ADMIN")) {
+            model.addAttribute("loginRequest", new LoginRequest());
+            return "redirect:/admin";
+        }
+        if(!StringUtils.isEmpty(message)){
+            model.addAttribute("message", message);
+        }else{
+            model.addAttribute("message", "");
+        }
+        if(patientResponse == null || patientResponse.getPatient() == null || patientResponse.getUser() == null){
+            patientResponse = new AdminPatientResponse();
+            PatientDTO patientDTO = new PatientDTO();
+            patientResponse.setPatient(patientDTO);
+            patientResponse.setUser(new UserDTO());
+            if(!StringUtils.isEmpty(patientId)){
+                patientResponse = adminService.getPatient(patientId,session.getAttribute("token").toString());
+            }
+        }
+        model.addAttribute("patientResponse", patientResponse);
+        model.addAttribute("patientProfiles",patientResponse.getPatientProfiles());
+        return "patientDetail";
+    }
+    @PostMapping("patient")
+    public String getPatient(HttpServletRequest request, RedirectAttributes redirectAttrs, HttpSession session,
+                            @ModelAttribute(name = "patientId") String patientId){
+        if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())
+                || StringUtils.isEmpty(session.getAttribute("userType").toString())
+                || !session.getAttribute("userType").toString().equalsIgnoreCase("ADMIN")) {
+            redirectAttrs.addFlashAttribute("loginRequest", new LoginRequest());
+            return "redirect:/admin";
+        }
+        redirectAttrs.addFlashAttribute("patientId", patientId );
+        return "redirect:/admin/patient";
+    }
+
+    @PostMapping("patient/add")
+    public String addPatient(HttpServletRequest request, RedirectAttributes redirectAttrs, HttpSession session,
+                            @ModelAttribute(name = "patientResponse") AdminPatientResponse patientResponse) throws JsonProcessingException {
+        if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())
+                || StringUtils.isEmpty(session.getAttribute("userType").toString())
+                || !session.getAttribute("userType").toString().equalsIgnoreCase("ADMIN")) {
+            redirectAttrs.addFlashAttribute("loginRequest", new LoginRequest());
+            return "redirect:/admin";
+        }
+        AddUserRequest addUserRequest = new AddUserRequest();
+//        String name = request.getParameter("fullName");
+//        String sex = request.getParameter("sex");
+//        String phoneNumber = request.getParameter("phoneNumber");
+//        String identityNumber = request.getParameter("identityNumber");
+//        String email = request.getParameter("email");
+        addUserRequest.setName(patientResponse.getPatient().getFullName());
+        addUserRequest.setSex(patientResponse.getPatient().getSex());
+        addUserRequest.setPhoneNumber(patientResponse.getPatient().getPhoneNumber());
+        addUserRequest.setIdentityNumber(patientResponse.getPatient().getIdentityNumber());
+        addUserRequest.setEmail(patientResponse.getUser().getEmail());
+        addUserRequest.setType(3);
+        BaseResponse baseResponse = adminService.addUser(addUserRequest,session.getAttribute("token").toString());
+        AdminPatientResponse patientResponse1 = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), AdminPatientResponse.class);
+        if(patientResponse1 != null){
+            redirectAttrs.addFlashAttribute("message", "Tạo bệnh nhân thành công");
+            redirectAttrs.addFlashAttribute("patientId", patientResponse1.getPatient().getId() );
+            return "redirect:/admin/patient";
+        }else{
+            redirectAttrs.addFlashAttribute("message", baseResponse.getMessage());
+            redirectAttrs.addFlashAttribute("patientResponse", patientResponse);
+        }
+        return "redirect:/admin/patient";
     }
 }

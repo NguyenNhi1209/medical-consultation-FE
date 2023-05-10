@@ -11,4 +11,6 @@ public class DepartmentService {
     private String adminUrl;
 
     private Logger logger = Logger.getLogger(getClass().getName());
+
+
 }

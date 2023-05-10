@@ -1,10 +1,7 @@
 package com.example.DNFrontEnd.Service;
 
 import com.example.DNFrontEnd.Model.BaseResponse;
-import com.example.DNFrontEnd.Model.request.ActivateUserRequest;
-import com.example.DNFrontEnd.Model.request.AddUserRequest;
-import com.example.DNFrontEnd.Model.request.ListDoctorRequest;
-import com.example.DNFrontEnd.Model.request.UpdateScheduleRequest;
+import com.example.DNFrontEnd.Model.request.*;
 import com.example.DNFrontEnd.Model.response.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -155,5 +152,71 @@ public class AdminService {
             throw new RuntimeException(e);
         }
         return baseResponse;
+    }
+
+    public BasePaginationResponse getPatients(ListPatientRequest request, String token, String page) {
+        BasePaginationResponse basePaginationResponse;
+        List<SchedulesResponse> schedulesResponseList = new ArrayList<>();
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/admin/patients?page="+page+"&size=10"))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .header("content-type", "application/json")
+                    .method("GET", HttpRequest.BodyPublishers.ofString(ListPatientRequest.convertToString(request)))
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+            basePaginationResponse = objectMapper.readValue(response.body().toString(),BasePaginationResponse.class);
+            System.out.println(basePaginationResponse);
+            schedulesResponseList = objectMapper.readValue(objectMapper.writeValueAsString(basePaginationResponse.getData()).toString(), List.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return basePaginationResponse;
+    }
+
+    public AdminPatientResponse getPatient(String patientId, String token) {
+        BaseResponse baseResponse;
+        AdminPatientResponse patientResponse = new AdminPatientResponse();
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/admin/patient/" + patientId))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .header("content-type", "application/json")
+                    .method("GET",HttpRequest.BodyPublishers.noBody() )
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+            System.out.println(baseResponse);
+            patientResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), AdminPatientResponse.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return patientResponse;
     }
 }

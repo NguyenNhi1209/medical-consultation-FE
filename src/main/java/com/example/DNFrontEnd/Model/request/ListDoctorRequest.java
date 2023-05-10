@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class ListDoctorRequest {
     private Long departmentId;
+    private String email;
     public static String convertToString(ListDoctorRequest listDoctorRequest) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String result = objectMapper.writeValueAsString(listDoctorRequest);

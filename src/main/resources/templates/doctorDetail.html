@@ -212,8 +212,8 @@
                                     <td colspan="2">
                                         <div class="form-group">
                                             <label>Giới tính:</label><br>
-                                            <input type="radio" th:field="*{doctor.sex}" name="sex" th:value="M">Nam
-                                            <input type="radio" th:field="*{doctor.sex}" name="sex" th:value="F">Nữ
+                                            <input type="radio" th:field="*{doctor.sex}" name="sex" th:value="M" th:checked="${doctorResponse.doctor.sex == 'M'}">Nam
+                                            <input type="radio" th:field="*{doctor.sex}" name="sex" th:value="F" th:checked="${doctorResponse.doctor.sex == 'F'}">Nữ
                                         </div>
                                     </td>
                                 </tr>
@@ -329,17 +329,19 @@
         var errorName = document.getElementById("errorName").innerHTML.trim();
         var errorPhoneNumber = document.getElementById("errorPhoneNumber").innerHTML.trim();
         var errorIdentityNumber = document.getElementById("errorIdentityNumber").innerHTML.trim();
+        var errorEmail = document.getElementById("errorEmail").innerHTML.trim();
         var name = document.getElementById("fullName").value.trim();
         var phoneNumber = document.getElementById("phoneNumber").value.trim();
         var identityNumber = document.getElementById("identityNumber").value.trim();
-        if(errorName === "" && errorPhoneNumber === "" && errorPhoneNumber === ""){
-            if(name === "" || phoneNumber === "" || identityNumber === ""){
+        var email = document.getElementById("email").value.trim();
+        if(name === "" || email === ""){
+            element.disabled = true;
+        }else{
+            if(errorName != "" || errorPhoneNumber != "" || errorPhoneNumber != "" || errorEmail != ""){
                 element.disabled = true;
             }else{
                 element.disabled = false;
             }
-        }else{
-            element.disabled = true;
         }
     }
 
@@ -379,7 +381,7 @@
         var pattern = new RegExp(input.pattern);
         var errorMsg = document.getElementById("errorPhoneNumber");
 
-        if (!pattern.test(input.value)) {
+        if (!pattern.test(input.value) && input.value.trim() != "") {
         errorMsg.innerHTML = "Số điện thoại không hợp lệ";
         input.classList.add("invalid");
         } else {
@@ -393,7 +395,7 @@
         var pattern = new RegExp(input.pattern);
         var errorMsg = document.getElementById("errorIdentityNumber");
 
-        if (!pattern.test(input.value)) {
+        if (!pattern.test(input.value) && input.value.trim() != "") {
         errorMsg.innerHTML = "Số CMND/CCCD không hợp lệ";
         input.classList.add("invalid");
         } else {
@@ -421,6 +423,7 @@
     if(message != null && message != ""){
     alert(message);
     }
+    checkValid();
 
 
 

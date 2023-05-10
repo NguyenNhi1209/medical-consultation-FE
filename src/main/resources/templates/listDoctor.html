@@ -197,10 +197,22 @@
                   <td>
                     <form th:method="POST" th:action="@{/admin/doctors}">
                       <button type="submit" class="btn btn-primary btn-register"
-                              style="margin: 75px 0px 10px 10px;float: left;background-color: #09d066;">Tất cả </a>
+                              style="margin: 75px 10px 10px 10px;float: left;background-color: #09d066;">Tất cả </a>
                       </button>
                     </form>
                   </td>
+                  <form th:method="POST" th:action="@{/admin/doctors}">
+                    <td>
+                      <input type="hidden" name="departmentId" th:value="${departmentId}">
+                      <input type="text" class="form-control" name="email" th:value="${email}" placeholder="Tìm theo email"
+                             style="margin: 75px 0px 10px 0px;float: right;padding: 6px 12px 6px 12px;border-radius: 5px;">
+                    </td>
+                    <td>
+                      <button type="submit" class="btn btn-primary btn-register"
+                              style="margin: 75px 0px 10px 10px;float: left;background-color: #09d066;">Tìm kiếm  </a>
+                      </button>
+                    </td>
+                  </form>
                 </tr>
               </table>
             </div>
@@ -225,9 +237,11 @@
               <tr class="tm-bg-gray">
                 <th scope="col" >Khoa</th>
                 <th scope="col" >Tên bác sĩ</th>
+                <th scope="col" >Email</th>
                 <th scope="col" class="text-center">Giới tính</th>
                 <th scope="col" class="text-center">Số điện thoại</th>
                 <th scope="col" class="text-center">CMND/CCCD</th>
+                <th scope="col" class="text-center">&nbsp;</th>
                 <th scope="col" class="text-center">&nbsp;</th>
               </tr>
               </thead>
@@ -235,19 +249,41 @@
               <tr th:each="item : ${doctorResponseList}">
                 <td class="tm-product-name" th:text="${item.doctor.department.name}"></td>
                 <td class="tm-product-name" th:text="${item.doctor.fullName}"></td>
+                <td class="tm-product-name" th:text="${item.user.email}"></td>
                 <td class="text-center"  th:if="${item.doctor.sex == 'F'}" >Nữ</td>
-                <td class="text-center"  th:if="${item.doctor.sex != 'F'}" >Nam</td>
+                <td class="text-center"  th:if="${item.doctor.sex == 'M'}" >Nam</td>
+                <td class="text-center"  th:if="${item.doctor.sex != 'M' && item.doctor.sex != 'F'}" >Chưa xác định</td>
                 <td class="text-center" th:text="${item.doctor.phoneNumber}"></td>
                 <td class="text-center" th:text="${item.doctor.identityNumber}"></td>
                 <td class="text-center">
-                  <form method="POST" th:action="@{/admin/doctor}" id="myForm">
+                  <form method="POST" th:action="@{/admin/doctor}" th:id="'myForm' + ${item.doctor.id}">
                     <input type="hidden" th:value="${item.doctor.id}" name="doctorId">
                   </form>
-                  <a href="#" th:onclick="'document.getElementById(\'myForm\').submit(); return false;'">
+                  <a href="#" th:onclick="'document.getElementById(\'myForm' + ${item.doctor.id} + '\').submit(); return false;'">
                     <i class="material-icons" style="font-size:24px">edit</i></a>
                 </td>
-
-
+                <td class="text-center">
+                  <form method="POST" th:action="@{/admin/user/activate}" th:if="${item.user.isActive == true}">
+                    <input type="hidden" name="departmentId" th:value="${departmentId}">
+                    <input type="hidden" name="email" th:value="${email}">
+                    <input type="hidden" name="userId" th:value="${item.user.id}">
+                    <input type="hidden" name="isActive" th:value="${item.user.isActive}">
+                    <button type="submit" class="btn btn-primary btn-register"
+                            style="margin: 0px 0px 10px 10px;float: left;background-color: #09d066;background-color:red;"
+                            onclick="return confirm('Bạn có chắc chắn muốn vô hiệu hóa bác sĩ không?')" >Vô hiệu hóa  </a>
+                    </button>
+                  </form>
+                  <form method="POST" th:action="@{/admin/user/activate}" th:if="${item.user.isActive == false}">
+                    <input type="hidden" name="departmentId" th:value="${departmentId}">
+                    <input type="hidden" name="email" th:value="${email}">
+                    <input type="hidden" name="userId" th:value="${item.user.id}">
+                    <input type="hidden" name="isActive" th:value="${item.user.isActive}">
+                    <button type="submit" class="btn btn-primary btn-register"
+                            style="margin: 0px 0px 10px 10px;float: left;background-color: #09d066;"
+                            onclick="return confirm('Bạn có chắc chắn muốn kích hoạt bác sĩ không?')">Kích hoạt  </a>
+                    </button>
+                  </form>
+                </td>
               </tr>
               </tbody>
             </table>
@@ -281,7 +317,11 @@
 </body>
 <script th:inline="javascript">
   function addDoctor() {
-        window.location.href = "http://localhost:8081/admin/doctor";
-    }
+      window.location.href = "http://localhost:8081/admin/doctor";
+  }
+  var message = /*[[${message}]]*/ "";
+  if(message != null && message != ""){
+  alert(message);
+  }
 </script>
 </html>

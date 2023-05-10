@@ -5,10 +5,8 @@ import com.example.DNFrontEnd.Model.BaseResponse;
 import com.example.DNFrontEnd.Model.DTO.DepartmentDTO;
 import com.example.DNFrontEnd.Model.DTO.DoctorDTO;
 import com.example.DNFrontEnd.Model.DTO.UserDTO;
-import com.example.DNFrontEnd.Model.request.AddUserRequest;
-import com.example.DNFrontEnd.Model.request.DetailDoctorScheduleRequest;
-import com.example.DNFrontEnd.Model.request.ListDoctorRequest;
-import com.example.DNFrontEnd.Model.request.LoginRequest;
+import com.example.DNFrontEnd.Model.ERROR;
+import com.example.DNFrontEnd.Model.request.*;
 import com.example.DNFrontEnd.Model.response.*;
 import com.example.DNFrontEnd.Service.AdminService;
 import com.example.DNFrontEnd.Service.AuthService;
@@ -155,7 +153,9 @@ public class AdminController {
     //doctor
     @GetMapping("doctors")
     public String getListDoctor(Model model,HttpSession session, @ModelAttribute(name = "page") String page,
-                                @ModelAttribute(name = "departmentId") String departmentId) throws JsonProcessingException {
+                                @ModelAttribute(name = "departmentId") String departmentId,
+                                @ModelAttribute(name = "email") String email,
+                                @ModelAttribute(name = "message") String message) throws JsonProcessingException {
         if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())
                 || StringUtils.isEmpty(session.getAttribute("userType").toString())
                 || !session.getAttribute("userType").toString().equalsIgnoreCase("ADMIN")) {
@@ -170,6 +170,19 @@ public class AdminController {
             departmentId = "";
             model.addAttribute("departmentId", departmentId);
             listDoctorRequest.setDepartmentId(null);
+        }
+        if(!StringUtils.isEmpty(email)){
+            model.addAttribute("email", email);
+            listDoctorRequest.setEmail(email);
+        }else{
+            email="";
+            model.addAttribute("email", email);
+            listDoctorRequest.setEmail(null);
+        }
+        if(!StringUtils.isEmpty(message)){
+            model.addAttribute("message", message);
+        }else{
+            model.addAttribute("message", "");
         }
         page = StringUtils.isEmpty(page) ? "0" : String.valueOf(Integer.parseInt(page) - 1);
         model.addAttribute("page", String.valueOf(Integer.parseInt(page) + 1));
@@ -189,10 +202,13 @@ public class AdminController {
     }
     @PostMapping("doctors")
     public String getListDoctor(HttpServletRequest request, RedirectAttributes redirectAttrs, HttpSession session,
-                                @ModelAttribute(name = "departmentId") String departmentId){
+                                @ModelAttribute(name = "departmentId") String departmentId,
+                                @ModelAttribute(name = "email") String email){
         departmentId = request.getParameter("departmentId");
+        email = request.getParameter("email");
         String page = request.getParameter("page");
         redirectAttrs.addFlashAttribute("departmentId", departmentId);
+        redirectAttrs.addFlashAttribute("email", email);
         redirectAttrs.addFlashAttribute("page", page);
         return "redirect:/admin/doctors";
     }
@@ -255,7 +271,13 @@ public class AdminController {
 //        String phoneNumber = request.getParameter("phoneNumber");
 //        String identityNumber = request.getParameter("identityNumber");
 //        String email = request.getParameter("email");
-
+        if(StringUtils.isEmpty(departmentId)){
+            DepartmentDTO departmentDTO = new DepartmentDTO();
+            doctorResponse.getDoctor().setDepartment(departmentDTO);
+            redirectAttrs.addFlashAttribute("doctorResponse", doctorResponse);
+            redirectAttrs.addFlashAttribute("message", "Phải chọn khoa");
+            return "redirect:/admin/doctor";
+        }
         addUserRequest.setName(doctorResponse.getDoctor().getFullName());
         addUserRequest.setSex(doctorResponse.getDoctor().getSex());
         addUserRequest.setPhoneNumber(doctorResponse.getDoctor().getPhoneNumber());
@@ -279,4 +301,47 @@ public class AdminController {
         return "redirect:/admin/doctor";
     }
 
+    @PostMapping("/user/activate")
+    public String activate(HttpServletRequest request, RedirectAttributes redirectAttrs, HttpSession session,
+                                @ModelAttribute(name = "departmentId") String departmentId,
+                                @ModelAttribute(name = "email") String email){
+        if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())
+                || StringUtils.isEmpty(session.getAttribute("userType").toString())
+                || !session.getAttribute("userType").toString().equalsIgnoreCase("ADMIN")) {
+            redirectAttrs.addFlashAttribute("loginRequest", new LoginRequest());
+            return "redirect:/admin";
+        }
+        departmentId = request.getParameter("departmentId");
+        email = request.getParameter("email");
+        String page = request.getParameter("page");
+        String userId = request.getParameter("userId");
+        String isActive = request.getParameter("isActive");
+        String message = "";
+        ActivateUserRequest activateUserRequest = new ActivateUserRequest();
+        if(!StringUtils.isEmpty(isActive) && !StringUtils.isEmpty(userId)){
+            if(isActive.equalsIgnoreCase("true")){
+                activateUserRequest.setUserId(Long.parseLong(userId));
+                activateUserRequest.setIsActive(false);
+                message = "Vô hiệu hóa thành công";
+            }
+            if(isActive.equalsIgnoreCase("false")){
+                activateUserRequest.setUserId(Long.parseLong(userId));
+                activateUserRequest.setIsActive(true);
+                message = "Kích hoạt thành công";
+            }
+            if(activateUserRequest.getUserId() != null){
+                BaseResponse baseResponse = adminService.activate(activateUserRequest,session.getAttribute("token").toString());
+                if(baseResponse != null && baseResponse.getCode() == ERROR.SUCCESS.getCode()
+                        && baseResponse.getMessage().equalsIgnoreCase(ERROR.SUCCESS.getMessage())){
+                    redirectAttrs.addFlashAttribute("message", message);
+                }else{
+                    redirectAttrs.addFlashAttribute("message", "Thất bại");
+                }
+            }
+        }
+        redirectAttrs.addFlashAttribute("departmentId", departmentId);
+        redirectAttrs.addFlashAttribute("email", email);
+        redirectAttrs.addFlashAttribute("page", page);
+        return "redirect:/admin/doctors";
+    }
 }

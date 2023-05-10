@@ -1,6 +1,7 @@
 package com.example.DNFrontEnd.Service;
 
 import com.example.DNFrontEnd.Model.BaseResponse;
+import com.example.DNFrontEnd.Model.request.ActivateUserRequest;
 import com.example.DNFrontEnd.Model.request.AddUserRequest;
 import com.example.DNFrontEnd.Model.request.ListDoctorRequest;
 import com.example.DNFrontEnd.Model.request.UpdateScheduleRequest;
@@ -103,6 +104,37 @@ public class AdminService {
                     .header("Authorization", "Bearer " + token)
                     .header("content-type", "application/json")
                     .method("POST", HttpRequest.BodyPublishers.ofString(AddUserRequest.convertToString(request)))
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+            System.out.println(baseResponse);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return baseResponse;
+    }
+
+    public BaseResponse activate(ActivateUserRequest request, String token) {
+        BaseResponse baseResponse = new BaseResponse<>();
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/admin/activate"))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .header("content-type", "application/json")
+                    .method("POST", HttpRequest.BodyPublishers.ofString(ActivateUserRequest.convertToString(request)))
                     .build();
             HttpResponse response = HttpClient.newHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
             ObjectMapper objectMapper = new ObjectMapper()

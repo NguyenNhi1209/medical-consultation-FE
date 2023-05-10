@@ -272,11 +272,11 @@ public class HomeController {
             paymentDTO.setVnp_OrderInfo(session.getAttribute("name") + " thanh toán đặt lịch khám bệnh " + saveScheduleRequest.getMedicalDate());
             paymentDTO.setScheduleId(detailScheduleResponse.getScheduleId());
             System.out.println(paymentDTO.toString());
+            String payment = paymentService.payment(paymentDTO,session.getAttribute("token").toString());
             if(vnp_BankCode.equalsIgnoreCase("CASH")){
                 redirectAttrs.addFlashAttribute("message","Đặt lịch thành công");
                 return "redirect:/patient/schedule/detail1?scheduleId=" + detailScheduleResponse.getScheduleId();
             }
-            String payment = paymentService.payment(paymentDTO,session.getAttribute("token").toString());
             if(!payment.equalsIgnoreCase("error")){
                 session.setAttribute("scheduleId", detailScheduleResponse.getScheduleId());
                 if(!payment.equalsIgnoreCase("CASH")){

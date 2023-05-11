@@ -277,7 +277,7 @@ public class AdminController {
 //        String phoneNumber = request.getParameter("phoneNumber");
 //        String identityNumber = request.getParameter("identityNumber");
 //        String email = request.getParameter("email");
-        if(StringUtils.isEmpty(departmentId)){
+        if(StringUtils.isEmpty(departmentId) && StringUtils.isEmpty(doctorResponse.getDoctor().getId().toString())){
             DepartmentDTO departmentDTO = new DepartmentDTO();
             doctorResponse.getDoctor().setDepartment(departmentDTO);
             redirectAttrs.addFlashAttribute("doctorResponse", doctorResponse);

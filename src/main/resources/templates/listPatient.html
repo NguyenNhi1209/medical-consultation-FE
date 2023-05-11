@@ -260,7 +260,7 @@
                     <i class="material-icons" style="font-size:24px">edit</i></a>
                 </td>
                 <td class="text-center">
-                  <form method="POST" th:action="@{/admin/user/activate}" th:if="${item.user.isActive == true}">
+                  <form method="POST" th:action="@{/admin/patient/activate}" th:if="${item.user.isActive == true}">
                     <input type="hidden" name="departmentId" th:value="${departmentId}">
                     <input type="hidden" name="email" th:value="${email}">
                     <input type="hidden" name="userId" th:value="${item.user.id}">

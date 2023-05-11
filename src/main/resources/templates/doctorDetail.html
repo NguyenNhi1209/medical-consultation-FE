@@ -430,6 +430,12 @@
     }
     checkValid();
 
+    var doctorId = /*[[${{doctorResponse.doctor.id}}]]*/ "";
+    if(doctorId != null && doctorId != ""){
+        var element7 = document.getElementById("confirm");
+        element7.style.display = "none";
+    }
+
 
 
 

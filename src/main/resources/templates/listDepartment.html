@@ -181,14 +181,20 @@
       <div class="col-xl-8 col-lg-12 tm-md-12 tm-sm-12 tm-col">
         <div class="bg-white tm-block h-100">
           <div class="row">
-            <h2 class="tm-block-title d-inline-block text-center">Danh sách bệnh nhân</h2>
+            <h2 class="tm-block-title d-inline-block text-center">Danh sách khoa</h2>
             <div class="col-md-8 col-sm-12">
               <table>
                 <tr>
-                  <form th:method="POST" th:action="@{/admin/patients}">
+                  <td>
+                    <form th:method="POST" th:action="@{/admin/departments}">
+                      <button type="submit" class="btn btn-primary btn-register"
+                              style="margin: 75px 10px 10px 10px;float: left;background-color: #09d066;">Tất cả </a>
+                      </button>
+                    </form>
+                  </td>
+                  <form th:method="POST" th:action="@{/admin/departments}">
                     <td>
-                      <input type="hidden" name="departmentId" th:value="${departmentId}">
-                      <input type="text" class="form-control" name="email" th:value="${email}" placeholder="Tìm theo email"
+                      <input type="text" class="form-control" name="name" th:value="${name}" placeholder="Tìm theo tên khoa"
                              style="margin: 75px 0px 10px 0px;float: right;padding: 6px 12px 6px 12px;border-radius: 5px;">
                     </td>
                     <td>
@@ -197,27 +203,12 @@
                       </button>
                     </td>
                   </form>
-                  <td>
-                  <td>
-                    <form th:method="POST" th:action="@{/admin/patients}">
-                      <button type="submit" class="btn btn-primary btn-register"
-                              style="margin: 75px 10px 10px 10px;float: left;background-color: #09d066;">Tất cả </a>
-                      </button>
-                    </form>
-                  </td>
-                  </td>
                 </tr>
               </table>
             </div>
             <div class="col-md-4 col-sm-12 text-right">
               <table style="float: right;">
-                <tr>
-                    <td>
-                      <button type="button" class="btn btn-primary btn-register" th:attr="onclick=|addPatient();|"
-                              style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;"> Thêm bệnh nhân
-                      </button>
-                    </td>
-                </tr>
+
               </table>
             </div>
           </div>
@@ -226,60 +217,25 @@
             <table class="table table-hover table-striped tm-table-striped-even mt-3">
               <thead>
               <tr class="tm-bg-gray">
-                <th scope="col" >Email</th>
-                <th scope="col" >Tên bệnh nhân</th>
-                <th scope="col" class="text-center">Ngày sinh</th>
-                <th scope="col" class="text-center">Giới tính</th>
-                <th scope="col" class="text-center">Số điện thoại</th>
-                <th scope="col" class="text-center">CMND/CCCD</th>
-                <th scope="col" >Địa chỉ</th>
-                <th scope="col" class="text-center">Nghề nghiệp</th>
-                <th scope="col" class="text-center">Danh sách HSBN</th>
-                <th scope="col" class="text-center">&nbsp;</th>
+                <th scope="col" >ID</th>
+                <th scope="col" >Tên Khoa</th>
+                <th scope="col" class="text-center">Ký hiệu</th>
+                <th scope="col" class="text-center">Giá dịch vụ</th>
+                <th scope="col" class="text-center">Tổng số bác sĩ</th>
               </tr>
               </thead>
               <tbody>
-              <tr th:each="item : ${adminPatientResponseList}">
-                <td class="tm-product-name" th:text="${item.user.email}"></td>
-                <td class="tm-product-name" th:text="${item.patient.fullName}"></td>
-                <td class="text-center" th:if="${item.patient.birthday != null}"
-                    th:text="${item.patient.birthday.substring(8,10)+'-'+item.patient.birthday.substring(5,7)+'-'+item.patient.birthday.substring(0,4)}"></td>
-                <td class="text-center" th:if="${item.patient.birthday == null}">Chưa xác định</td>
-                <td class="text-center"  th:if="${item.patient.sex == 'F'}" >Nữ</td>
-                <td class="text-center"  th:if="${item.patient.sex == 'M'}" >Nam</td>
-                <td class="text-center"  th:if="${item.patient.sex != 'M' && item.patient.sex != 'F'}" >Chưa xác định</td>
-                <td class="text-center" th:text="${item.patient.phoneNumber}"></td>
-                <td class="text-center" th:text="${item.patient.identityNumber}"></td>
-                <td class="tm-product-name" th:text="${item.patient.address}"></td>
-                <td class="text-center" th:text="${item.patient.job}"></td>
+              <tr th:each="item : ${departmentResponseList}">
+                <td class="tm-product-name" th:text="${item.id}"></td>
+                <td class="tm-product-name" th:text="${item.name}"></td>
+                <td class="text-center" th:text="${item.symbol}"></td>
+                <td class="text-center" th:text="${item.price.toString.substring(0, item.price.toString.length()-5) + '.000 đ'}"></td>
                 <td class="text-center">
-                  <form method="POST" th:action="@{/admin/patient}" th:id="'myForm' + ${item.patient.id}">
-                    <input type="hidden" th:value="${item.patient.id}" name="patientId">
+                  <form method="POST" th:action="@{/admin/doctors}" th:id="'myForm' + ${item.id}">
+                    <input type="hidden" name="departmentId" th:value="${item.id}">
                   </form>
-                  <a href="#" th:onclick="'document.getElementById(\'myForm' + ${item.patient.id} + '\').submit(); return false;'">
-                    <i class="material-icons" style="font-size:24px">edit</i></a>
-                </td>
-                <td class="text-center">
-                  <form method="POST" th:action="@{/admin/user/activate}" th:if="${item.user.isActive == true}">
-                    <input type="hidden" name="departmentId" th:value="${departmentId}">
-                    <input type="hidden" name="email" th:value="${email}">
-                    <input type="hidden" name="userId" th:value="${item.user.id}">
-                    <input type="hidden" name="isActive" th:value="${item.user.isActive}">
-                    <button type="submit" class="btn btn-primary btn-register"
-                            style="margin: 0px 0px 10px 10px;float: left;background-color: #09d066;background-color:red;"
-                            onclick="return confirm('Bạn có chắc chắn muốn vô hiệu hóa người dùng không?')" >Vô hiệu hóa  </a>
-                    </button>
-                  </form>
-                  <form method="POST" th:action="@{/admin/patient/activate}" th:if="${item.user.isActive == false}">
-                    <input type="hidden" name="departmentId" th:value="${departmentId}">
-                    <input type="hidden" name="email" th:value="${email}">
-                    <input type="hidden" name="userId" th:value="${item.user.id}">
-                    <input type="hidden" name="isActive" th:value="${item.user.isActive}">
-                    <button type="submit" class="btn btn-primary btn-register"
-                            style="margin: 0px 0px 10px 10px;float: left;background-color: #09d066;"
-                            onclick="return confirm('Bạn có chắc chắn muốn kích hoạt người dùng không?')">Kích hoạt  </a>
-                    </button>
-                  </form>
+                  <a href="#" th:onclick="'document.getElementById(\'myForm' + ${item.id} + '\').submit(); return false;'">
+                    <i th:text="${item.doctors.size}" ></i></a>
                 </td>
               </tr>
               </tbody>
@@ -288,7 +244,7 @@
           <div class="table-responsive">
             <div class="col-md-12 col-sm-12 text-center" >
               <table style="float:right;">
-                <form th:method="POST" th:action="@{/admin/patients}">
+                <form th:method="POST" th:action="@{/admin/departments}">
                   <input type="hidden" th:value="${department}" name="department">
                   <tr>
                     <td th:each="cell : ${pageList}">
@@ -313,8 +269,8 @@
 <div th:include="footer.html"></div>
 </body>
 <script th:inline="javascript">
-  function addPatient() {
-      window.location.href = "http://localhost:8081/admin/patient";
+  function addDoctor() {
+      window.location.href = "http://localhost:8081/admin/doctor";
   }
   var message = /*[[${message}]]*/ "";
   if(message != null && message != ""){

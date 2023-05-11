@@ -11,6 +11,7 @@ import com.example.DNFrontEnd.Model.request.*;
 import com.example.DNFrontEnd.Model.response.*;
 import com.example.DNFrontEnd.Service.AdminService;
 import com.example.DNFrontEnd.Service.AuthService;
+import com.example.DNFrontEnd.Service.DepartmentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -39,6 +41,9 @@ public class AdminController {
 
     @Autowired
     AdminService adminService;
+
+    @Autowired
+    DepartmentService departmentService;
 
     ObjectMapper objectMapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
@@ -510,5 +515,99 @@ public class AdminController {
             redirectAttrs.addFlashAttribute("patientResponse", patientResponse);
         }
         return "redirect:/admin/patient";
+    }
+
+    @GetMapping("departments")
+    public String getListDepartment(Model model,HttpSession session, @ModelAttribute(name = "page") String page,
+                                 @ModelAttribute(name = "name") String name,
+                                 @ModelAttribute(name = "message") String message) throws JsonProcessingException {
+        if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())
+                || StringUtils.isEmpty(session.getAttribute("userType").toString())
+                || !session.getAttribute("userType").toString().equalsIgnoreCase("ADMIN")) {
+            model.addAttribute("loginRequest", new LoginRequest());
+            return "redirect:/admin";
+        }
+        ListDepartmentRequest listDepartmentRequest = new ListDepartmentRequest();
+        if(!StringUtils.isEmpty(name)){
+            model.addAttribute("name", name);
+            listDepartmentRequest.setName(name);
+        }else{
+            name="";
+            model.addAttribute("name", name);
+            listDepartmentRequest.setName(null);
+        }
+        if(!StringUtils.isEmpty(message)){
+            model.addAttribute("message", message);
+        }else{
+            model.addAttribute("message", "");
+        }
+        page = StringUtils.isEmpty(page) ? "0" : String.valueOf(Integer.parseInt(page) - 1);
+        model.addAttribute("page", String.valueOf(Integer.parseInt(page) + 1));
+        BasePaginationResponse basePaginationResponse = departmentService.getDepartments(listDepartmentRequest,session.getAttribute("token").toString(),page);
+        List<DepartmentResponse> departmentResponseList = new ArrayList<>();
+        departmentResponseList = objectMapper.readValue(objectMapper.writeValueAsString(basePaginationResponse.getData()).toString(), List.class);
+        System.out.println(departmentResponseList);
+        List<String> pageList = new ArrayList<>();
+        if(basePaginationResponse.getTotalPages() > 1){
+            for (int i = 1; i <= basePaginationResponse.getTotalPages(); i++){
+                pageList.add(String.valueOf(i));
+            }
+        }
+        model.addAttribute("pageList", pageList );
+        model.addAttribute("departmentResponseList", departmentResponseList );
+        return "listDepartment";
+    }
+    @PostMapping("departments")
+    public String getListDepartment(HttpServletRequest request, RedirectAttributes redirectAttrs, HttpSession session,
+                                 @ModelAttribute(name = "name") String name){
+        name = request.getParameter("name");
+        String page = request.getParameter("page");
+        redirectAttrs.addFlashAttribute("name", name);
+        redirectAttrs.addFlashAttribute("page", page);
+        return "redirect:/admin/departments";
+    }
+
+    @GetMapping("stats-revenue")
+    public String getStatsRevenue(Model model,HttpSession session,
+                                    @ModelAttribute(name = "year") String year,
+                                    @ModelAttribute(name = "message") String message) throws JsonProcessingException {
+        if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())
+                || StringUtils.isEmpty(session.getAttribute("userType").toString())
+                || !session.getAttribute("userType").toString().equalsIgnoreCase("ADMIN")) {
+            model.addAttribute("loginRequest", new LoginRequest());
+            return "redirect:/admin";
+        }
+        StatsRevenueRequest statsRevenueRequest = new StatsRevenueRequest();
+        if(!StringUtils.isEmpty(year)){
+            model.addAttribute("year", year);
+            statsRevenueRequest.setYear(Integer.parseInt(year));
+        }else{
+            model.addAttribute("year", year);
+            statsRevenueRequest.setYear(LocalDate.now().getYear());
+        }
+        if(!StringUtils.isEmpty(message)){
+            model.addAttribute("message", message);
+        }else{
+            model.addAttribute("message", "");
+        }
+        StatsRevenueResponse statsRevenueResponse = adminService.getStatsRevenue(statsRevenueRequest,session.getAttribute("token").toString());
+        List<Double> listRevenue = new ArrayList<>();
+        if(statsRevenueResponse != null && statsRevenueResponse.getStatsRevenues() != null
+            && !statsRevenueResponse.getStatsRevenues().isEmpty()){
+            year = String.valueOf(statsRevenueResponse.getYear());
+            for (int i = 0 ; i < statsRevenueResponse.getStatsRevenues().size(); i++){
+                listRevenue.add(statsRevenueResponse.getStatsRevenues().get(i).getRevenues());
+            }
+        }
+        model.addAttribute("year", year );
+        model.addAttribute("listRevenue", listRevenue );
+        return "statsRevenue";
+    }
+    @PostMapping("stats-revenue")
+    public String getStatsRevenue(HttpServletRequest request, RedirectAttributes redirectAttrs, HttpSession session,
+                                    @ModelAttribute(name = "year") String year){
+        year = request.getParameter("year");
+        redirectAttrs.addFlashAttribute("year", year);
+        return "redirect:/admin/stats-revenue";
     }
 }

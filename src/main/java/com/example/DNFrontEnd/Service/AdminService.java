@@ -219,4 +219,37 @@ public class AdminService {
         }
         return patientResponse;
     }
+
+    public StatsRevenueResponse getStatsRevenue(StatsRevenueRequest request, String token) {
+        BaseResponse baseResponse = new BaseResponse();
+        StatsRevenueResponse statsRevenueResponse = new StatsRevenueResponse();
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/admin/stats-revenue"))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .header("content-type", "application/json")
+                    .method("POST", HttpRequest.BodyPublishers.ofString(StatsRevenueRequest.convertToString(request)))
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+            System.out.println(baseResponse);
+            statsRevenueResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), StatsRevenueResponse.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return statsRevenueResponse;
+    }
 }

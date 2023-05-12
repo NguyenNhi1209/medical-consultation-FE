@@ -270,39 +270,53 @@ public class AdminController {
             redirectAttrs.addFlashAttribute("loginRequest", new LoginRequest());
             return "redirect:/admin";
         }
-        AddUserRequest addUserRequest = new AddUserRequest();
-        String departmentId = request.getParameter("departmentId");
-//        String name = request.getParameter("fullName");
-//        String sex = request.getParameter("sex");
-//        String phoneNumber = request.getParameter("phoneNumber");
-//        String identityNumber = request.getParameter("identityNumber");
-//        String email = request.getParameter("email");
-        if(StringUtils.isEmpty(departmentId) && StringUtils.isEmpty(doctorResponse.getDoctor().getId().toString())){
-            DepartmentDTO departmentDTO = new DepartmentDTO();
-            doctorResponse.getDoctor().setDepartment(departmentDTO);
-            redirectAttrs.addFlashAttribute("doctorResponse", doctorResponse);
-            redirectAttrs.addFlashAttribute("message", "Phải chọn khoa");
-            return "redirect:/admin/doctor";
-        }
-        addUserRequest.setName(doctorResponse.getDoctor().getFullName());
-        addUserRequest.setSex(doctorResponse.getDoctor().getSex());
-        addUserRequest.setPhoneNumber(doctorResponse.getDoctor().getPhoneNumber());
-        addUserRequest.setIdentityNumber(doctorResponse.getDoctor().getIdentityNumber());
-        addUserRequest.setEmail(doctorResponse.getUser().getEmail());
-        addUserRequest.setDepartmentId(Long.parseLong(departmentId));
-        addUserRequest.setType(2);
-        BaseResponse baseResponse = adminService.addUser(addUserRequest,session.getAttribute("token").toString());
-        DoctorResponse doctorResponse1 = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), DoctorResponse.class);
-        if(doctorResponse1 != null){
-            redirectAttrs.addFlashAttribute("message", "Tạo bác sĩ thành công");
-            redirectAttrs.addFlashAttribute("doctorId", doctorResponse1.getDoctor().getId() );
-            return "redirect:/admin/doctor";
+        if (doctorResponse.getDoctor().getId() != null){
+            UpdateDoctorRequest updateDoctorRequest = new UpdateDoctorRequest();
+            updateDoctorRequest.setId(doctorResponse.getDoctor().getId());
+            updateDoctorRequest.setSex(doctorResponse.getDoctor().getSex());
+            updateDoctorRequest.setName(doctorResponse.getDoctor().getFullName());
+            updateDoctorRequest.setIdentityNumber(doctorResponse.getDoctor().getIdentityNumber());
+            updateDoctorRequest.setPhoneNumber(doctorResponse.getDoctor().getPhoneNumber());
+            BaseResponse baseResponse = adminService.updateDoctor(updateDoctorRequest,session.getAttribute("token").toString());
+            DoctorResponse doctorResponse2 = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), DoctorResponse.class);
+            if(doctorResponse2 != null){
+                redirectAttrs.addFlashAttribute("message", "Chỉnh sửa thành công");
+                redirectAttrs.addFlashAttribute("doctorId", doctorResponse2.getDoctor().getId() );
+                return "redirect:/admin/doctor";
+            }else{
+                redirectAttrs.addFlashAttribute("message", baseResponse.getMessage());
+                redirectAttrs.addFlashAttribute("doctorResponse", doctorResponse);
+            }
         }else{
-            redirectAttrs.addFlashAttribute("message", baseResponse.getMessage());
-            DepartmentDTO departmentDTO = new DepartmentDTO();
-            departmentDTO.setId(Long.parseLong(departmentId));
-            doctorResponse.getDoctor().setDepartment(departmentDTO);
-            redirectAttrs.addFlashAttribute("doctorResponse", doctorResponse);
+            AddUserRequest addUserRequest = new AddUserRequest();
+            String departmentId = request.getParameter("departmentId");
+            if(StringUtils.isEmpty(departmentId)){
+                DepartmentDTO departmentDTO = new DepartmentDTO();
+                doctorResponse.getDoctor().setDepartment(departmentDTO);
+                redirectAttrs.addFlashAttribute("doctorResponse", doctorResponse);
+                redirectAttrs.addFlashAttribute("message", "Phải chọn khoa");
+                return "redirect:/admin/doctor";
+            }
+            addUserRequest.setName(doctorResponse.getDoctor().getFullName());
+            addUserRequest.setSex(doctorResponse.getDoctor().getSex());
+            addUserRequest.setPhoneNumber(doctorResponse.getDoctor().getPhoneNumber());
+            addUserRequest.setIdentityNumber(doctorResponse.getDoctor().getIdentityNumber());
+            addUserRequest.setEmail(doctorResponse.getUser().getEmail());
+            addUserRequest.setDepartmentId(Long.parseLong(departmentId));
+            addUserRequest.setType(2);
+            BaseResponse baseResponse = adminService.addUser(addUserRequest,session.getAttribute("token").toString());
+            DoctorResponse doctorResponse1 = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), DoctorResponse.class);
+            if(doctorResponse1 != null){
+                redirectAttrs.addFlashAttribute("message", "Tạo bác sĩ thành công");
+                redirectAttrs.addFlashAttribute("doctorId", doctorResponse1.getDoctor().getId() );
+                return "redirect:/admin/doctor";
+            }else{
+                redirectAttrs.addFlashAttribute("message", baseResponse.getMessage());
+                DepartmentDTO departmentDTO = new DepartmentDTO();
+                departmentDTO.setId(Long.parseLong(departmentId));
+                doctorResponse.getDoctor().setDepartment(departmentDTO);
+                redirectAttrs.addFlashAttribute("doctorResponse", doctorResponse);
+            }
         }
         return "redirect:/admin/doctor";
     }
@@ -567,23 +581,26 @@ public class AdminController {
         return "redirect:/admin/departments";
     }
 
-    @GetMapping("stats-revenue")
+    @GetMapping("stats")
     public String getStatsRevenue(Model model,HttpSession session,
-                                    @ModelAttribute(name = "year") String year,
-                                    @ModelAttribute(name = "message") String message) throws JsonProcessingException {
+                                  @ModelAttribute(name = "year") String year,
+                                  @ModelAttribute(name = "monthS") String monthS,
+                                  @ModelAttribute(name = "yearS") String yearS,
+                                  @ModelAttribute(name = "message") String message) throws JsonProcessingException {
         if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())
                 || StringUtils.isEmpty(session.getAttribute("userType").toString())
                 || !session.getAttribute("userType").toString().equalsIgnoreCase("ADMIN")) {
             model.addAttribute("loginRequest", new LoginRequest());
             return "redirect:/admin";
         }
+
+        // for revenue
         StatsRevenueRequest statsRevenueRequest = new StatsRevenueRequest();
         if(!StringUtils.isEmpty(year)){
-            model.addAttribute("year", year);
             statsRevenueRequest.setYear(Integer.parseInt(year));
         }else{
-            model.addAttribute("year", year);
-            statsRevenueRequest.setYear(LocalDate.now().getYear());
+            year = String.valueOf(LocalDate.now().getYear());
+            statsRevenueRequest.setYear(Integer.parseInt(year));
         }
         if(!StringUtils.isEmpty(message)){
             model.addAttribute("message", message);
@@ -601,13 +618,63 @@ public class AdminController {
         }
         model.addAttribute("year", year );
         model.addAttribute("listRevenue", listRevenue );
-        return "statsRevenue";
+
+        //for schedule
+        StatsScheduleRequest statsScheduleRequest = new StatsScheduleRequest();
+        String condition = "";
+        if(!StringUtils.isEmpty(yearS)){
+            condition = yearS;
+        }else{
+            yearS = String.valueOf(LocalDate.now().getYear());
+            condition = String.valueOf(yearS);
+        }
+        if(!StringUtils.isEmpty(monthS)){
+            monthS = Integer.parseInt(monthS) < 10 ? "0" + monthS : monthS;
+            condition = condition + "-" + monthS;
+        }else{
+            monthS = String.valueOf(LocalDate.now().getMonthValue() < 10 ? "0" + LocalDate.now().getMonthValue() : LocalDate.now().getMonthValue());
+            condition = condition + "-" + monthS;
+        }
+        statsScheduleRequest.setCondition(condition);
+        StatsScheduleResponse statsScheduleResponse = adminService.getStatsSchedule(statsScheduleRequest,session.getAttribute("token").toString());
+        List<String> listDepartment = new ArrayList<>();
+        List<Long> listTotal = new ArrayList<>();
+        List<Long> listDone = new ArrayList<>();
+        List<Long> listNotDone = new ArrayList<>();
+        List<Long> listPay = new ArrayList<>();
+        List<Long> listNotPay = new ArrayList<>();
+        if(statsScheduleResponse != null && statsScheduleResponse.getStatsSchedules() != null
+                && !statsScheduleResponse.getStatsSchedules().isEmpty()){
+            for (int i = 0 ; i < statsScheduleResponse.getStatsSchedules().size(); i++){
+                listDepartment.add(statsScheduleResponse.getStatsSchedules().get(i).getDepartment().getSymbol());
+                listTotal.add(statsScheduleResponse.getStatsSchedules().get(i).getScheduleRevenue().getTotalSchedule());
+                listDone.add(statsScheduleResponse.getStatsSchedules().get(i).getScheduleRevenue().getTotalDone());
+                listNotDone.add(statsScheduleResponse.getStatsSchedules().get(i).getScheduleRevenue().getTotalNotDone());
+                listPay.add(statsScheduleResponse.getStatsSchedules().get(i).getScheduleRevenue().getTotalPay());
+                listNotPay.add(statsScheduleResponse.getStatsSchedules().get(i).getScheduleRevenue().getTotalNotPay());
+            }
+        }
+        model.addAttribute("yearS", yearS );
+        model.addAttribute("monthS", monthS );
+        model.addAttribute("listDepartment", listDepartment );
+        model.addAttribute("listTotal", listTotal );
+        model.addAttribute("listDone", listDone );
+        model.addAttribute("listNotDone", listNotDone );
+        model.addAttribute("listPay", listPay );
+        model.addAttribute("listNotPay", listNotPay );
+        return "stats";
     }
-    @PostMapping("stats-revenue")
+    @PostMapping("stats")
     public String getStatsRevenue(HttpServletRequest request, RedirectAttributes redirectAttrs, HttpSession session,
-                                    @ModelAttribute(name = "year") String year){
+                                  @ModelAttribute(name = "year") String year,
+                                  @ModelAttribute(name = "monthS") String monthS,
+                                  @ModelAttribute(name = "yearS") String yearS){
         year = request.getParameter("year");
         redirectAttrs.addFlashAttribute("year", year);
-        return "redirect:/admin/stats-revenue";
+        monthS = request.getParameter("monthS");
+        redirectAttrs.addFlashAttribute("monthS", monthS);
+        yearS = request.getParameter("yearS");
+        redirectAttrs.addFlashAttribute("yearS", yearS);
+        return "redirect:/admin/stats";
     }
 }

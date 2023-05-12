@@ -170,19 +170,9 @@
                 </ul>
             </li>
             <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/admin/patients}">Quản lý bệnh nhân</a></li>
-            <li><a href="#">Thống kê</a>
-                <ul>
-                    <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/admin/stats-revenue}">Doanh thu</a></li>
-                    <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/admin/doctors}">Lịch khám</a></li>
-                </ul>
-            </li>
+            <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/admin/stats}">Thống kê</a></li>
             <li><a th:href="@{/user/logout}" th:if="${session.userType == 'ADMIN'}">Đăng xuất</a></li>
         </ul>
-        <!--        <a th:href="@{/admin}">Trang chủ</a>-->
-        <!--        <a th:if="${session.userType != null}" th:href="@{/booking}">Bệnh nhân</a>-->
-        <!--        <a th:if="${session.userType != null}" th:href="@{/updateProfile}">Bác sĩ</a>-->
-        <!--        <a th:if="${session.userType != null}" th:href="@{/patient/schedule}">Lịch khám bệnh</a>-->
-        <!--        <a th:href="@{/user/logout}" th:if="${session.userType != null}">Đăng xuất</a>-->
     </nav>
 
     <div class="icons" th:if="${session.name != null}">
@@ -430,11 +420,7 @@
     }
     checkValid();
 
-    var doctorId = /*[[${{doctorResponse.doctor.id}}]]*/ "";
-    if(doctorId != null && doctorId != ""){
-        var element7 = document.getElementById("confirm");
-        element7.style.display = "none";
-    }
+
 
 
 

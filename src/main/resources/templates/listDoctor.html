@@ -153,12 +153,7 @@
         </ul>
       </li>
       <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/admin/patients}">Quản lý bệnh nhân</a></li>
-      <li><a href="#">Thống kê</a>
-        <ul>
-          <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/admin/stats-revenue}">Doanh thu</a></li>
-          <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/admin/doctors}">Lịch khám</a></li>
-        </ul>
-      </li>
+      <li><a th:if="${session.userType == 'ADMIN'}" th:href="@{/admin/stats}">Thống kê</a></li>
       <li><a th:href="@{/user/logout}" th:if="${session.userType == 'ADMIN'}">Đăng xuất</a></li>
     </ul>
     <!--        <a th:href="@{/admin}">Trang chủ</a>-->

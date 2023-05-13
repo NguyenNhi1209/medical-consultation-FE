@@ -629,9 +629,11 @@ public class AdminController {
             condition = String.valueOf(yearS);
         }
         if(!StringUtils.isEmpty(monthS)){
+            model.addAttribute("monthS", monthS );
             monthS = Integer.parseInt(monthS) < 10 ? "0" + monthS : monthS;
             condition = condition + "-" + monthS;
         }else{
+            model.addAttribute("monthS", LocalDate.now().getMonthValue() );
             monthS = String.valueOf(LocalDate.now().getMonthValue() < 10 ? "0" + LocalDate.now().getMonthValue() : LocalDate.now().getMonthValue());
             condition = condition + "-" + monthS;
         }
@@ -655,7 +657,6 @@ public class AdminController {
             }
         }
         model.addAttribute("yearS", yearS );
-        model.addAttribute("monthS", monthS );
         model.addAttribute("listDepartment", listDepartment );
         model.addAttribute("listTotal", listTotal );
         model.addAttribute("listDone", listDone );

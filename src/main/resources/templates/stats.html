@@ -310,10 +310,7 @@
     options: {
         scales: {
             y: {
-                beginAtZero: true,
-                ticks: {
-                    stepSize: 1
-                }
+                beginAtZero: true
             }
         }
     }
@@ -377,7 +374,7 @@
       myChart1.data.datasets[0].data = [[${listNotPay}]];
       myChart1.data.datasets[0].label ="Tổng số lịch chưa thanh toán " + monthS + " " + yearS;
     } else if (value === "pay") {
-      myChart1.data.datasets[0].data = [[${listDone}]];
+      myChart1.data.datasets[0].data = [[${listPay}]];
       myChart1.data.datasets[0].label ="Tổng số lịch đã thanh toán " + monthS + " " + yearS;
     }
     myChart1.update();

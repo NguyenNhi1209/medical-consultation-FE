@@ -80,7 +80,7 @@ public class HomeController {
     @PostMapping("/booking")
     public String postBooking(Model model, HttpSession session,RedirectAttributes redirectAttrs, HttpServletRequest servletRequest,
                               @ModelAttribute("patientProfileResponse")PatientProfileResponse patientProfileResponse,
-                              @ModelAttribute("listFreeSchedule") ListFreeSchedule listFreeSchedule ) {
+                              @ModelAttribute("listFreeSchedule") ListFreeSchedule listFreeSchedule ) throws JsonProcessingException {
         if (StringUtils.isEmpty(servletRequest.getParameter("symptom"))) {
             redirectAttrs.addFlashAttribute("error", "Nhập triệu chứng");
             redirectAttrs.addFlashAttribute("patientProfileResponse", patientProfileResponse);
@@ -97,21 +97,24 @@ public class HomeController {
         String symptom = servletRequest.getParameter("symptom");
         System.out.println(date + " " + symptom);
 
-//        CreatePatientProfileRequest request = new CreatePatientProfileRequest();
-//        request.setSymptom(servletRequest.getParameter("symptom"));
-//        patientProfileResponse = patientService.createPatientProfile(request, session.getAttribute("token").toString());
         patientProfileResponse.setSymptom(symptom);
         redirectAttrs.addFlashAttribute("patientProfileResponse", patientProfileResponse);
         FetchDepartmentRequest request1 = new FetchDepartmentRequest();
         request1.setMedicalDate(date);
         request1.setSymptom(symptom);
         System.out.println(request1);
-        listFreeSchedule = patientService.fetchDepartment(request1,session.getAttribute("token").toString());
 
+        BaseResponse baseResponse = patientService.fetchDepartment(request1,session.getAttribute("token").toString());
+        listFreeSchedule = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), ListFreeSchedule.class);
+        System.out.println(listFreeSchedule);
+        if(!StringUtils.isEmpty(baseResponse.getMessageCode()) && baseResponse.getMessageCode().equalsIgnoreCase("EMPTY_SYMPTOM")){
+            redirectAttrs.addFlashAttribute("error", baseResponse.getMessage());
+            redirectAttrs.addFlashAttribute("scheduleDate",date);
+            return "redirect:/booking";
+        }
         if(listFreeSchedule != null){
             session.setAttribute("chooseTime",true);
             redirectAttrs.addFlashAttribute("listFreeSchedule", listFreeSchedule);
-
         }
 
         List<ListFreeSchedule.DetailSchedule> detailSchedules = listFreeSchedule.getDetailSchedules();
@@ -189,7 +192,9 @@ public class HomeController {
             BaseResponse baseResponse = patientService.savePatient(savePatientRequest, session.getAttribute("token").toString());
             patientResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), PatientResponse.class);
             redirectAttrs.addFlashAttribute("patientResponse", patientResponse);
-            session.setAttribute("name",patientResponse.getFullName());
+            if(patientResponse != null){
+                session.setAttribute("name",patientResponse.getFullName());
+            }
         }else{
             SaveProfileRequest saveProfileRequest = new SaveProfileRequest();
             saveProfileRequest.setId(doctorProfileResponse.getDoctorId());

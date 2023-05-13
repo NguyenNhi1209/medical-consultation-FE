@@ -100,9 +100,8 @@ public class PatientService {
         return patientProfileResponse;
     }
 
-    public ListFreeSchedule fetchDepartment(FetchDepartmentRequest request, String token) {
+    public BaseResponse fetchDepartment(FetchDepartmentRequest request, String token) {
         BaseResponse baseResponse;
-        ListFreeSchedule listFreeSchedule = null;
         try {
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .uri(URI.create(adminUrl+"/department/fetch"))
@@ -117,8 +116,7 @@ public class PatientService {
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
             baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
-            listFreeSchedule = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), ListFreeSchedule.class);
-            System.out.println(listFreeSchedule);
+
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -132,7 +130,7 @@ public class PatientService {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-        return listFreeSchedule;
+        return baseResponse;
     }
     public DetailScheduleResponse saveSchedule(SaveScheduleRequest request, String token) {
         BaseResponse baseResponse;

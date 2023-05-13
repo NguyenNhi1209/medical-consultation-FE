@@ -92,7 +92,8 @@ background: linear-gradient(#141e30, #243b55);
                     </div>
                     <div class="form-group">
                         <label for="birthday">Ngày sinh</label>
-                        <input type="date" th:field="*{birthday}" class="form-control" id="birthday" name="birthday"/>
+                        <input type="date" th:field="*{birthday}" class="form-control" id="birthday" name="birthday"
+                                onkeydown="return false"/>
 
                     </div>
                     <div class="form-group">
@@ -212,5 +213,10 @@ background: linear-gradient(#141e30, #243b55);
     }
 
     checkValid();
+    var now = new Date();
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var day = ("0" + now.getDate()).slice(-2);
+    var today = now.getFullYear() + "-" + month + "-" + day;
+    document.getElementById("birthday").setAttribute("max", today);
 </script>
 </html>

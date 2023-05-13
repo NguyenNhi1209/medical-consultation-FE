@@ -116,7 +116,7 @@
                                         <div class="form-group">
                                             <label for="birthday">Ngày sinh:</label>
                                             <input type="date" th:field="*{birthday}" class="form-control" id="birthday"
-                                                   name="birthday"/>
+                                                   name="birthday" onkeydown="return false"/>
 
                                         </div>
                                     </td>
@@ -222,6 +222,13 @@
     element1.disabled = false;
     var element2 = document.getElementById("confirm2");
     element2.style.display = "none";
+
+
+    var now = new Date();
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var day = ("0" + now.getDate()).slice(-2);
+    var today = now.getFullYear() + "-" + month + "-" + day;
+    document.getElementById("birthday").setAttribute("max", today);
 
     function checkValid(){
         var element = document.getElementById("confirm");

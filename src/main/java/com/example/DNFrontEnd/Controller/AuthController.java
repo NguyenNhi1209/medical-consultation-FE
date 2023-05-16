@@ -214,7 +214,12 @@ public class AuthController {
                     redirectAttrs.addFlashAttribute("registerConfirm", "Đăng ký tài khoản thành công! Vui lòng kiểm tra Email để xác thực tài khoản.");
                     return "redirect:/user/login";
                 }
+                if(baseResponse.getData() == null){
+                    redirectAttrs.addFlashAttribute("error", baseResponse.getMessage());
+                    return "redirect:/user/register";
+                }
             }
+
         } catch (HttpClientErrorException ex) {
             ex.printStackTrace();
             System.out.println("catch roi");

@@ -56,6 +56,7 @@
         <a th:href="@{/introduce}">Giới thiệu</a>
         <a th:if="${session.userType != 'DOCTOR'}" th:href="@{/booking}">Đặt lịch khám</a>
         <a th:if="${session.userType != null}" th:href="@{/updateProfile}">Quản lý thông tin</a>
+        <a th:if="${session.userType != null}" th:href="@{/patientProfile}">Khám bệnh</a>
         <a th:if="${session.userType != null && session.userType != 'DOCTOR'}" th:href="@{/patient/schedule}">Xem lịch đã đặt</a>
         <a th:if="${session.userType == 'DOCTOR'}" th:href="@{/doctor/schedule}">Xem lịch khám</a>
         <a th:href="@{/user/logout}" th:if="${session.userType != null}">Đăng xuất</a>

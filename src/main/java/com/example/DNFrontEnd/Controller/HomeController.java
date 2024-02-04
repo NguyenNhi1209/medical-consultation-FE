@@ -307,5 +307,34 @@ public class HomeController {
         return "success";
     }
 
+    @GetMapping("/patientProfile")
+    public String test(Model model, HttpSession session, @ModelAttribute("patientResponse") PatientResponse patientResponse, @ModelAttribute(name = "error") String error) throws JsonProcessingException {
+        if (error != "" && error != null) {
+            model.addAttribute("patientResponse", patientResponse);
+            model.addAttribute("error", error);
+        } else {
+            model.addAttribute("patientResponse", new PatientResponse());
+            model.addAttribute("error", "");
+        }
 
+        //get patien/doctor by userID
+        if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())) {
+            model.addAttribute("loginRequest", new LoginRequest());
+            return "login";
+        }
+//        if (session.getAttribute("userType") != null || StringUtils.isEmpty(session.getAttribute("userType").toString())) {
+//            if (session.getAttribute("userType").toString().equalsIgnoreCase("PATIENT")) {
+//                BaseResponse baseResponse = patientService.getPatient(session.getAttribute("token").toString());
+//                patientResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), PatientResponse.class);
+//                model.addAttribute("patientResponse", patientResponse);
+//                return "updateProfilePatient";
+//            }
+//            if (session.getAttribute("userType").toString().equalsIgnoreCase("DOCTOR")) {
+//                DoctorProfileResponse doctorProfileResponse = doctorService.getDoctorProfile(session.getAttribute("token").toString());
+//                model.addAttribute("doctorProfileResponse", doctorProfileResponse);
+//                return "updateProfileDoctor";
+//            }
+//        }
+        return "patientProfile";
+    }
 }

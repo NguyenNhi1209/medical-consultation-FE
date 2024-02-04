@@ -81,12 +81,13 @@ public class AuthController {
         LoginRequest user = new LoginRequest();
         user.setEmail(request.getParameter("email"));
         user.setPassword(request.getParameter("password"));
-        String isDoctor =  request.getParameter("loginWithDoctor");
-        if(isDoctor != null){
-            user.setLoginWithDoctor(true);
-        }else{
-            user.setLoginWithDoctor(false);
-        }
+        user.setLoginWithDoctor(true);
+//        String isDoctor =  request.getParameter("loginWithDoctor");
+//        if(isDoctor != null){
+//            user.setLoginWithDoctor(true);
+//        }else{
+//            user.setLoginWithDoctor(false);
+//        }
         System.out.println(user.toString());
 
         try {

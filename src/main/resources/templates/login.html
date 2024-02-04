@@ -89,10 +89,10 @@ background: linear-gradient(#141e30, #243b55);
                     <input type="password" th:field="*{password}" name="password" placeholder="Nhập mật khẩu" id="input-password"
                            class="form-control">
                 </div>
-                <div class="form-group">
-                    <input type="checkbox" name="loginWithDoctor" />
-                    <label> Bạn là bác sĩ</label>
-                </div>
+<!--                <div class="form-group">-->
+<!--                    <input type="checkbox" name="loginWithDoctor" />-->
+<!--                    <label> Bạn là bác sĩ</label>-->
+<!--                </div>-->
                 <span th:text="${error}" style="color:red;"></span>
                 <br>
                                 <p class="lost-password"><a th:href="@{/user/forgotPassword}">Quên mật khẩu?</a></p>

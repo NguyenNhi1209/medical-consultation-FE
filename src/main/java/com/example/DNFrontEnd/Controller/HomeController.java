@@ -2,6 +2,7 @@ package com.example.DNFrontEnd.Controller;
 
 import com.example.DNFrontEnd.Model.BaseResponse;
 import com.example.DNFrontEnd.Model.DTO.PaymentDTO;
+import com.example.DNFrontEnd.Model.entity.ParentDetail;
 import com.example.DNFrontEnd.Model.request.*;
 import com.example.DNFrontEnd.Model.response.*;
 import com.example.DNFrontEnd.Service.DoctorService;
@@ -308,12 +309,16 @@ public class HomeController {
     }
 
     @GetMapping("/patientProfile")
-    public String test(Model model, HttpSession session, @ModelAttribute("patientResponse") PatientResponse patientResponse, @ModelAttribute(name = "error") String error) throws JsonProcessingException {
+    public String test(Model model, HttpSession session, @ModelAttribute("parentDetail") ParentDetail parentDetail,
+                       @ModelAttribute("createPatientResponse") CreatePatientResponse createPatientResponse,
+                       @ModelAttribute(name = "error") String error) throws JsonProcessingException {
         if (error != "" && error != null) {
-            model.addAttribute("patientResponse", patientResponse);
+            model.addAttribute("parentDetail", parentDetail);
+            model.addAttribute("createPatientResponse", createPatientResponse);
             model.addAttribute("error", error);
         } else {
-            model.addAttribute("patientResponse", new PatientResponse());
+            model.addAttribute("parentDetail", new ParentDetail());
+            model.addAttribute("createPatientResponse", new CreatePatientResponse());
             model.addAttribute("error", "");
         }
 
@@ -335,6 +340,7 @@ public class HomeController {
 //                return "updateProfileDoctor";
 //            }
 //        }
+
         return "patientProfile";
     }
 }

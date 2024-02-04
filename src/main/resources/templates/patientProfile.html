@@ -10,6 +10,7 @@
             rel="stylesheet"
             th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"
     />
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <title>Thông tin cá nhân</title>
     <style>
@@ -59,8 +60,6 @@
             min-width: 100%
         }
         table td{
-        text-align: center;
-        vertical-align: middle;
             padding: 5px 5px 5px 5px;
         }
         footer {
@@ -86,6 +85,19 @@
         .error{
         color: red;
         }
+        select {
+            display: block;
+            width: 100%;
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -99,140 +111,137 @@
                         <h2><p>Thông tin bệnh nhân</p></h2>
                     </div>
                     <div class="card-body">
-                        <table class="table" style="border: 1px solid;">
-                            <form method="POST" th:action="@{/updateProfile}" th:object="${patientResponse}">
+                        <table>
+                            <form method="POST" th:action="@{/patient/searchParent}" th:object="${parentDetail}">
                                 <tr>
-                                    <td colspan="2">
-                                        <div class="form-group">
-<!--                                            <label>Số điện thoại:</label>&nbsp;<span class="error" id="errorPhoneNumber"></span>-->
-<!--                                            <input type="text" th:field="*{phoneNumber}" class="form-control"-->
-<!--                                                   pattern="^0\d{9}$" oninput="checkPatternPhoneNumber()"-->
-<!--                                                   id="phoneNumber" name="phoneNumber" placeholder="Số điện thoại..."/>-->
-                                        </div>
-                                    </td>
-                                    <td colspan="2">
-<!--                                        <div class="form-group">-->
-<!--                                            <label for="identityNumber">CMND/CCCD:</label>&nbsp;<span class="error" id="errorIdentityNumber"></span>-->
-<!--                                            <input type="text" th:field="*{identityNumber}" class="form-control"-->
-<!--                                                   id="identityNumber" name="identityNumber"-->
-<!--                                                   pattern="^[0-9]{9}([0-9]{3})?$" oninput="checkPatternIdentityNumber()"-->
-<!--                                                   placeholder="CMND/CCCD..."/>-->
-<!--                                        </div>-->
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <div class="form-group">
-                                            <label for="fullName">Họ và tên:</label>&nbsp;<span class="error" id="errorName"></span>
-                                            <input type="text" th:field="*{fullName}" class="form-control" id="fullName" name="fullName"
-                                                   pattern="^([a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+)((\s{1,}[a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+|[\s*]){0,})$" oninput="checkPatternName()"
-                                                   placeholder="Họ và tên...">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
-                                            <label for="birthday">Ngày sinh:</label>
-                                            <input type="date" th:field="*{birthday}" class="form-control" id="birthday"
-                                                   name="birthday" onkeydown="return false"/>
-
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
-                                            <label>Giới tính:</label><br>
-                                            <input type="radio" th:field="*{sex}" name="sex" th:value="M">Nam
-                                            <input type="radio" th:field="*{sex}" name="sex" th:value="F">Nữ
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <div class="form-group">
-                                            <label for="address">Địa chỉ:</label>&nbsp;<span class="error" id="errorAddress"></span>
-                                            <input type="text" th:field="*{address}" class="form-control" id="address"
-                                                   name="address"
-                                                   pattern="^([0-9a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ,-/]+)((\s{1,}[0-9a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ,-/]+|[\s*]){0,})$" oninput="checkPatternAddress()"
-                                                   placeholder="Địa chỉ...">
-                                        </div>
-                                    </td>
-                                    <td colspan="2">
-                                        <div class="form-group">
-                                            <label for="job">Nghề nghiệp:</label>&nbsp;<span class="error" id="errorJob"></span>
-                                            <input type="text" th:field="*{job}" class="form-control" id="job"
-                                                   name="job"
-                                                   pattern="^([a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+)((\s{1,}[a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+|[\s*]){0,})$" oninput="checkPatternJob()"
-                                                   placeholder="Công việc...">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3">
-                                        <div class="form-group">
-                                            <input type="hidden" th:field="*{id}" class="form-control" id="id"
-                                                   name="id">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <button type="submit" class="btn btn-primary btn-register" id="confirm"
-                                                style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
-                                            Lưu
-                                        </button>
-                                        <div class="update">
-                                            <button id="confirm1" type="button"
-                                                    class="btn btn-primary btn-register" th:attr="onclick=|update();|"
-                                                    style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
-                                                Chỉnh sửa
-                                            </button>
-                                        </div>
-                                        <div class="cancel">
-                                            <button id="confirm2" type="button"
-                                                    class="btn btn-primary btn-register" th:attr="onclick=|cancel();|"
-                                                    style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
-                                                Hủy
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </form>
-                        </table>
-
-                        <table style="border: 1px solid;">
-                            <form method="POST" th:action="@{/updateProfile}" th:object="${patientResponse}">
-                                <tr>
-                                    <td rowspan="3" style="width: 40%; border: 1px solid;">
-                                        <div class="form-group">
-                                            <label>Số điện thoại:</label>&nbsp;<span class="error" id="errorPhoneNumber"></span></br>
+                                    <td style="width: 80%;">
+                                            <label>Nhập số điện thoại: </label>&nbsp;<span class="error" id="errorPhoneNumber"></span></br>
                                             <input type="text" th:field="*{phoneNumber}" class="form-control" pattern="^0\d{9}$"
                                                    oninput="checkPatternPhoneNumber()" id="phoneNumber" name="phoneNumber" placeholder="Số điện thoại..."
-                                                   style="width: 30%; float: left"/>
-                                            <button id="search" type="button"
-                                                    class="btn btn-primary btn-register" th:attr="onclick=|search();|"
-                                                    style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
-                                                Tìm kiếm
-                                            </button>
-                                        </div>
+                                                   style=" float: left"/>
                                     </td>
                                     <td>
-                                        <label>Họ tên:</label>
-                                        <input type="text">
+                                        <button id="search" type="submit"
+                                                class="btn btn-primary btn-register"
+                                                style="margin: 35px 0px 10px 0px;float: left;background-color: #09d066;">
+                                            Tìm kiếm
+                                        </button>
+
+                                        <button id="add" type="addparent"
+                                                class="btn btn-primary btn-register" th:attr="onclick=|addparent();|"
+                                                style="margin: 35px 0px 10px 10px;float: left;background-color: #09d066;">
+                                            + Thêm mới
+                                        </button>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>Địa chỉ:</label>
-                                        <input type="text">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>Danh sách bé:</label>
-                                        <select>
-                                            <option th:each="option : ${dropdownOptions}" th:value="${option.value}" th:text="${option.label}">Default Option</option>
-                                        </select>
-                                    </td>
+
                                 </tr>
                             </form>
                         </table>
+
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" th:action="@{/patient/savePatient}" th:object="${createPatientResponse}">
+                            <div class="col-md-6 col-lg-6 col-6 col-md-6 col-sm-6"><h4>Thông tin cha mẹ:</h4>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <label>Số điện thoại:</label>
+                                            <input type="text" th:field="*{parentDetail.phoneNumber}" class="form-control" pattern="^0\d{9}$"
+                                                   oninput="checkPatternPhoneNumber()" id="phoneNumberP" name="phoneNumberP" placeholder="Số điện thoại..."
+                                                   style=" float: left"/>
+                                        </td>
+                                        <td>
+                                            <label>Họ và tên:</label>
+                                            <input type="text" th:field="*{parentDetail.fullName}" class="form-control"
+                                                   id="fullNameP" name="fullNameP" placeholder="Họ và tên..."
+                                                   style=" float: left"/>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td>
+                                            <label>Địa chỉ:</label>
+                                            <input type="text" th:field="*{parentDetail.address}" class="form-control"
+                                                   id="addressP" name="addressP" placeholder="Địa chỉ..."
+                                                   style=" float: left"/>
+                                        </td>
+                                        <td>
+                                            <label>Danh sách bé:</label>
+                                            <select>
+                                                <option th:each="option : ${dropdownOptions}" th:value="${option.value}" th:text="${option.label}">Default Option</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-6 col-md-6 col-sm-6" style="border-left:1px solid">
+                                <h4>Thông tin bé:</h4>
+                                <table>
+                                    <tr>
+                                        <td>
+                                                <label for="fullName">Họ và tên:</label>&nbsp;<span class="error" id="errorName"></span>
+                                                <input type="text" th:field="*{patientDetail.fullName}" class="form-control" id="fullName" name="fullName"
+                                                       pattern="^([a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+)((\s{1,}[a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+|[\s*]){0,})$" oninput="checkPatternName()"
+                                                       placeholder="Họ và tên...">
+                                        </td>
+                                        <td>
+                                                <label for="birthday">Ngày sinh:</label>
+                                                <input type="date" th:field="*{patientDetail.birthday}" class="form-control" id="birthday"
+                                                       name="birthday" onkeydown="return false"/>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td >
+
+                                                <label for="address">Cân nặng:</label>&nbsp;<span class="error" id="errorAddress"></span>
+                                                <input type="text" th:field="*{patientDetail.weight}" class="form-control" id="address"
+                                                       name="address"
+                                                       pattern="^([0-9a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ,-/]+)((\s{1,}[0-9a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ,-/]+|[\s*]){0,})$" oninput="checkPatternAddress()"
+                                                       placeholder="Địa chỉ...">
+
+                                        <td>
+
+                                                <label>Giới tính:</label><br>
+                                                <input type="radio" th:field="*{patientDetail.sex}" name="sex" th:value="M">Nam
+                                                <input type="radio" th:field="*{patientDetail.sex}" name="sex" th:value="F">Nữ
+
+                                        </td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" th:field="*{patientDetail.id}" class="form-control" id="id"
+                                                   name="id">
+                                            <button type="submit" class="btn btn-primary btn-register" id="confirm"
+                                                    style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
+                                                Lưu
+                                            </button>
+                                            <div class="cancel">
+                                                <button id="confirm2" type="button"
+                                                        class="btn btn-primary btn-register" th:attr="onclick=|cancel();|"
+                                                        style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
+                                                    Hủy
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td>
+
+                                            <div class="update">
+                                                <button id="confirm1" type="button"
+                                                        class="btn btn-primary btn-register" th:attr="onclick=|update();|"
+                                                        style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
+                                                    Khám ->
+                                                </button>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -359,6 +368,10 @@
         }
         checkValid();
     }
+    var message = /*[[${message}]]*/ "";
+       if(message != null && message != ""){
+       alert(message);
+       }
 
 </script>
 </html>

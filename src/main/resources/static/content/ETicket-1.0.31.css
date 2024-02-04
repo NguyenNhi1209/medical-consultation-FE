@@ -140,10 +140,7 @@ optgroup {
     font-weight: 700
 }
 
-table {
-    border-collapse: collapse;
-    border-spacing: 0
-}
+
 
 td, th {
     padding: 0
@@ -211,21 +208,15 @@ td, th {
         background-color: #fff !important
     }
 
-    .btn > .caret, .dropup > .btn > .caret {
-        border-top-color: #000 !important
-    }
+
 
     .label {
         border: 1px solid #000
     }
 
-    .table {
-        border-collapse: collapse !important
-    }
 
-    .table-bordered td, .table-bordered th {
-        border: 1px solid #ddd !important
-    }
+
+
 }
 
 @font-face {
@@ -1123,7 +1114,7 @@ hr {
     margin-top: 20px;
     margin-bottom: 20px;
     border: 0;
-    border-top: 1px solid #eee
+
 }
 
 .sr-only {
@@ -2389,9 +2380,7 @@ pre code {
     }
 }
 
-table {
-    background-color: transparent
-}
+
 
 th {
     text-align: left
@@ -2407,7 +2396,7 @@ th {
     padding: 8px;
     line-height: 1.42857143;
     vertical-align: top;
-    border-top: 1px solid #ddd
+
 }
 
 .table > thead > tr > th {
@@ -2415,13 +2404,9 @@ th {
     border-bottom: 2px solid #ddd
 }
 
-.table > caption + thead > tr:first-child > td, .table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > td, .table > thead:first-child > tr:first-child > th {
-    border-top: 0
-}
 
-.table > tbody + tbody {
-    border-top: 2px solid #ddd
-}
+
+
 
 .table .table {
     background-color: #fff

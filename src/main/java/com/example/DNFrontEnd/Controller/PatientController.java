@@ -1,10 +1,12 @@
 package com.example.DNFrontEnd.Controller;
 
+import com.example.DNFrontEnd.Model.BaseResponse;
+import com.example.DNFrontEnd.Model.entity.ParentDetail;
+import com.example.DNFrontEnd.Model.request.CreatePatientRequest;
 import com.example.DNFrontEnd.Model.request.DetailDoctorScheduleRequest;
 import com.example.DNFrontEnd.Model.request.ListDoctorScheduleRequest;
 import com.example.DNFrontEnd.Model.request.ListPatientScheduleRequest;
-import com.example.DNFrontEnd.Model.response.BasePaginationResponse;
-import com.example.DNFrontEnd.Model.response.SchedulesResponse;
+import com.example.DNFrontEnd.Model.response.*;
 import com.example.DNFrontEnd.Service.PatientService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -123,5 +125,67 @@ public class PatientController {
 //        System.out.println(schedulesResponse);
         return "schedulePatientDetail";
     }
+    @PostMapping("/searchParent")
+    public String searchParent(RedirectAttributes redirectAttrs, HttpSession session, @RequestParam String phoneNumber,
+                               @ModelAttribute(name = "message") String message) throws JsonProcessingException {
+        BaseResponse baseResponse = patientService.searchParent(phoneNumber, session.getAttribute("token").toString());
+        if(baseResponse.getMessageCode() == null){
+            SearchPatientResponse searchPatientResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), SearchPatientResponse.class);
+            CreatePatientResponse createPatientResponse = new CreatePatientResponse();
+            createPatientResponse.setParentDetail(searchPatientResponse.getParentDetail());
+            createPatientResponse.setPatientDetail(searchPatientResponse.getPatientDetails().get(0));
+            redirectAttrs.addFlashAttribute("createPatientResponse", createPatientResponse);
+            System.out.println("1");
+        }else{
+            System.out.println("2");
+            redirectAttrs.addFlashAttribute("createPatientResponse", new CreatePatientResponse());
+            message = baseResponse.getMessage();
+        }
+        ParentDetail parentDetail = new ParentDetail();
+        parentDetail.setPhoneNumber(phoneNumber);
+//        redirectAttrs.addFlashAttribute("schedulesResponse",schedulesResponse);
+//        System.out.println(schedulesResponse);
+        System.out.println(phoneNumber);
+        System.out.println(message);
+        redirectAttrs.addFlashAttribute("message",message);
+        redirectAttrs.addFlashAttribute("parentDetail",parentDetail);
+        return "redirect:/patientProfile";
+    }
+    @PostMapping("/savePatient")
+    public String savePatient(RedirectAttributes redirectAttrs, HttpSession session,
+                              @ModelAttribute(name = "createPatientResponse") CreatePatientResponse createPatientResponse,
+                              @ModelAttribute(name = "message") String message) throws JsonProcessingException {
+        System.out.println(createPatientResponse.toString());
+        CreatePatientRequest createPatientRequest = new CreatePatientRequest();
+        createPatientRequest.setPhoneNumber(createPatientResponse.getParentDetail().getPhoneNumber());
+        createPatientRequest.setAddress(createPatientResponse.getParentDetail().getAddress());
+        createPatientRequest.setFullName(createPatientResponse.getParentDetail().getFullName());
+        createPatientRequest.setPatientDetail(createPatientResponse.getPatientDetail());
+        BaseResponse baseResponse = patientService.savePatient(createPatientRequest,session.getAttribute("token").toString());
+        if (baseResponse.getMessageCode() == null){
+            System.out.println("luu dc r");
+            createPatientResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), CreatePatientResponse.class);
+        }else{
 
+            message = baseResponse.getMessage();
+            System.out.println(message);
+        }
+
+//        SearchPatientResponse searchPatientResponse = patientService.searchParent(phoneNumber, session.getAttribute("token").toString());
+//        ParentDetail parentDetail = new ParentDetail();
+//        parentDetail.setPhoneNumber(phoneNumber);
+//        if (searchPatientResponse != null && searchPatientResponse.getParentDetail() != null){
+//            redirectAttrs.addFlashAttribute("createPatientResponse", new CreatePatientResponse());
+//        }else{
+//            redirectAttrs.addFlashAttribute("createPatientResponse", new CreatePatientResponse());
+//            message = "Không tìm thấy ai";
+//        }
+////        redirectAttrs.addFlashAttribute("schedulesResponse",schedulesResponse);
+////        System.out.println(schedulesResponse);
+//        System.out.println(phoneNumber);
+//        System.out.println(message);
+//        redirectAttrs.addFlashAttribute("message",message);
+        redirectAttrs.addFlashAttribute("createPatientResponse",createPatientResponse);
+        return "redirect:/patientProfile";
+    }
 }

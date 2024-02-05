@@ -2,6 +2,7 @@ package com.example.DNFrontEnd.Controller;
 
 import com.example.DNFrontEnd.Model.BaseResponse;
 import com.example.DNFrontEnd.Model.entity.ParentDetail;
+import com.example.DNFrontEnd.Model.entity.PatientDetail;
 import com.example.DNFrontEnd.Model.request.CreatePatientRequest;
 import com.example.DNFrontEnd.Model.request.DetailDoctorScheduleRequest;
 import com.example.DNFrontEnd.Model.request.ListDoctorScheduleRequest;
@@ -129,16 +130,18 @@ public class PatientController {
     public String searchParent(RedirectAttributes redirectAttrs, HttpSession session, @RequestParam String phoneNumber,
                                @ModelAttribute(name = "message") String message) throws JsonProcessingException {
         BaseResponse baseResponse = patientService.searchParent(phoneNumber, session.getAttribute("token").toString());
+        List<PatientDetail> listPatient = new ArrayList<>();
         if(baseResponse.getMessageCode() == null){
             SearchPatientResponse searchPatientResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), SearchPatientResponse.class);
             CreatePatientResponse createPatientResponse = new CreatePatientResponse();
             createPatientResponse.setParentDetail(searchPatientResponse.getParentDetail());
             createPatientResponse.setPatientDetail(searchPatientResponse.getPatientDetails().get(0));
             redirectAttrs.addFlashAttribute("createPatientResponse", createPatientResponse);
-            System.out.println("1");
+            listPatient = searchPatientResponse.getPatientDetails();
+            redirectAttrs.addFlashAttribute("listPatient", listPatient);
         }else{
-            System.out.println("2");
             redirectAttrs.addFlashAttribute("createPatientResponse", new CreatePatientResponse());
+            redirectAttrs.addFlashAttribute("listPatient", listPatient);
             message = baseResponse.getMessage();
         }
         ParentDetail parentDetail = new ParentDetail();

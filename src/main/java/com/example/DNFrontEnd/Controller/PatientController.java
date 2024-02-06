@@ -189,6 +189,7 @@ public class PatientController {
 //        System.out.println(message);
 //        redirectAttrs.addFlashAttribute("message",message);
         redirectAttrs.addFlashAttribute("createPatientResponse",createPatientResponse);
+        redirectAttrs.addFlashAttribute("listPatient", createPatientResponse.getPatientDetails());
         return "redirect:/patientProfile";
     }
 }

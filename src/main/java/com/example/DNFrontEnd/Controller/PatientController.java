@@ -1,6 +1,7 @@
 package com.example.DNFrontEnd.Controller;
 
 import com.example.DNFrontEnd.Model.BaseResponse;
+import com.example.DNFrontEnd.Model.DTO.PatientProfileDTO;
 import com.example.DNFrontEnd.Model.entity.ParentDetail;
 import com.example.DNFrontEnd.Model.entity.PatientDetail;
 import com.example.DNFrontEnd.Model.request.*;
@@ -203,6 +204,13 @@ public class PatientController {
             message = baseResponse.getMessage();
         }
         model.addAttribute("detailPatientResponse", detailPatientResponse);
+        List<PatientProfileDTO> histories = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            for (PatientProfileDTO history : detailPatientResponse.getHistories()) {
+                histories.add(history);
+            }
+        }
+        model.addAttribute("histories", histories);
         return "patientHistories";
     }
 }

@@ -98,6 +98,16 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+
+        .table-container {
+            max-height: 250px; /* Giới hạn chiều cao của container bảng */
+            overflow-y: auto; /* Tạo thanh cuộn dọc khi bảng vượt quá chiều cao */
+        }
+
+        .table-container table {
+            width: 100%; /* Đảm bảo bảng chiếm toàn bộ chiều rộng của container */
+            /* Các thuộc tính CSS khác cho bảng */
+        }
     </style>
 </head>
 <body>
@@ -163,19 +173,15 @@
                                 </tr>
                                 <tr>
                                     <td >
-
                                         <label for="weightC">Cân nặng:</label>&nbsp;<span class="error" id="errorAddress"></span>
                                         <input disabled type="text" class="form-control" placeholder="Cân nặng" pattern="^([0-9){0,})$"
                                                id="weightC" name="weightC" th:value="${detailPatientResponse.patientDetail.weight}"/>
-
+                                    </td>
                                     <td>
-
                                         <label>Giới tính:</label><br>
                                         <input disabled type="radio" id="M" th:name="sexC" th:value="M" th:checked="${detailPatientResponse.patientDetail.sex == 'M'}"> Nam
                                         &nbsp;&nbsp;&nbsp;
                                         <input disabled type="radio" id="F" th:name="sexC" th:value="F" th:checked="${detailPatientResponse.patientDetail.sex == 'F'}"> Nữ
-
-                                    </td>
                                     </td>
                                 </tr>
                                 <tr>
@@ -183,45 +189,55 @@
                                         <input disabled type="hidden" class="form-control"
                                                id="idC" name="id" th:value="${detailPatientResponse.patientDetail.id}">
                                     </td>
+                                    <td style="display: grid;">
+                                        <a th:href="@{#}"
+                                           type="button" class="btn btn-primary btn-register"
+                                           style="background-color: #09d066;">
+                                            Bắt đầu khám
+                                        </a>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
-                        <!--<div class="col-md-6 col-lg-6 col-6 col-md-6 col-sm-6" style="border-left:1px solid;float: right">
-                            <button id="addPatient" type="button"
-                                    class="btn btn-primary btn-register" th:attr="onclick=|addPatient();|"
-                                    style="margin: 75px 0px 10px 10px;float: left;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
-                                Thêm bé
-                            </button>
-                            <div class="cancel">
-                                <button id="cancel" type="button"
-                                        class="btn btn-primary btn-register" th:attr="onclick=|cancel();|"
-                                        style="margin: 75px 0px 10px 10px;float: left;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
-                                    Hủy
-                                </button>
-                                <div class="update">
-                                    <button id="confirm1" type="button"
-                                            class="btn btn-primary btn-register" th:attr="onclick=|update();|"
-                                            style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
-                                        Chi tiết
-                                    </button>
-                                </div>
-                            </div>
-                        </div>-->
                     </div>
 
-                    <div class="card-header">
-                        <h2><p>Lịch sử khám bệnh</p></h2>
-                    </div>
-                    <div class="card-body">
-                        <table>
+                    <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12">
+                        <div class="card-header">
+                            <h2><p>Lịch sử khám bệnh</p></h2>
+                        </div>
+                        <div class="card-body table-container">
+                            <table>
                                 <tr>
-                                    <th scope="col" class="text-center">&nbsp;</th>
-                                    <th scope="col" class="text-center">Ngày khám</th>
-                                    <th scope="col">Tiền sử</th>
-                                    <th scope="col">Triệu chứng</th>
-                                    <th scope="col">Chuẩn đoán</th>
+                                    <th style="border: 1px solid;" class="text-center">Ngày khám</th>
+                                    <th style="border: 1px solid;" class="text-center">Tiền sử</th>
+                                    <th style="border: 1px solid;" class="text-center">Triệu chứng</th>
+                                    <th style="border: 1px solid;" class="text-center">Chuẩn đoán</th>
+                                    <th style="border: 1px solid;" class="text-center">&nbsp;ID&nbsp;</th>
                                 </tr>
+                                <tr th:each="history : ${histories}">
+                                    <td style="border: 1px solid;" th:text="${history.createdAt}"></td>
+                                    <td style="border: 1px solid;" th:text="${history.anamnesis}"></td>
+                                    <td style="border: 1px solid;" th:text="${history.symptom}"></td>
+                                    <td style="border: 1px solid;" th:text="${history.diagnostic}"></td>
+                                    <td style="border: 1px solid;" th:text="${history.patientProfileId}"></td>
+                                </tr>
+                                <!--                            <tr th:each="history : ${histories}">-->
+                                <!--                                <td class="text-center" th:text="${item.medicalDate.substring(8,10)+'-'+item.medicalDate.substring(5,7)+'-'+item.medicalDate.substring(0,4)}"></td>-->
+                                <!--                                <td class="text-center" th:text="${item.hours} + ':00'"></td>-->
+                                <!--                                <td class="tm-product-name" th:text="${item.patientProfile.name}"></td>-->
+                                <!--                                <td class="text-center"  th:if="${item.patientProfile.sex == 'F'}" >Nữ</td>-->
+                                <!--                                <td class="text-center"  th:if="${item.patientProfile.sex != 'F'}" >Nam</td>-->
+                                <!--                                <td class="tm-product-name" th:text="${item.patientProfile.symptom}"></td>-->
+                                <!--                                <td class="text-center"  th:if="${item.isPay == true}" >Đã thanh toán</td>-->
+                                <!--                                <td class="text-center"  th:if="${item.isPay != true}" >Chưa thanh toán</td>-->
+                                <!--                                <td class="text-center"  th:if="${item.isDone == true}" >Đã khám</td>-->
+                                <!--                                <td class="text-center"  th:if="${item.isDone != true}" >Chưa khám</td>-->
+                                <!--                                <td class="text-center">-->
+                                <!--                                    <a th:href="@{/doctor/schedule/detail(scheduleId=${item.scheduleId})}">-->
+                                <!--                                        <i class="material-icons" style="font-size:24px">edit</i></a></td>-->
+                                <!--                            </tr>-->
                             </table>
+                        </div>
                     </div>
                 </div>
             </div>

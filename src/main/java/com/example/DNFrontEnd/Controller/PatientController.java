@@ -3,10 +3,7 @@ package com.example.DNFrontEnd.Controller;
 import com.example.DNFrontEnd.Model.BaseResponse;
 import com.example.DNFrontEnd.Model.entity.ParentDetail;
 import com.example.DNFrontEnd.Model.entity.PatientDetail;
-import com.example.DNFrontEnd.Model.request.CreatePatientRequest;
-import com.example.DNFrontEnd.Model.request.DetailDoctorScheduleRequest;
-import com.example.DNFrontEnd.Model.request.ListDoctorScheduleRequest;
-import com.example.DNFrontEnd.Model.request.ListPatientScheduleRequest;
+import com.example.DNFrontEnd.Model.request.*;
 import com.example.DNFrontEnd.Model.response.*;
 import com.example.DNFrontEnd.Service.PatientService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -191,5 +188,21 @@ public class PatientController {
         redirectAttrs.addFlashAttribute("createPatientResponse",createPatientResponse);
         redirectAttrs.addFlashAttribute("listPatient", createPatientResponse.getPatientDetails());
         return "redirect:/patientProfile";
+    }
+
+    @GetMapping("/history")
+    public String history(Model model, HttpSession session,
+                          @RequestParam("patientId") Long patientId,
+                          @ModelAttribute(name = "message") String message) throws JsonProcessingException {
+
+        DetailPatientResponse detailPatientResponse = new DetailPatientResponse();
+        BaseResponse baseResponse = patientService.getPatientById(patientId, session.getAttribute("token").toString());
+        if (baseResponse.getMessageCode() == null){
+            detailPatientResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), DetailPatientResponse.class);
+        }else{
+            message = baseResponse.getMessage();
+        }
+        model.addAttribute("detailPatientResponse", detailPatientResponse);
+        return "patientHistories";
     }
 }

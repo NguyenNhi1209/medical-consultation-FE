@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/all.min.css}">
+    <link
+            rel="stylesheet"
+            th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"
+    />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>Lịch sử khám bệnh</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .fix-height {
+            flex: 1;
+        }
+
+        a, a:hover, a:focus {
+            text-decoration: none;
+            color: white;
+        }
+
+        .title {
+            font-weight: 600;
+            font-size: 22px;
+            display: block;
+            margin: 20px 0;
+            text-transform: uppercase;
+            /*text-transform: uppercase;*/
+        }
+        .navbar {
+            padding-top: 30px;
+        }
+        .card {
+            text-align:justify;
+        }
+        .card-header{
+            text-align:center;
+<!--            background-color: #09d066;-->
+            padding: 3px 3px 3px 6px;
+        }
+        .card-body{
+            text-align:justify;
+            padding:10px;
+        }
+
+        .card-body span{
+            margin-top: 10px ;
+        }
+        table {
+            min-width: 100%
+        }
+        table td{
+            padding: 5px 5px 5px 5px;
+        }
+        footer {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+         height: 30%;
+         margin-top: 20px ;
+        }
+        header{
+        margin-bottom: 100px ;
+        }
+        .container{
+         height: 70%;
+         min-height: 80vh;
+        }
+        .our-services{
+         margin-top: 110px ;
+        }
+        .invalid {
+        border-color: red;
+        }
+        .error{
+        color: red;
+        }
+        select {
+            display: block;
+            width: 100%;
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div class="our-services">
+    <div class="container">
+        <div class="container">
+            <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12" style="margin-top: 20px;">
+                <div class="card" id="content">
+                    <div class="card-header">
+                        <h2><p>Thông tin bệnh nhân</p></h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-6 col-lg-6 col-6 col-md-6 col-sm-6" th:if="${detailPatientResponse}">
+                            <h4>Thông tin cha mẹ:</h4>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <label>Số điện thoại:</label>
+                                        <input disabled type="text" class="form-control" pattern="^0\d{9}$"
+                                               th:value="${detailPatientResponse.parentDetail.phoneNumber}"
+                                               id="phoneNumberP" name="phoneNumberP" placeholder="Số điện thoại..."
+                                               style=" float: left"/>
+                                    </td>
+                                    <td>
+                                        <label>Họ và tên:</label>
+                                        <input disabled type="text" class="form-control" id="fullNameP" name="fullNameP" placeholder="Họ và tên..."
+                                               th:value="${detailPatientResponse.parentDetail.fullName}"
+                                               style=" float: left"/>
+                                        <input disabled type="text"
+                                               id="idP" name="idP" th:value="${detailPatientResponse.parentDetail.id}"
+                                               style=" float: left; display:none"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <label>Địa chỉ:</label>
+                                        <input disabled type="text" class="form-control" placeholder="Địa chỉ..."
+                                               id="addressP" name="addressP" th:value="${detailPatientResponse.parentDetail.address}"
+                                               style=" float: left"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-6 col-md-6 col-sm-6" th:if="${detailPatientResponse}">
+                            <h4>Thông tin bé:</h4>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <label for="fullNameC">Họ và tên:</label>&nbsp;<span class="error" id="errorName"></span>
+                                        <input disabled type="text" class="form-control" id="fullNameC" name="fullName"
+                                               th:value="${detailPatientResponse.patientDetail.fullName}"
+                                               pattern="^([a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+)((\s{1,}[a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+|[\s*]){0,})$"
+                                               oninput="checkPatternName()"
+                                               placeholder="Họ và tên...">
+                                    </td>
+                                    <td>
+                                        <label for="birthdayC">Ngày sinh:</label>
+                                        <input disabled type="date" class="form-control" onkeydown="return false"
+                                               id="birthdayC" name="birthday" th:value="${detailPatientResponse.patientDetail.birthday}"/>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td >
+
+                                        <label for="weightC">Cân nặng:</label>&nbsp;<span class="error" id="errorAddress"></span>
+                                        <input disabled type="text" class="form-control" placeholder="Cân nặng" pattern="^([0-9){0,})$"
+                                               id="weightC" name="weightC" th:value="${detailPatientResponse.patientDetail.weight}"/>
+
+                                    <td>
+
+                                        <label>Giới tính:</label><br>
+                                        <input disabled type="radio" id="M" th:name="sexC" th:value="M" th:checked="${detailPatientResponse.patientDetail.sex == 'M'}"> Nam
+                                        &nbsp;&nbsp;&nbsp;
+                                        <input disabled type="radio" id="F" th:name="sexC" th:value="F" th:checked="${detailPatientResponse.patientDetail.sex == 'F'}"> Nữ
+
+                                    </td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input disabled type="hidden" class="form-control"
+                                               id="idC" name="id" th:value="${detailPatientResponse.patientDetail.id}">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!--<div class="col-md-6 col-lg-6 col-6 col-md-6 col-sm-6" style="border-left:1px solid;float: right">
+                            <button id="addPatient" type="button"
+                                    class="btn btn-primary btn-register" th:attr="onclick=|addPatient();|"
+                                    style="margin: 75px 0px 10px 10px;float: left;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
+                                Thêm bé
+                            </button>
+                            <div class="cancel">
+                                <button id="cancel" type="button"
+                                        class="btn btn-primary btn-register" th:attr="onclick=|cancel();|"
+                                        style="margin: 75px 0px 10px 10px;float: left;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
+                                    Hủy
+                                </button>
+                                <div class="update">
+                                    <button id="confirm1" type="button"
+                                            class="btn btn-primary btn-register" th:attr="onclick=|update();|"
+                                            style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
+                                        Chi tiết
+                                    </button>
+                                </div>
+                            </div>
+                        </div>-->
+                    </div>
+
+                    <div class="card-header">
+                        <h2><p>Lịch sử khám bệnh</p></h2>
+                    </div>
+                    <div class="card-body">
+                        <table>
+                                <tr>
+                                    <th scope="col" class="text-center">&nbsp;</th>
+                                    <th scope="col" class="text-center">Ngày khám</th>
+                                    <th scope="col">Tiền sử</th>
+                                    <th scope="col">Triệu chứng</th>
+                                    <th scope="col">Chuẩn đoán</th>
+                                </tr>
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+<div th:include="footer.html"></div>
+<script src="script.js"></script>
+</body>
+<script th:inline="javascript">
+    var message = /*[[${message}]]*/ "";
+    if(message != null && message != ""){
+        alert(message);
+    }
+    var now = new Date();
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var day = ("0" + now.getDate()).slice(-2);
+    var today = now.getFullYear() + "-" + month + "-" + day;
+
+    var searchPhone = document.getElementById('phoneNumberS').value;
+    if (searchPhone != ""){
+        document.getElementById('search').disabled = false;
+    } else {
+        document.getElementById('search').disabled = true;
+    }
+
+    function addPatient() {
+<!--        alert("nhi nè");-->
+        document.getElementById('idC').value = "";
+        document.getElementById('fullNameC').value = "";
+        document.getElementById('weightC').value = "";
+        document.getElementById('birthdayC').value = "";
+        let elements = document.getElementsByName('patientDetail.sex');
+        for (let i = 0; i < elements.length; i++) {
+            if (elements[i].type == "radio") {
+                elements[i].checked = false;
+            }
+        }
+    }
+    document.getElementById("birthdayC").setAttribute("max", today);
+
+    function cancel() {
+        var parentId = document.getElementById('idP').value;
+        if (parentId != "") {
+            addPatient();
+        } else {
+            document.getElementById('phoneNumberP').value = "";
+            document.getElementById('addressP').value = "";
+            document.getElementById('fullNameP').value = "";
+            addPatient();
+        }
+    }
+
+    function addParent() {
+        document.getElementById('phoneNumberP').value = document.getElementById('phoneNumberS').value;
+    }
+
+    function enableSearch() {
+        var searchPhone = document.getElementById('phoneNumberS').value;
+        if (searchPhone != ""){
+            document.getElementById('search').disabled = false;
+        } else {
+            document.getElementById('search').disabled = true;
+        }
+    }
+
+    function getSelect() {
+        var patientID = document.getElementById("patientSelect").value;
+        var patient = findPatientById(patientID);
+        if (patient != null) {
+            document.getElementById('idC').value = patient.id;
+            document.getElementById('fullNameC').value = patient.fullName;
+            document.getElementById('weightC').value = patient.weight;
+            document.getElementById('birthdayC').value = patient.birthday;
+            let elements = document.getElementsByName('patientDetail.sex');
+            for (let i = 0; i < elements.length; i++) {
+                if (elements[i].id == patient.sex) {
+                    elements[i].checked = true;
+                }
+            }
+        }
+    }
+
+    function findPatientById(patientId) {
+        var patientList = /*[[${listPatient}]]*/ [];
+        for (var i = 0; i < patientList.length; i++) {
+            if (patientList[i].id == patientId) {
+                return patientList[i];
+            }
+        }
+        return null;
+    }
+</script>
+</html>

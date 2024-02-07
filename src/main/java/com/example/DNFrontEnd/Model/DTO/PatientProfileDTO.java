@@ -13,4 +13,7 @@ public class PatientProfileDTO {
     private String symptom;
     private String diagnostic;
     private Boolean isComplete;
+    private String createdAt;
+    private String anamnesis;
+    private String advice;
 }

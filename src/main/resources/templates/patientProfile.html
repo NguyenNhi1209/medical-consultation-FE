@@ -205,8 +205,9 @@
                                         <td>
 
                                                 <label>Giới tính:</label><br>
-                                                <input type="radio" id="M" th:field="*{patientDetail.sex}" th:name="sexC" th:value="M">Nam
-                                                <input type="radio" id="F" th:field="*{patientDetail.sex}" th:name="sexC" th:value="F">Nữ
+                                                <input type="radio" id="M" th:field="*{patientDetail.sex}" th:name="sexC" th:value="M"> Nam
+                                                &nbsp;&nbsp;&nbsp;
+                                                <input type="radio" id="F" th:field="*{patientDetail.sex}" th:name="sexC" th:value="F"> Nữ
 
                                         </td>
                                         </td>
@@ -226,28 +227,27 @@
                                 </table>
                             </div>
                         </form>
-                        <div class="col-md-6 col-lg-6 col-6 col-md-6 col-sm-6" style="border-left:1px solid;float: right">
+                        <div class="col-md-6 col-lg-6 col-6 col-md-6 col-sm-6" style="border-left:1px solid;float: right;height: auto;">
                             <button id="addPatient" type="button"
                                     class="btn btn-primary btn-register" th:attr="onclick=|addPatient();|"
                                     style="margin: 75px 0px 10px 10px;float: left;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
                                 Thêm bé
                             </button>
-                            <div class="cancel">
-                                <button id="cancel" type="button"
-                                        class="btn btn-primary btn-register" th:attr="onclick=|cancel();|"
-                                        style="margin: 75px 0px 10px 10px;float: left;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
-                                    Hủy
-                                </button>
-                                <div class="update">
-                                    <button id="confirm1" type="button"
-                                            class="btn btn-primary btn-register" th:attr="onclick=|update();|"
-                                            style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
-                                        Khám ->
-                                    </button>
-                                </div>
-                            </div>
+                            <button id="cancel" type="button"
+                                    class="btn btn-primary btn-register" th:attr="onclick=|cancel();|"
+                                    style="margin: 75px 0px 10px 10px;float: left;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
+                                Hủy
+                            </button>
+<!--                            <button id="history" type="button" th:href="@{/patient/history(param=${createPatientResponse.patientDetail.id})}"-->
+<!--                                    class="btn btn-primary btn-register" th:attr="onclick=|history();|"-->
+<!--                                    style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">-->
+<!--                                Lịch sử-->
+<!--                            </button>-->
+                            <a th:href="@{/patient/history(patientId=${createPatientResponse.patientDetail.id})}" type="button" class="btn btn-primary btn-register"
+                               style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
+                                Lịch sử
+                            </a>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -341,6 +341,11 @@
             }
         }
         return null;
+    }
+
+    function history() {
+        var id = document.getElementById('idC').value;
+        alert(id);
     }
 </script>
 </html>

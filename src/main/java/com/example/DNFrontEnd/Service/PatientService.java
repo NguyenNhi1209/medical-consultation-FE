@@ -47,6 +47,28 @@ public class PatientService {
         return null;
     }
 
+    public BaseResponse getPatientById(Long patientId, String token)  {
+        BaseResponse baseResponse;
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/patient/detail/" + patientId))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .header("content-type", "application/json")
+                    .method("GET", HttpRequest.BodyPublishers.noBody())
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+            return  baseResponse;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public BaseResponse savePatient(SavePatientRequest savePatientRequest,String token)  {
         BaseResponse baseResponse;
         try {

@@ -45,16 +45,14 @@
         }
         .card-header{
             text-align:center;
-<!--            background-color: #09d066;-->
-            padding: 3px 3px 3px 6px;
+            background-color: #09d066;
+            border-radius: 20px;
         }
         .card-body{
             text-align:justify;
-            padding:10px;
         }
 
         .card-body span{
-            margin-top: 10px ;
         }
         table {
             min-width: 100%
@@ -63,21 +61,20 @@
             padding: 5px 5px 5px 5px;
         }
         footer {
-          position: absolute;
-          bottom: 0;
-          width: 100%;
-         height: 30%;
-         margin-top: 20px ;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
         }
         header{
-        margin-bottom: 100px ;
+            margin-bottom: 100px ;
         }
         .container{
          height: 70%;
          min-height: 80vh;
         }
         .our-services{
-         margin-top: 110px ;
+            margin-top: 100px;
+            margin-bottom: 30px;
         }
         .invalid {
         border-color: red;
@@ -121,84 +118,95 @@
                         <h2><p>Thông tin bệnh nhân</p></h2>
                     </div>
                     <div class="card-body">
-                        <div class="col-md-6 col-lg-6 col-6 col-md-6 col-sm-6" th:if="${detailPatientResponse}">
-                            <h4>Thông tin cha mẹ:</h4>
-                            <table>
-                                <tr>
-                                    <td>
-                                        <label>Số điện thoại:</label>
-                                        <input disabled type="text" class="form-control" pattern="^0\d{9}$"
-                                               th:value="${detailPatientResponse.parentDetail.phoneNumber}"
-                                               id="phoneNumberP" name="phoneNumberP" placeholder="Số điện thoại..."
-                                               style=" float: left"/>
-                                    </td>
-                                    <td>
-                                        <label>Họ và tên:</label>
-                                        <input disabled type="text" class="form-control" id="fullNameP" name="fullNameP" placeholder="Họ và tên..."
-                                               th:value="${detailPatientResponse.parentDetail.fullName}"
-                                               style=" float: left"/>
-                                        <input disabled type="text"
-                                               id="idP" name="idP" th:value="${detailPatientResponse.parentDetail.id}"
-                                               style=" float: left; display:none"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <label>Địa chỉ:</label>
-                                        <input disabled type="text" class="form-control" placeholder="Địa chỉ..."
-                                               id="addressP" name="addressP" th:value="${detailPatientResponse.parentDetail.address}"
-                                               style=" float: left"/>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-md-6 col-lg-6 col-6 col-md-6 col-sm-6" th:if="${detailPatientResponse}">
-                            <h4>Thông tin bé:</h4>
-                            <table>
-                                <tr>
-                                    <td>
-                                        <label for="fullNameC">Họ và tên:</label>&nbsp;<span class="error" id="errorName"></span>
-                                        <input disabled type="text" class="form-control" id="fullNameC" name="fullName"
-                                               th:value="${detailPatientResponse.patientDetail.fullName}"
-                                               pattern="^([a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+)((\s{1,}[a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+|[\s*]){0,})$"
-                                               oninput="checkPatternName()"
-                                               placeholder="Họ và tên...">
-                                    </td>
-                                    <td>
-                                        <label for="birthdayC">Ngày sinh:</label>
-                                        <input disabled type="date" class="form-control" onkeydown="return false"
-                                               id="birthdayC" name="birthday" th:value="${detailPatientResponse.patientDetail.birthday}"/>
-                                    </td>
+                        <form method="GET" th:action="@{/patient/medical}" th:object="${detailPatientResponse}">
+                            <div class="col-md-6 col-lg-6 col-6 col-md-6 col-sm-6" th:if="${detailPatientResponse}">
+                                <h4>Thông tin cha mẹ:</h4>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <label>Số điện thoại:</label>
+                                            <input readonly type="text" class="form-control" pattern="^0\d{9}$"
+                                                   th:field="*{parentDetail.phoneNumber}"
+                                                   th:value="${detailPatientResponse.parentDetail.phoneNumber}"
+                                                   id="phoneNumberP" name="phoneNumberP" placeholder="Số điện thoại..."
+                                                   style=" float: left"/>
+                                        </td>
+                                        <td>
+                                            <label>Họ và tên:</label>
+                                            <input readonly type="text" class="form-control" id="fullNameP" name="fullNameP" placeholder="Họ và tên..."
+                                                   th:field="*{parentDetail.fullName}"
+                                                   th:value="${detailPatientResponse.parentDetail.fullName}"
+                                                   style=" float: left"/>
+                                            <input readonly type="text" id="idP" name="idP"
+                                                   th:field="*{parentDetail.id}"
+                                                   th:value="${detailPatientResponse.parentDetail.id}"
+                                                   style=" float: left; display:none"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <label>Địa chỉ:</label>
+                                            <input readonly type="text" class="form-control" placeholder="Địa chỉ..." id="addressP" name="addressP"
+                                                   th:field="*{parentDetail.address}"
+                                                   th:value="${detailPatientResponse.parentDetail.address}"
+                                                   style=" float: left"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-6 col-md-6 col-sm-6" th:if="${detailPatientResponse}">
+                                <h4>Thông tin bé:</h4>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <label for="fullNameC">Họ và tên:</label>&nbsp;<span class="error" id="errorName"></span>
+                                            <input readonly type="text" class="form-control" id="fullNameC" name="fullName"
+                                                   th:field="*{patientDetail.fullName}"
+                                                   th:value="${detailPatientResponse.patientDetail.fullName}"
+                                                   pattern="^([a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+)((\s{1,}[a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+|[\s*]){0,})$"
+                                                   oninput="checkPatternName()"
+                                                   placeholder="Họ và tên...">
+                                        </td>
+                                        <td>
+                                            <label for="birthdayC">Ngày sinh:</label>
+                                            <input readonly type="date" class="form-control" onkeydown="return false"
+                                                   id="birthdayC" name="birthday"
+                                                   th:field="*{patientDetail.birthday}"
+                                                   th:value="${detailPatientResponse.patientDetail.birthday}"/>
+                                        </td>
 
-                                </tr>
-                                <tr>
-                                    <td >
-                                        <label for="weightC">Cân nặng:</label>&nbsp;<span class="error" id="errorAddress"></span>
-                                        <input disabled type="text" class="form-control" placeholder="Cân nặng" pattern="^([0-9){0,})$"
-                                               id="weightC" name="weightC" th:value="${detailPatientResponse.patientDetail.weight}"/>
-                                    </td>
-                                    <td>
-                                        <label>Giới tính:</label><br>
-                                        <input disabled type="radio" id="M" th:name="sexC" th:value="M" th:checked="${detailPatientResponse.patientDetail.sex == 'M'}"> Nam
-                                        &nbsp;&nbsp;&nbsp;
-                                        <input disabled type="radio" id="F" th:name="sexC" th:value="F" th:checked="${detailPatientResponse.patientDetail.sex == 'F'}"> Nữ
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input disabled type="hidden" class="form-control"
-                                               id="idC" name="id" th:value="${detailPatientResponse.patientDetail.id}">
-                                    </td>
-                                    <td style="display: grid;">
-                                        <a th:href="@{#}"
-                                           type="button" class="btn btn-primary btn-register"
-                                           style="background-color: #09d066;">
-                                            Bắt đầu khám
-                                        </a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label for="weightC">Cân nặng:</label>&nbsp;<span class="error" id="errorAddress"></span>
+                                            <input readonly type="text" class="form-control" placeholder="Cân nặng" pattern="^([0-9){0,})$"
+                                                   id="weightC" name="weightC"
+                                                   th:field="*{patientDetail.weight}"
+                                                   th:value="${detailPatientResponse.patientDetail.weight}"/>
+                                        </td>
+                                        <td>
+                                            <label>Giới tính:</label><br>
+                                            <input readonly type="radio" id="M" th:name="sexC" th:value="M" th:field="*{patientDetail.sex}" th:checked="${detailPatientResponse.patientDetail.sex == 'M'}"> Nam
+                                            &nbsp;&nbsp;&nbsp;
+                                            <input readonly type="radio" id="F" th:name="sexC" th:value="F" th:field="*{patientDetail.sex}" th:checked="${detailPatientResponse.patientDetail.sex == 'F'}"> Nữ
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input readonly type="hidden" class="form-control"
+                                                   id="idC" name="id" th:value="${detailPatientResponse.patientDetail.id}" th:field="*{patientDetail.id}">
+                                        </td>
+                                        <td style="display: grid;">
+
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-register" style="background-color: #09d066;">
+                                Bắt đầu khám
+                            </button>
+                        </form>
                     </div>
 
                     <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12">

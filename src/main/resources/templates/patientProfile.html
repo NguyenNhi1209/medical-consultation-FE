@@ -46,7 +46,7 @@
         .card-header{
             text-align:center;
 <!--            background-color: #09d066;-->
-            padding: 3px 3px 3px 6px;
+            border-radius: 20px;
         }
         .card-body{
             text-align:justify;
@@ -77,7 +77,8 @@
          min-height: 80vh;
         }
         .our-services{
-         margin-top: 110px ;
+            margin-top: 100px;
+            margin-bottom: 30px;
         }
         .invalid {
         border-color: red;
@@ -194,27 +195,23 @@
 
                                     </tr>
                                     <tr>
-                                        <td >
-
-                                                <label for="weightC">Cân nặng:</label>&nbsp;<span class="error" id="errorAddress"></span>
-                                                <input type="text" th:field="*{patientDetail.weight}" class="form-control" id="weightC"
-                                                       name="weightC"
-                                                       pattern="^([0-9a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ,-/]+)((\s{1,}[0-9a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ,-/]+|[\s*]){0,})$" oninput="checkPatternAddress()"
-                                                       placeholder="Cân nặng">
-
                                         <td>
-
-                                                <label>Giới tính:</label><br>
-                                                <input type="radio" id="M" th:field="*{patientDetail.sex}" th:name="sexC" th:value="M"> Nam
-                                                &nbsp;&nbsp;&nbsp;
-                                                <input type="radio" id="F" th:field="*{patientDetail.sex}" th:name="sexC" th:value="F"> Nữ
-
+                                            <label for="weightC">Cân nặng:</label>&nbsp;<span class="error" id="errorAddress"></span>
+                                            <input type="text" th:field="*{patientDetail.weight}" class="form-control" id="weightC"
+                                                   name="weightC"
+                                                   pattern="^([0-9a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ,-/]+)((\s{1,}[0-9a-vA-VxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđXYỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ,-/]+|[\s*]){0,})$" oninput="checkPatternAddress()"
+                                                   placeholder="Cân nặng">
                                         </td>
+                                        <td>
+                                            <label>Giới tính:</label><br>
+                                            <input type="radio" id="M" th:field="*{patientDetail.sex}" th:name="sexC" th:value="M"> Nam
+                                            &nbsp;&nbsp;&nbsp;
+                                            <input type="radio" id="F" th:field="*{patientDetail.sex}" th:name="sexC" th:value="F"> Nữ
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input type="hidden" th:field="*{patientDetail.id}" class="form-control" id="idC"
+                                            <input type="text" th:field="*{patientDetail.id}" class="form-control" id="idC"
                                                    name="id">
                                         </td>
                                         <td>
@@ -238,12 +235,8 @@
                                     style="margin: 75px 0px 10px 10px;float: left;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
                                 Hủy
                             </button>
-<!--                            <button id="history" type="button" th:href="@{/patient/history(param=${createPatientResponse.patientDetail.id})}"-->
-<!--                                    class="btn btn-primary btn-register" th:attr="onclick=|history();|"-->
-<!--                                    style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">-->
-<!--                                Lịch sử-->
-<!--                            </button>-->
-                            <a th:href="@{/patient/history(patientId=${createPatientResponse.patientDetail.id})}" type="button" class="btn btn-primary btn-register"
+                            <a type="button" class="btn btn-primary btn-register"
+                               onclick="redirectToPatientHistory();"
                                style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
                                 Lịch sử
                             </a>
@@ -346,6 +339,12 @@
     function history() {
         var id = document.getElementById('idC').value;
         alert(id);
+    }
+
+    function redirectToPatientHistory() {
+        var patientId = document.getElementById('idC').value;
+        var url = '/patient/history?patientId=' + patientId;
+        window.location.href = url;
     }
 </script>
 </html>

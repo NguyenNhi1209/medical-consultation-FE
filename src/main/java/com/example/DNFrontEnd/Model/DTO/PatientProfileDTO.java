@@ -2,6 +2,8 @@ package com.example.DNFrontEnd.Model.DTO;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class PatientProfileDTO {
     private Long patientId;
@@ -16,4 +18,5 @@ public class PatientProfileDTO {
     private String createdAt;
     private String anamnesis;
     private String advice;
+    private List<MedicineDTO> medicines;
 }

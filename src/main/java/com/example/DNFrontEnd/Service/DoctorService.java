@@ -124,6 +124,36 @@ public class DoctorService {
         return baseResponse;
     }
 
+    public BaseResponse updateScheduleDetail(MedicalPatientRequest request, String token) {
+        BaseResponse baseResponse = new BaseResponse<>();
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/doctor/schedule/update"))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .header("content-type", "application/json")
+                    .method("POST", HttpRequest.BodyPublishers.ofString(MedicalPatientRequest.convertToString(request)))
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return baseResponse;
+    }
+
     public DoctorProfileResponse getDoctorProfile(String token)  {
         BaseResponse baseResponse;
         DoctorProfileResponse doctorProfileResponse = new DoctorProfileResponse();

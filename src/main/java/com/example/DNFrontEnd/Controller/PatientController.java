@@ -6,6 +6,7 @@ import com.example.DNFrontEnd.Model.entity.ParentDetail;
 import com.example.DNFrontEnd.Model.entity.PatientDetail;
 import com.example.DNFrontEnd.Model.request.*;
 import com.example.DNFrontEnd.Model.response.*;
+import com.example.DNFrontEnd.Service.DoctorService;
 import com.example.DNFrontEnd.Service.PatientService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -30,6 +31,8 @@ public class PatientController {
 
     @Autowired
     PatientService patientService;
+    @Autowired
+    DoctorService doctorService;
     ObjectMapper objectMapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
     @GetMapping("/schedule")
@@ -195,7 +198,6 @@ public class PatientController {
     public String history(Model model, HttpSession session,
                           @RequestParam("patientId") Long patientId,
                           @ModelAttribute(name = "message") String message) throws JsonProcessingException {
-
         DetailPatientResponse detailPatientResponse = new DetailPatientResponse();
         BaseResponse baseResponse = patientService.getPatientById(patientId, session.getAttribute("token").toString());
         if (baseResponse.getMessageCode() == null){
@@ -204,13 +206,37 @@ public class PatientController {
             message = baseResponse.getMessage();
         }
         model.addAttribute("detailPatientResponse", detailPatientResponse);
-        List<PatientProfileDTO> histories = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            for (PatientProfileDTO history : detailPatientResponse.getHistories()) {
-                histories.add(history);
-            }
-        }
-        model.addAttribute("histories", histories);
+        model.addAttribute("histories", detailPatientResponse.getHistories());
         return "patientHistories";
+    }
+    @GetMapping("/medical")
+    public String medicalUI(Model model, HttpSession session,
+                        @ModelAttribute(name = "detailPatientResponse") DetailPatientResponse detailPatientResponse,
+                        @ModelAttribute(name = "medicalPatientRequest") MedicalPatientRequest medicalPatientRequest,
+                        @ModelAttribute(name = "message") String message) throws JsonProcessingException {
+
+        medicalPatientRequest = new MedicalPatientRequest();
+        medicalPatientRequest.setPatientId(detailPatientResponse.getPatientDetail().getId());
+//        model.addAttribute("detailPatientResponse", detailPatientResponse);
+        model.addAttribute("medicalPatientRequest", medicalPatientRequest);
+        return "medicalPatient";
+    }
+
+    @PostMapping("/medical")
+    public String medical(Model model, HttpSession session,
+                          @ModelAttribute(name = "medicalPatientRequest") MedicalPatientRequest medicalPatientRequest,
+                        @ModelAttribute(name = "message") String message) throws JsonProcessingException {
+
+        System.out.println(medicalPatientRequest);
+        DetailPatientProfileResponse detailPatientProfileResponse = new DetailPatientProfileResponse();
+        BaseResponse baseResponse = doctorService.updateScheduleDetail(medicalPatientRequest, session.getAttribute("token").toString());
+        if (baseResponse.getMessageCode() == null){
+            detailPatientProfileResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), DetailPatientProfileResponse.class);
+        }else{
+            message = baseResponse.getMessage();
+        }
+        System.out.println(detailPatientProfileResponse);
+//        model.addAttribute("detailPatientResponse", detailPatientResponse);
+        return "medicalPatient";
     }
 }

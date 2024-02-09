@@ -43,8 +43,10 @@ public class HomeController {
     @GetMapping
     public String home(Model model, @ModelAttribute(name = "name") String name,
                        @ModelAttribute(name = "userType") String userType, HttpSession session) {
-
-
+        if (session.getAttribute("token") == null || StringUtils.isEmpty(session.getAttribute("token").toString())) {
+            model.addAttribute("loginRequest", new LoginRequest());
+            return "login";
+        }
         return "home";
     }
     @GetMapping("/redirectBooking")

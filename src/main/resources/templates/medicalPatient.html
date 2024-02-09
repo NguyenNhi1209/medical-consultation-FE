@@ -139,6 +139,10 @@
                                             <i class="fa fa-user-circle-o"></i>&nbsp;
                                             <span>Ba, mẹ, người giám hộ: </span>
                                             <b><span style="color: limegreen;" th:text="${detailPatientResponse.parentDetail.fullName}"></span></b>
+                                            <input type="hidden" class="form-control" name="phoneNumberP" th:value="${detailPatientResponse.parentDetail.phoneNumber}">
+                                            <input type="hidden" class="form-control" name="fullNameP" th:value="${detailPatientResponse.parentDetail.fullName}">
+                                            <input type="hidden" class="form-control" name="addressP" th:value="${detailPatientResponse.parentDetail.address}">
+                                            <input type="hidden" class="form-control" name="idP" th:value="${detailPatientResponse.parentDetail.id}">
                                         </td>
                                     </tr>
                                     <tr>

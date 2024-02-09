@@ -234,8 +234,13 @@ public class PatientController {
                           @ModelAttribute(name = "detailPatientResponse") DetailPatientResponse detailPatientResponse,
                           @ModelAttribute(name = "medicalPatientRequest") MedicalPatientRequest medicalPatientRequest,
                           @ModelAttribute(name = "patientInfoUI") PatientInfoUI patientInfoUI,
+                        @RequestParam String phoneNumberP,
+                          @RequestParam String fullNameP,
+                          @RequestParam String addressP,
+                          @RequestParam Long idP,
                         @ModelAttribute(name = "message") String message) throws JsonProcessingException {
-
+        ParentDetail parentDetail = new ParentDetail(idP,phoneNumberP,fullNameP,addressP);
+        patientInfoUI.setParentDetail(parentDetail);
         System.out.println(medicalPatientRequest);
         System.out.println(patientInfoUI);
         DetailPatientProfileResponse detailPatientProfileResponse = new DetailPatientProfileResponse();
@@ -249,6 +254,9 @@ public class PatientController {
         model.addAttribute("detailPatientProfileResponse", detailPatientProfileResponse);
         model.addAttribute("patientInfo", medicalPatientRequest.getPatientInfo());
         model.addAttribute("medicines", detailPatientProfileResponse.getMedicines());
+        model.addAttribute("patientInfoUI", patientInfoUI);
+        System.out.println(detailPatientProfileResponse);
+        System.out.println(patientInfoUI);
         return "resultMedicalPatient";
     }
 }

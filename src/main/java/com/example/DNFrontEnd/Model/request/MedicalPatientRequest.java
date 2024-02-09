@@ -1,6 +1,9 @@
 package com.example.DNFrontEnd.Model.request;
 
 import com.example.DNFrontEnd.Model.DTO.MedicineDTO;
+import com.example.DNFrontEnd.Model.DTO.PatientInfoUI;
+import com.example.DNFrontEnd.Model.entity.ParentDetail;
+import com.example.DNFrontEnd.Model.entity.PatientDetail;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -16,6 +19,7 @@ public class MedicalPatientRequest {
     private String diagnostic;
     private String advice;
     private List<MedicineDTO> medicines = new ArrayList<>();
+    private PatientInfoUI patientInfo;
 
     public static String convertToString(MedicalPatientRequest medicalPatientRequest) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();

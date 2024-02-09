@@ -1,6 +1,7 @@
 package com.example.DNFrontEnd.Controller;
 
 import com.example.DNFrontEnd.Model.BaseResponse;
+import com.example.DNFrontEnd.Model.DTO.PatientInfoUI;
 import com.example.DNFrontEnd.Model.DTO.PatientProfileDTO;
 import com.example.DNFrontEnd.Model.entity.ParentDetail;
 import com.example.DNFrontEnd.Model.entity.PatientDetail;
@@ -217,17 +218,26 @@ public class PatientController {
 
         medicalPatientRequest = new MedicalPatientRequest();
         medicalPatientRequest.setPatientId(detailPatientResponse.getPatientDetail().getId());
+        PatientInfoUI patientInfoUI = new PatientInfoUI();
+        patientInfoUI.setParentDetail(detailPatientResponse.getParentDetail());
+        patientInfoUI.setPatientDetail(detailPatientResponse.getPatientDetail());
+        medicalPatientRequest.setPatientInfo(patientInfoUI);
+        System.out.println(patientInfoUI);
 //        model.addAttribute("detailPatientResponse", detailPatientResponse);
         model.addAttribute("medicalPatientRequest", medicalPatientRequest);
+        model.addAttribute("patientInfoUI", patientInfoUI);
         return "medicalPatient";
     }
 
     @PostMapping("/medical")
     public String medical(Model model, HttpSession session,
+                          @ModelAttribute(name = "detailPatientResponse") DetailPatientResponse detailPatientResponse,
                           @ModelAttribute(name = "medicalPatientRequest") MedicalPatientRequest medicalPatientRequest,
+                          @ModelAttribute(name = "patientInfoUI") PatientInfoUI patientInfoUI,
                         @ModelAttribute(name = "message") String message) throws JsonProcessingException {
 
         System.out.println(medicalPatientRequest);
+        System.out.println(patientInfoUI);
         DetailPatientProfileResponse detailPatientProfileResponse = new DetailPatientProfileResponse();
         BaseResponse baseResponse = doctorService.updateScheduleDetail(medicalPatientRequest, session.getAttribute("token").toString());
         if (baseResponse.getMessageCode() == null){
@@ -235,8 +245,10 @@ public class PatientController {
         }else{
             message = baseResponse.getMessage();
         }
-        System.out.println(detailPatientProfileResponse);
-//        model.addAttribute("detailPatientResponse", detailPatientResponse);
-        return "medicalPatient";
+//        System.out.println(detailPatientProfileResponse);
+        model.addAttribute("detailPatientProfileResponse", detailPatientProfileResponse);
+        model.addAttribute("patientInfo", medicalPatientRequest.getPatientInfo());
+        model.addAttribute("medicines", detailPatientProfileResponse.getMedicines());
+        return "resultMedicalPatient";
     }
 }

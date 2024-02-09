@@ -1,5 +1,6 @@
 package com.example.DNFrontEnd.Model.DTO;
 
+import com.example.DNFrontEnd.Model.entity.PatientDetail;
 import lombok.Data;
 
 import java.util.List;
@@ -19,4 +20,5 @@ public class PatientProfileDTO {
     private String anamnesis;
     private String advice;
     private List<MedicineDTO> medicines;
+    private PatientDetail patientDetail;
 }

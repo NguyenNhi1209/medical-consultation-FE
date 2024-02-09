@@ -1,6 +1,7 @@
 package com.example.DNFrontEnd.Model.response;
 
 import com.example.DNFrontEnd.Model.DTO.MedicineDTO;
+import com.example.DNFrontEnd.Model.entity.PatientDetail;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,4 +20,5 @@ public class DetailPatientProfileResponse {
     private String advice;
     private String diagnostic;
     private List<MedicineDTO> medicines;
+    private PatientDetail patientDetail;
 }

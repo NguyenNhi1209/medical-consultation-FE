@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Khám bệnh</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; !important
+        }
+
+        .fix-height {
+            flex: 1;
+        }
+
+        a, a:hover, a:focus {
+            text-decoration: none;
+            color: white;
+        }
+
+        .title {
+            font-weight: 600;
+            font-size: 22px;
+            display: block;
+            margin: 20px 0;
+            text-transform: uppercase;
+            /*text-transform: uppercase;*/
+        }
+        .navbar {
+            padding-top: 30px;
+        }
+        .card {
+            text-align:justify;
+        }
+        .card-header{
+            text-align:center;
+            background-color: #09d066;
+            border-radius: 20px;
+        }
+        .card-body{
+            text-align:justify;
+        }
+
+        .card-body span{
+        }
+        table {
+            min-width: 100%
+        }
+        table td{
+            padding: 5px 5px 5px 5px;
+        }
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 30%;
+            margin-top: 20px ;
+        }
+        header{
+            margin-bottom: 100px ;
+        }
+        .container{
+         height: 70%;
+         min-height: 80vh;
+        }
+        .our-services{
+            margin-top: 100px;
+            margin-bottom: 30px;
+        }
+        .invalid {
+        border-color: red;
+        }
+        .error{
+        color: red;
+        }
+        select {
+            display: block;
+            width: 100%;
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .table-container {
+            max-height: 250px; /* Giới hạn chiều cao của container bảng */
+            overflow-y: auto; /* Tạo thanh cuộn dọc khi bảng vượt quá chiều cao */
+        }
+
+        .table-container table {
+            width: 100%; /* Đảm bảo bảng chiếm toàn bộ chiều rộng của container */
+            /* Các thuộc tính CSS khác cho bảng */
+        }
+    </style>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div class="our-services">
+    <div class="container">
+        <div class="container">
+            <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12" style="margin-top: 20px;">
+                <div class="card" id="content">
+                    <form method="POST" th:action="@{/patient/medical}" th:object="${medicalPatientRequest}">
+                        <div class="card-header">
+                            <h2><p>Thông tin bệnh nhân</p></h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12" th:if="${patientInfo}">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <input readonly type="hidden" class="form-control" id="idC" name="id" th:field="*{patientId}">
+                                            <i class="fa fa-user-circle-o"></i>&nbsp;
+                                            <span>Họ và tên: </span>
+                                            <b><span style="color: limegreen;" th:text="${patientInfo.patientDetail.fullName}"></span></b>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-birthday-cake"></i>&nbsp;
+                                            <span>Ngày sinh: </span>
+                                            <b><span style="color: limegreen;" th:text="${patientInfo.patientDetail.birthday}"></span></b>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-user-circle-o"></i>&nbsp;
+                                            <span>Ba, mẹ, người giám hộ: </span>
+                                            <b><span style="color: limegreen;" th:text="${patientInfo.parentDetail.fullName}"></span></b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <i class="fa fa-balance-scale"></i>&nbsp;
+                                            <span>Cân nặng: </span>
+                                            <b><span style="color: limegreen;" th:text="${patientInfo.patientDetail.weight}"></span></b>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-intersex"></i>&nbsp;
+                                            <span>Giới tính: </span>
+                                            <b><span style="color: limegreen;" th:if="${patientInfo.patientDetail.sex == 'F'}">Nữ</span></b>
+                                            <b><span style="color: limegreen;" th:if="${patientInfo.patientDetail.sex == 'M'}">Nam</span></b>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-phone"></i>&nbsp;
+                                            <span>Số điện thoại: </span>
+                                            <b><span style="color: limegreen;" th:text="${patientInfo.parentDetail.phoneNumber}"></span></b>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12">
+                            <div class="card-header">
+                                <h2><p>Thông tin khám bệnh</p></h2>
+                            </div>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label>Tiền sử:</label>
+                                            <input type="text" class="form-control" id="anamnesis" name="anamnesis" placeholder="..." th:field="*{anamnesis}">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <label>Triệu chứng:</label>
+                                            <textarea rows="1" class="form-control" id="symptom" name="symptom" placeholder="..." th:field="*{symptom}"></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label>Chuẩn đoán:</label>
+                                            <input type="text" class="form-control" id="diagnostic" name="diagnostic" placeholder="..." th:field="*{diagnostic}">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <label>Lời dặn:</label>
+                                            <input type="text" class="form-control" id="advice" name="advice" placeholder="..." th:field="*{advice}">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="card-header">
+                                <h2><p>Danh sách thuốc</p></h2>
+                            </div>
+                            <div class="card-body table-container">
+                                <table>
+                                    <tr>
+                                        <th style="border: 1px solid;" class="text-center">Tên thuốc</th>
+                                        <th style="border: 1px solid;" class="text-center">Đơn vị</th>
+                                        <th style="border: 1px solid;" class="text-center">Đường dùng</th>
+                                        <th style="border: 1px solid;" class="text-center">Sáng</th>
+                                        <th style="border: 1px solid;" class="text-center">Trưa</th>
+                                        <th style="border: 1px solid;" class="text-center">Chiều</th>
+                                        <th style="border: 1px solid;" class="text-center">Tối</th>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid;"></td>
+                                        <td style="border: 1px solid;"></td>
+                                        <td style="border: 1px solid;"></td>
+                                        <td style="border: 1px solid;"></td>
+                                        <td style="border: 1px solid;"></td>
+                                        <td style="border: 1px solid;"></td>
+                                        <td style="border: 1px solid;"></td>
+                                    </tr>
+    <!--                                <tr th:each="history : ${histories}">-->
+    <!--                                    <td style="border: 1px solid;" th:text="${history.createdAt}"></td>-->
+    <!--                                    <td style="border: 1px solid;" th:text="${history.anamnesis}"></td>-->
+    <!--                                    <td style="border: 1px solid;" th:text="${history.symptom}"></td>-->
+    <!--                                    <td style="border: 1px solid;" th:text="${history.diagnostic}"></td>-->
+    <!--                                    <td style="border: 1px solid;" th:text="${history.patientProfileId}"></td>-->
+    <!--                                </tr>-->
+                                    <!--                            <tr th:each="history : ${histories}">-->
+                                    <!--                                <td class="text-center" th:text="${item.medicalDate.substring(8,10)+'-'+item.medicalDate.substring(5,7)+'-'+item.medicalDate.substring(0,4)}"></td>-->
+                                    <!--                                <td class="text-center" th:text="${item.hours} + ':00'"></td>-->
+                                    <!--                                <td class="tm-product-name" th:text="${item.patientProfile.name}"></td>-->
+                                    <!--                                <td class="text-center"  th:if="${item.patientProfile.sex == 'F'}" >Nữ</td>-->
+                                    <!--                                <td class="text-center"  th:if="${item.patientProfile.sex != 'F'}" >Nam</td>-->
+                                    <!--                                <td class="tm-product-name" th:text="${item.patientProfile.symptom}"></td>-->
+                                    <!--                                <td class="text-center"  th:if="${item.isPay == true}" >Đã thanh toán</td>-->
+                                    <!--                                <td class="text-center"  th:if="${item.isPay != true}" >Chưa thanh toán</td>-->
+                                    <!--                                <td class="text-center"  th:if="${item.isDone == true}" >Đã khám</td>-->
+                                    <!--                                <td class="text-center"  th:if="${item.isDone != true}" >Chưa khám</td>-->
+                                    <!--                                <td class="text-center">-->
+                                    <!--                                    <a th:href="@{/doctor/schedule/detail(scheduleId=${item.scheduleId})}">-->
+                                    <!--                                        <i class="material-icons" style="font-size:24px">edit</i></a></td>-->
+                                    <!--                            </tr>-->
+                                </table>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-register" style="background-color: #09d066;">
+                            Kết thúc
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div th:include="footer.html"></div>
+<script src="script.js"></script>
+</body>
+<script th:inline="javascript">
+    var message = /*[[${message}]]*/ "";
+    if(message != null && message != ""){
+        alert(message);
+    }
+    var now = new Date();
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var day = ("0" + now.getDate()).slice(-2);
+    var today = now.getFullYear() + "-" + month + "-" + day;
+
+    var searchPhone = document.getElementById('phoneNumberS').value;
+    if (searchPhone != ""){
+        document.getElementById('search').disabled = false;
+    } else {
+        document.getElementById('search').disabled = true;
+    }
+
+    function addPatient() {
+<!--        alert("nhi nè");-->
+        document.getElementById('idC').value = "";
+        document.getElementById('fullNameC').value = "";
+        document.getElementById('weightC').value = "";
+        document.getElementById('birthdayC').value = "";
+        let elements = document.getElementsByName('patientDetail.sex');
+        for (let i = 0; i < elements.length; i++) {
+            if (elements[i].type == "radio") {
+                elements[i].checked = false;
+            }
+        }
+    }
+    document.getElementById("birthdayC").setAttribute("max", today);
+
+    function cancel() {
+        var parentId = document.getElementById('idP').value;
+        if (parentId != "") {
+            addPatient();
+        } else {
+            document.getElementById('phoneNumberP').value = "";
+            document.getElementById('addressP').value = "";
+            document.getElementById('fullNameP').value = "";
+            addPatient();
+        }
+    }
+
+    function addParent() {
+        document.getElementById('phoneNumberP').value = document.getElementById('phoneNumberS').value;
+    }
+
+    function enableSearch() {
+        var searchPhone = document.getElementById('phoneNumberS').value;
+        if (searchPhone != ""){
+            document.getElementById('search').disabled = false;
+        } else {
+            document.getElementById('search').disabled = true;
+        }
+    }
+
+    function getSelect() {
+        var patientID = document.getElementById("patientSelect").value;
+        var patient = findPatientById(patientID);
+        if (patient != null) {
+            document.getElementById('idC').value = patient.id;
+            document.getElementById('fullNameC').value = patient.fullName;
+            document.getElementById('weightC').value = patient.weight;
+            document.getElementById('birthdayC').value = patient.birthday;
+            let elements = document.getElementsByName('patientDetail.sex');
+            for (let i = 0; i < elements.length; i++) {
+                if (elements[i].id == patient.sex) {
+                    elements[i].checked = true;
+                }
+            }
+        }
+    }
+
+    function findPatientById(patientId) {
+        var patientList = /*[[${listPatient}]]*/ [];
+        for (var i = 0; i < patientList.length; i++) {
+            if (patientList[i].id == patientId) {
+                return patientList[i];
+            }
+        }
+        return null;
+    }
+</script>
+</html>

@@ -211,8 +211,9 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input type="text" th:field="*{patientDetail.id}" class="form-control" id="idC"
-                                                   name="id">
+                                            <input type="hidden" th:field="*{patientDetail.id}" class="form-control" id="idC"
+                                                   oninput="enableHistory();"
+                                                   name="idC">
                                         </td>
                                         <td>
                                             <button type="submit" class="btn btn-primary btn-register" id="confirm"
@@ -235,11 +236,11 @@
                                     style="margin: 75px 0px 10px 10px;float: left;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
                                 Hủy
                             </button>
-                            <a type="button" class="btn btn-primary btn-register"
+                            <button type="button" class="btn btn-primary btn-register" id="history"
                                onclick="redirectToPatientHistory();"
                                style="margin: 75px 0px 10px 10px;float: right;background-color: #09d066;position: relative;top: -70px;left: -10px;z-index: 1;">
                                 Lịch sử
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>

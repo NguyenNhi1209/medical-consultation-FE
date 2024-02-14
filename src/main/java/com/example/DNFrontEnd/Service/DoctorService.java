@@ -124,6 +124,39 @@ public class DoctorService {
         return baseResponse;
     }
 
+    public SchedulesResponse getMedicalDetail(DetailMedicalRequest request, String token) {
+        BaseResponse baseResponse;
+        SchedulesResponse schedulesResponse = new SchedulesResponse();
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(adminUrl+"/doctor/schedule/detail"))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .header("content-type", "application/json")
+                    .method("POST", HttpRequest.BodyPublishers.ofString(DetailMedicalRequest.convertToString(request)))
+                    .build();
+            HttpResponse response = HttpClient.newHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+            baseResponse = objectMapper.readValue(response.body().toString(),BaseResponse.class);
+            System.out.println(baseResponse);
+            schedulesResponse = objectMapper.readValue(objectMapper.writeValueAsString(baseResponse.getData()).toString(), SchedulesResponse.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return schedulesResponse;
+    }
+
     public BaseResponse updateScheduleDetail(MedicalPatientRequest request, String token) {
         BaseResponse baseResponse = new BaseResponse<>();
         try {

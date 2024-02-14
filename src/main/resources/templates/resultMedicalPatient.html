@@ -57,9 +57,9 @@
         table {
             min-width: 100%
         }
-        table td{
-            padding: 5px 5px 5px 5px;
-        }
+<!--        table td{-->
+<!--            padding: 5px 5px 5px 5px;-->
+<!--        }-->
         footer {
             position: absolute;
             bottom: 0;
@@ -123,140 +123,158 @@
 <div class="our-services">
     <div class="container">
         <div class="container">
-            <div class="col-md-4 col-lg-4 col-4 col-md-4 col-sm-4" style="justify-content: center;align-items: center;float:left">
-            <img src="/images/logo1-bg.png" id="logo" alt="" style="width: 160px; height: 114px; border-radius: 20px;">
-            </div>
-            <div class="col-md-8 col-lg-8 col-8 col-md-8 col-sm-8" style="text-align: center;float:right">
-                <h2>PHÒNG KHÁM NHI BÁC SĨ LINH</h2>
-                <h4>Đt: 0815.766.120 – 0382.448.775</h4>
-                <h4>Đ/c: 23/3 Hải Thượng, Phường 06, Đà Lạt, Lâm Đồng</h4>
-            </div>
-            <br><br>
+            <table>
+                <tr>
+                    <td>
+                        <div class="col-md-3 col-lg-3 col-3 col-md-3 col-sm-3" style="justify-content: center;align-items: center;float:left">
+                            <img src="/images/logo1-bg.png" id="logo" alt="" style="border-radius: 20px;">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-md-9 col-lg-9 col-9 col-md-9 col-sm-9" style="text-align: center;float:right">
+                            <h4>PHÒNG KHÁM NHI BÁC SĨ LINH</h4>
+                            <h5>Đt: 0815.766.120 – 0382.448.775</h5>
+                            <p>Đ/c: 23/3 Hải Thượng, Phường 06, Đà Lạt, Lâm Đồng</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
             <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12">
-            <h1 style="text-align: center;">ĐƠN THUỐC</h1>
-            <br>
+            <b><h3 style="text-align: center;">ĐƠN THUỐC</h3></b>
             <form method="POST">
                 <table>
                     <tr>
                         <td>
-                            <h4><b>Họ tên:</b></h4>
+                            <b>Họ tên:</b>
                         </td>
                         <td>
-                            <h4>
-                                <b th:text="${detailPatientProfileResponse.patientDetail.fullName}"></span></b>
-                            </h4>
+                            <span th:text="${detailPatientProfileResponse.patientDetail.fullName}"></span>
                         </td>
                         <td>
-                            <h4><b>Giới tính:</b></h4>
+                            <b>Giới tính:</b>
                         </td>
                         <td>
-                            <h4>
-                                <b th:if="${detailPatientProfileResponse.patientDetail.sex == 'M'}">Nam</span></b>
-                                <b th:if="${detailPatientProfileResponse.patientDetail.sex == 'F'}">Nữ</span></b>
-                            </h4>
+                            <span th:if="${detailPatientProfileResponse.patientDetail.sex == 'M'}">Nam</span>
+                            <span th:if="${detailPatientProfileResponse.patientDetail.sex == 'F'}">Nữ</span>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <h4><b>Năm sinh/Tuổi:</b></h4>
+                            <b>Năm sinh/Tuổi:</b>
                         </td>
                         <td>
-                            <h4>
-                                <b th:text="${detailPatientProfileResponse.patientDetail.birthday}"></span></b>
-                            </h4>
+                            <span th:text="${detailPatientProfileResponse.patientDetail.birthday}"></span>
                         </td>
                         <td>
-                            <h4><b>Cân nặng:</b></h4>
+                            <b>Cân nặng:</b>
                         </td>
                         <td>
-                            <h4>
-                                <b th:text="${detailPatientProfileResponse.patientDetail.weight}"></span></b>
-                            </h4>
+                            <span th:text="${detailPatientProfileResponse.patientDetail.weight}"></span>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <h4><b>Địa Chỉ:</b></h4>
+                            <b>Địa Chỉ:</b>
                         </td>
                         <td colspan="3">
-                            <h4>
-                                <b th:text="${patientInfoUI.parentDetail.address}"></span></b>
-                            </h4>
+                            <span th:text="${patientInfoUI.parentDetail.address}"></span>
                         </td>
 
                     </tr>
                     <tr>
                         <td>
-                            <h4><b>Bố/ Mẹ:</b></h4>
+                            <b>Bố/ Mẹ:</b>
                         </td>
                         <td>
-                            <h4>
-                                <b th:text="${patientInfoUI.parentDetail.fullName}"></span></b>
-                            </h4>
+                            <span th:text="${patientInfoUI.parentDetail.fullName}"></span>
                         </td>
                         <td>
-                            <h4><b>Sđt:</b></h4>
+                            <b>Sđt:</b>
                         </td>
                         <td>
-                            <h4>
-                                <b th:text="${patientInfoUI.parentDetail.phoneNumber}"></span></b>
-                            </h4>
+                            <span th:text="${patientInfoUI.parentDetail.phoneNumber}"></span>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <h4><b>Chẩn đoán:</b></h4>
+                            <b>Chẩn đoán:</b>
                         </td>
                         <td colspan="3">
-                            <h4>
-                                <b th:text="${detailPatientProfileResponse.diagnostic}"></span></b>
-                            </h4>
+                            <span th:text="${detailPatientProfileResponse.diagnostic}"></span>
                         </td>
-
                     </tr>
                 </table>
-                <h3><b>Thuốc điều trị:</b></h3>
-                <br>
-
-                    1<div class="nhi"></div>
-
+                <h4><b>Thuốc điều trị:</b></h4>
+                <table>
+                    <tr colspan="5" style="border-bottom: 1px dotted;">
+                        <td>1</td>
+                    </tr>
+                    <tr style="border-bottom: 1px dotted;">
+                        <td></td>
+                        <td>Sáng: </td>
+                        <td>Trưa: </td>
+                        <td>Chiều: </td>
+                        <td>Tối: </td>
+                    </tr>
+                    <tr colspan="5" style="border-bottom: 1px dotted;">
+                        <td>2</td>
+                    </tr>
+                    <tr style="border-bottom: 1px dotted;">
+                        <td></td>
+                        <td>Sáng: </td>
+                        <td>Trưa: </td>
+                        <td>Chiều: </td>
+                        <td>Tối: </td>
+                    </tr>
+                    <tr colspan="5" style="border-bottom: 1px dotted;">
+                        <td>3</td>
+                    </tr>
+                    <tr style="border-bottom: 1px dotted;">
+                        <td></td>
+                        <td>Sáng: </td>
+                        <td>Trưa: </td>
+                        <td>Chiều: </td>
+                        <td>Tối: </td>
+                    </tr>
+                    <tr colspan="5" style="border-bottom: 1px dotted;">
+                        <td>4</td>
+                    </tr>
+                    <tr style="border-bottom: 1px dotted;">
+                        <td></td>
+                        <td>Sáng: </td>
+                        <td>Trưa: </td>
+                        <td>Chiều: </td>
+                        <td>Tối: </td>
+                    </tr>
+                    <tr colspan="5" style="border-bottom: 1px dotted;">
+                        <td>5</td>
+                    </tr>
+                    <tr style="border-bottom: 1px dotted;">
+                        <td></td>
+                        <td>Sáng: </td>
+                        <td>Trưa: </td>
+                        <td>Chiều: </td>
+                        <td>Tối: </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 150px"><b>Lời dặn: </b></td>
+                        <td colspan="4"><span th:text="${detailPatientProfileResponse.advice}"></span></td>
+                    </tr>
+                </table>
                 <table>
                     <tr>
-                        <td>Sáng<div class="nhi"></div></td>
-
-                        <td>Trưa<div class="nhi"></div></td>
-
-                        <td>Chiều<div class="nhi"></div></td>
-
-                        <td>Tối<div class="nhi"></div></td>
+                        <td>- Tái khám xin mang theo đơn này</td>
+                        <td style="float: right">
+                            <i>
+                                Ngày <span th:text="${detailPatientProfileResponse.createdAt.substring(0, 2)}"></span>
+                                tháng <span th:text="${detailPatientProfileResponse.createdAt.substring(3, 5)}"></span>
+                                năm <span th:text="${detailPatientProfileResponse.createdAt.substring(6)}"></span>.
+                            </i>
+                            <br><br><br><br><br><br><br>
+                            Bs. Song Vĩnh Thúy Linh
+                        </td>
                     </tr>
                 </table>
-
-                <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12">
-                    2<div class="nhi"></div>
-                </div>
-                <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12">
-                    3<div class="nhi"></div>
-                </div>
-                <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12">
-                    4<div class="nhi"></div>
-                </div>
-                <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12">
-                    5<div class="nhi"></div>
-                </div>
-
-
-                Lời dặn:
-                <br>
-                Ngày … tháng … năm 20….
-
-
-
-                - Tái khám xin mang theo đơn này
-
-
-                Bs. Song Vĩnh Thúy Linh
-
             </form>
             </div>
         </div>

@@ -2,6 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -9,7 +13,6 @@
     <link rel="stylesheet" th:href="@{https://unpkg.com/swiper/swiper-bundle.min.css}"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Khám bệnh</title>
     <style>
@@ -55,10 +58,22 @@
         .card-body span{
         }
         table {
-            min-width: 100%
+            width: 100%;
         }
         table td{
             padding: 5px 5px 5px 5px;
+        }
+        .customTable tr td{
+            border: 1px solid;
+            text-align: left;
+        }
+        .customTable tr th{
+            border: 1px solid;
+            text-align: center;
+        }
+        .setBorder td{
+            border: 1px solid;
+            text-align: left;
         }
         footer {
             position: absolute;
@@ -73,6 +88,7 @@
         .container{
          height: 70%;
          min-height: 80vh;
+         width: 100%;
         }
         .our-services{
             margin-top: 100px;
@@ -108,6 +124,10 @@
             /* Các thuộc tính CSS khác cho bảng */
         }
     </style>
+    <script>
+        //URL
+        let URL_SEARCH_MEDICINE = 'http://localhost:8088/api/medicine/list';
+    </script>
 </head>
 <body>
 <div th:include="header.html"></div>
@@ -121,9 +141,9 @@
                             <h2><p>Thông tin bệnh nhân</p></h2>
                         </div>
                         <div class="card-body">
-                            <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12" th:if="${detailPatientResponse}">
+                            <div th:if="${detailPatientResponse}">
                                 <table>
-                                    <tr>
+                                    <tr style="border: none">
                                         <td>
                                             <input readonly type="hidden" class="form-control" id="idC" name="id" th:field="*{patientId}">
                                             <i class="fa fa-user-circle-o"></i>&nbsp;
@@ -166,91 +186,113 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="card-header">
+                            <h2><p>Thông tin khám bệnh</p></h2>
+                        </div>
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>Tiền sử:</label>
+                                        <input type="text" class="form-control" id="anamnesis" name="anamnesis" placeholder="..." th:field="*{anamnesis}">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>Triệu chứng:</label>
+                                        <textarea rows="1" class="form-control" id="symptom" name="symptom" placeholder="..." th:field="*{symptom}"></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>Chuẩn đoán:</label>
+                                        <input type="text" class="form-control" id="diagnostic" name="diagnostic" placeholder="..." th:field="*{diagnostic}">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>Lời dặn:</label>
+                                        <input type="text" class="form-control" id="advice" name="advice" placeholder="..." th:field="*{advice}">
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
 
-                        <div class="col-md-12 col-lg-12 col-12 col-md-12 col-sm-12">
-                            <div class="card-header">
-                                <h2><p>Thông tin khám bệnh</p></h2>
-                            </div>
-                            <table>
+                        <div class="card-header">
+                            <h2><p>Danh sách thuốc</p></h2>
+                        </div>
+                        <div class="card-body">
+                            <table class="customTable" id="medicine-content">
                                 <tr>
-                                    <td>
-                                        <div class="form-group">
-                                            <label>Tiền sử:</label>
-                                            <input type="text" class="form-control" id="anamnesis" name="anamnesis" placeholder="..." th:field="*{anamnesis}">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
-                                            <label>Triệu chứng:</label>
-                                            <textarea rows="1" class="form-control" id="symptom" name="symptom" placeholder="..." th:field="*{symptom}"></textarea>
-                                        </div>
-                                    </td>
+                                    <th>Tên thuốc</th>
+                                    <th>Đơn vị</th>
+                                    <th>Đường dùng</th>
+                                    <th>Sáng</th>
+                                    <th>Trưa</th>
+                                    <th>Chiều</th>
+                                    <th>Tối</th>
+                                    <th>Cách dùng</th>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <div class="form-group">
-                                            <label>Chuẩn đoán:</label>
-                                            <input type="text" class="form-control" id="diagnostic" name="diagnostic" placeholder="..." th:field="*{diagnostic}">
+                                    <td style="width: 250px;" id="medicine-name">
+                                        <input type="text" id="inputField">
+                                        <i class="fa fa-search" onclick="fetchData();"></i>
+                                        <div id="dropdown" style="display: none;">
+                                            <!-- Danh sách dropdown sẽ được thêm vào đây -->
                                         </div>
                                     </td>
-                                    <td>
-                                        <div class="form-group">
-                                            <label>Lời dặn:</label>
-                                            <input type="text" class="form-control" id="advice" name="advice" placeholder="..." th:field="*{advice}">
-                                        </div>
-                                    </td>
+<!--                                    <td style="width: 250px;" contenteditable="true" id="medicine-name"></td>-->
+                                    <td style="width: 100px;" contenteditable="true" id="medicine-unit"></td>
+                                    <td style="width: 100px;" contenteditable="true" id="medicine-use"></td>
+                                    <td style="width: 50px;" contenteditable="true" id="medicine-instruct-M"></td>
+                                    <td style="width: 50px;" contenteditable="true" id="medicine-instruct-L"></td>
+                                    <td style="width: 50px;" contenteditable="true" id="medicine-instruct-A"></td>
+                                    <td style="width: 50px;" contenteditable="true" id="medicine-instruct-N"></td>
+                                    <td style="width: auto;" contenteditable="true" id="medicine-instruct"></td>
                                 </tr>
                             </table>
-
-                            <div class="card-header">
-                                <h2><p>Danh sách thuốc</p></h2>
-                            </div>
-                            <div class="card-body table-container">
-                                <table>
-                                    <tr>
-                                        <th style="border: 1px solid;" class="text-center">Tên thuốc</th>
-                                        <th style="border: 1px solid;" class="text-center">Đơn vị</th>
-                                        <th style="border: 1px solid;" class="text-center">Đường dùng</th>
-                                        <th style="border: 1px solid;" class="text-center">Sáng</th>
-                                        <th style="border: 1px solid;" class="text-center">Trưa</th>
-                                        <th style="border: 1px solid;" class="text-center">Chiều</th>
-                                        <th style="border: 1px solid;" class="text-center">Tối</th>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid;"></td>
-                                        <td style="border: 1px solid;"></td>
-                                        <td style="border: 1px solid;"></td>
-                                        <td style="border: 1px solid;"></td>
-                                        <td style="border: 1px solid;"></td>
-                                        <td style="border: 1px solid;"></td>
-                                        <td style="border: 1px solid;"></td>
-                                    </tr>
-    <!--                                <tr th:each="history : ${histories}">-->
-    <!--                                    <td style="border: 1px solid;" th:text="${history.createdAt}"></td>-->
-    <!--                                    <td style="border: 1px solid;" th:text="${history.anamnesis}"></td>-->
-    <!--                                    <td style="border: 1px solid;" th:text="${history.symptom}"></td>-->
-    <!--                                    <td style="border: 1px solid;" th:text="${history.diagnostic}"></td>-->
-    <!--                                    <td style="border: 1px solid;" th:text="${history.patientProfileId}"></td>-->
-    <!--                                </tr>-->
-                                    <!--                            <tr th:each="history : ${histories}">-->
-                                    <!--                                <td class="text-center" th:text="${item.medicalDate.substring(8,10)+'-'+item.medicalDate.substring(5,7)+'-'+item.medicalDate.substring(0,4)}"></td>-->
-                                    <!--                                <td class="text-center" th:text="${item.hours} + ':00'"></td>-->
-                                    <!--                                <td class="tm-product-name" th:text="${item.patientProfile.name}"></td>-->
-                                    <!--                                <td class="text-center"  th:if="${item.patientProfile.sex == 'F'}" >Nữ</td>-->
-                                    <!--                                <td class="text-center"  th:if="${item.patientProfile.sex != 'F'}" >Nam</td>-->
-                                    <!--                                <td class="tm-product-name" th:text="${item.patientProfile.symptom}"></td>-->
-                                    <!--                                <td class="text-center"  th:if="${item.isPay == true}" >Đã thanh toán</td>-->
-                                    <!--                                <td class="text-center"  th:if="${item.isPay != true}" >Chưa thanh toán</td>-->
-                                    <!--                                <td class="text-center"  th:if="${item.isDone == true}" >Đã khám</td>-->
-                                    <!--                                <td class="text-center"  th:if="${item.isDone != true}" >Chưa khám</td>-->
-                                    <!--                                <td class="text-center">-->
-                                    <!--                                    <a th:href="@{/doctor/schedule/detail(scheduleId=${item.scheduleId})}">-->
-                                    <!--                                        <i class="material-icons" style="font-size:24px">edit</i></a></td>-->
-                                    <!--                            </tr>-->
-                                </table>
-                            </div>
+                            <br>
+                            <button type="button" class="btn btn-primary btn-register" id="history" onclick="addRow();" style="background-color: #09d066;">
+                                Thêm
+                            </button>
                         </div>
-
+                        <br>
+                        <div class="card-body table-container">
+                            <table id="medicine-table">
+                                <tr>
+                                    <th style="border: 1px solid;" class="text-center">Tên thuốc</th>
+                                    <th style="border: 1px solid;" class="text-center">Đơn vị</th>
+                                    <th style="border: 1px solid;" class="text-center">Đường dùng</th>
+                                    <th style="border: 1px solid;" class="text-center">Cách sử dụng</th>
+                                    <th style="border: 1px solid; width: 50px;" class="text-center"></th>
+                                </tr>
+<!--                                <tr th:each="history : ${histories}">-->
+<!--                                    <td style="border: 1px solid;" th:text="${history.createdAt}"></td>-->
+<!--                                    <td style="border: 1px solid;" th:text="${history.anamnesis}"></td>-->
+<!--                                    <td style="border: 1px solid;" th:text="${history.symptom}"></td>-->
+<!--                                    <td style="border: 1px solid;" th:text="${history.diagnostic}"></td>-->
+<!--                                    <td style="border: 1px solid;" th:text="${history.patientProfileId}"></td>-->
+<!--                                </tr>-->
+                                <!--                            <tr th:each="history : ${histories}">-->
+                                <!--                                <td class="text-center" th:text="${item.medicalDate.substring(8,10)+'-'+item.medicalDate.substring(5,7)+'-'+item.medicalDate.substring(0,4)}"></td>-->
+                                <!--                                <td class="text-center" th:text="${item.hours} + ':00'"></td>-->
+                                <!--                                <td class="tm-product-name" th:text="${item.patientProfile.name}"></td>-->
+                                <!--                                <td class="text-center"  th:if="${item.patientProfile.sex == 'F'}" >Nữ</td>-->
+                                <!--                                <td class="text-center"  th:if="${item.patientProfile.sex != 'F'}" >Nam</td>-->
+                                <!--                                <td class="tm-product-name" th:text="${item.patientProfile.symptom}"></td>-->
+                                <!--                                <td class="text-center"  th:if="${item.isPay == true}" >Đã thanh toán</td>-->
+                                <!--                                <td class="text-center"  th:if="${item.isPay != true}" >Chưa thanh toán</td>-->
+                                <!--                                <td class="text-center"  th:if="${item.isDone == true}" >Đã khám</td>-->
+                                <!--                                <td class="text-center"  th:if="${item.isDone != true}" >Chưa khám</td>-->
+                                <!--                                <td class="text-center">-->
+                                <!--                                    <a th:href="@{/doctor/schedule/detail(scheduleId=${item.scheduleId})}">-->
+                                <!--                                        <i class="material-icons" style="font-size:24px">edit</i></a></td>-->
+                                <!--                            </tr>-->
+                            </table>
+                        </div>
+                        <br>
                         <button type="submit" class="btn btn-primary btn-register" style="background-color: #09d066;">
                             Kết thúc
                         </button>
@@ -262,10 +304,11 @@
 </div>
 </div>
 <div th:include="footer.html"></div>
-<script src="script.js"></script>
 </body>
 <script th:inline="javascript">
     var message = /*[[${message}]]*/ "";
+    var token = /*[[${token}]]*/ "";
+    var url = "http://localhost:8080/api";
     if(message != null && message != ""){
         alert(message);
     }
@@ -274,12 +317,12 @@
     var day = ("0" + now.getDate()).slice(-2);
     var today = now.getFullYear() + "-" + month + "-" + day;
 
-    var searchPhone = document.getElementById('phoneNumberS').value;
-    if (searchPhone != ""){
-        document.getElementById('search').disabled = false;
-    } else {
-        document.getElementById('search').disabled = true;
-    }
+<!--    var searchPhone = document.getElementById('phoneNumberS').value;-->
+<!--    if (searchPhone != ""){-->
+<!--        document.getElementById('search').disabled = false;-->
+<!--    } else {-->
+<!--        document.getElementById('search').disabled = true;-->
+<!--    }-->
 
     function addPatient() {
 <!--        alert("nhi nè");-->
@@ -308,18 +351,18 @@
         }
     }
 
-    function addParent() {
-        document.getElementById('phoneNumberP').value = document.getElementById('phoneNumberS').value;
-    }
+<!--    function addParent() {-->
+<!--        document.getElementById('phoneNumberP').value = document.getElementById('phoneNumberS').value;-->
+<!--    }-->
 
-    function enableSearch() {
-        var searchPhone = document.getElementById('phoneNumberS').value;
-        if (searchPhone != ""){
-            document.getElementById('search').disabled = false;
-        } else {
-            document.getElementById('search').disabled = true;
-        }
-    }
+<!--    function enableSearch() {-->
+<!--        var searchPhone = document.getElementById('phoneNumberS').value;-->
+<!--        if (searchPhone != ""){-->
+<!--            document.getElementById('search').disabled = false;-->
+<!--        } else {-->
+<!--            document.getElementById('search').disabled = true;-->
+<!--        }-->
+<!--    }-->
 
     function getSelect() {
         var patientID = document.getElementById("patientSelect").value;
@@ -346,6 +389,110 @@
             }
         }
         return null;
+    }
+
+    function addRow() {
+        var medicine_name = document.getElementById("medicine-name").innerText.trim();
+        var medicine_unit = document.getElementById("medicine-unit").innerText.trim();
+        var medicine_use = document.getElementById("medicine-use").innerText.trim();
+        var medicine_instruct_M = document.getElementById("medicine-instruct-M").innerText.trim();
+        var medicine_instruct_L = document.getElementById("medicine-instruct-L").innerText.trim();
+        var medicine_instruct_A = document.getElementById("medicine-instruct-A").innerText.trim();
+        var medicine_instruct_N = document.getElementById("medicine-instruct-N").innerText.trim();
+        var medicine_instruct = document.getElementById("medicine-instruct").innerText.trim();
+
+        var table = document.getElementById("medicine-table");
+        var row = table.insertRow(-1); // Insert at the end of the table
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+
+        var instruct = "";
+        if (medicine_instruct !== null && medicine_instruct !== "") {
+            instruct += medicine_instruct;
+        }
+        if (medicine_instruct_M != null && medicine_instruct_M != "") {
+            if (instruct.length > 0){
+                instruct += ", ";
+            }
+            instruct += "<b>Sáng:</b> " + medicine_instruct_M;
+        }
+        if (medicine_instruct_L != null && medicine_instruct_L != "") {
+            if (instruct.length > 0){
+                instruct += ", ";
+            }
+            instruct += "<b>Trưa:</b> " + medicine_instruct_L;
+        }
+        if (medicine_instruct_A != null && medicine_instruct_A != "") {
+            if (instruct.length > 0){
+                instruct += ", ";
+            }
+            instruct += "<b>Chiều:</b> " + medicine_instruct_A;
+        }
+        if (medicine_instruct_N != null && medicine_instruct_N != "") {
+            if (instruct.length > 0){
+                instruct += ", ";
+            }
+            instruct += "<b>Tối:</b> " + medicine_instruct_N;
+        }
+
+        cell1.innerHTML = medicine_name;
+        cell2.innerHTML = medicine_unit;
+        cell3.innerHTML = medicine_use;
+        cell4.innerHTML = instruct;
+
+        var deleteCell = row.insertCell(4); // Tạo một ô mới cho nút xóa
+        var deleteButton = document.createElement("button"); // Tạo một nút xóa
+        deleteButton.textContent = "Xóa"; // Thiết lập nội dung của nút
+        deleteButton.onclick = function() {
+            removeRow(this); // Gọi hàm xóa hàng khi nút được nhấn
+        };
+        deleteCell.appendChild(deleteButton); // Thêm nút vào ô mới
+
+        row.classList.add("setBorder");
+        clearMedicineContent();
+    }
+
+    function removeRow(button) {
+        var row = button.parentNode.parentNode; // Lấy hàng chứa nút
+        row.parentNode.removeChild(row); // Loại bỏ hàng khỏi bảng
+    }
+
+    function clearMedicineContent() {
+        document.getElementById("medicine-name").innerText = "";
+        document.getElementById("medicine-unit").innerText = "";
+        document.getElementById("medicine-use").innerText = "";
+        document.getElementById("medicine-instruct-M").innerText = "";
+        document.getElementById("medicine-instruct-L").innerText = "";
+        document.getElementById("medicine-instruct-A").innerText = "";
+        document.getElementById("medicine-instruct-N").innerText = "";
+        document.getElementById("medicine-instruct").innerText = "";
+    }
+
+    function fetchData() {
+        var searchMedicine = document.getElementById('inputField').value;
+        let search = fetch(URL_SEARCH_MEDICINE, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                "name": searchMedicine,
+                "isPage": 'false',
+                "order": 'ASC',
+                "orderBy": 'name',
+                "pageIndex": '0',
+                "pageSize": '10'
+            })
+        });
+
+        search.then(function (response) {
+            return response.json();
+        }).then(function (res) {
+            console.log(res.data.totalItems);
+        })
     }
 </script>
 </html>

@@ -226,6 +226,7 @@ public class PatientController {
 //        model.addAttribute("detailPatientResponse", detailPatientResponse);
         model.addAttribute("medicalPatientRequest", medicalPatientRequest);
         model.addAttribute("patientInfoUI", patientInfoUI);
+        model.addAttribute("token", session.getAttribute("token").toString());
         return "medicalPatient";
     }
 

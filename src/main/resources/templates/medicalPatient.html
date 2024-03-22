@@ -123,6 +123,43 @@
             width: 100%; /* Đảm bảo bảng chiếm toàn bộ chiều rộng của container */
             /* Các thuộc tính CSS khác cho bảng */
         }
+
+        .search-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .search-input {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        }
+
+        .search-results li {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .search-results li:hover {
+            background-color: #f2f2f2;
+        }
     </style>
     <script>
         //URL
@@ -227,29 +264,29 @@
                             <table class="customTable" id="medicine-content">
                                 <tr>
                                     <th>Tên thuốc</th>
+                                    <th>Liều lượng</th>
                                     <th>Đơn vị</th>
-                                    <th>Đường dùng</th>
                                     <th>Sáng</th>
                                     <th>Trưa</th>
                                     <th>Chiều</th>
                                     <th>Tối</th>
+                                    <th>Đường dùng</th>
                                     <th>Cách dùng</th>
                                 </tr>
                                 <tr>
-                                    <td style="width: 250px;" id="medicine-name">
-                                        <input type="text" id="inputField">
-                                        <i class="fa fa-search" onclick="fetchData();"></i>
-                                        <div id="dropdown" style="display: none;">
-                                            <!-- Danh sách dropdown sẽ được thêm vào đây -->
+                                    <td style="width: 250px;">
+                                        <div class="search-container">
+                                            <input type="text" class="search-input" id="medicine-name" oninput="searchCharacters(this.value)">
+                                            <ul class="search-results" id="searchResults" style="display: none;"></ul>
                                         </div>
                                     </td>
-<!--                                    <td style="width: 250px;" contenteditable="true" id="medicine-name"></td>-->
-                                    <td style="width: 100px;" contenteditable="true" id="medicine-unit"></td>
-                                    <td style="width: 100px;" contenteditable="true" id="medicine-use"></td>
+                                    <td style="width: 100px;" id="medicine-dosage"></td>
+                                    <td style="width: 100px;" id="medicine-unit"></td>
                                     <td style="width: 50px;" contenteditable="true" id="medicine-instruct-M"></td>
                                     <td style="width: 50px;" contenteditable="true" id="medicine-instruct-L"></td>
                                     <td style="width: 50px;" contenteditable="true" id="medicine-instruct-A"></td>
                                     <td style="width: 50px;" contenteditable="true" id="medicine-instruct-N"></td>
+                                    <td style="width: 100px;" contenteditable="true" id="medicine-use"></td>
                                     <td style="width: auto;" contenteditable="true" id="medicine-instruct"></td>
                                 </tr>
                             </table>
@@ -317,13 +354,6 @@
     var day = ("0" + now.getDate()).slice(-2);
     var today = now.getFullYear() + "-" + month + "-" + day;
 
-<!--    var searchPhone = document.getElementById('phoneNumberS').value;-->
-<!--    if (searchPhone != ""){-->
-<!--        document.getElementById('search').disabled = false;-->
-<!--    } else {-->
-<!--        document.getElementById('search').disabled = true;-->
-<!--    }-->
-
     function addPatient() {
 <!--        alert("nhi nè");-->
         document.getElementById('idC').value = "";
@@ -350,19 +380,6 @@
             addPatient();
         }
     }
-
-<!--    function addParent() {-->
-<!--        document.getElementById('phoneNumberP').value = document.getElementById('phoneNumberS').value;-->
-<!--    }-->
-
-<!--    function enableSearch() {-->
-<!--        var searchPhone = document.getElementById('phoneNumberS').value;-->
-<!--        if (searchPhone != ""){-->
-<!--            document.getElementById('search').disabled = false;-->
-<!--        } else {-->
-<!--            document.getElementById('search').disabled = true;-->
-<!--        }-->
-<!--    }-->
 
     function getSelect() {
         var patientID = document.getElementById("patientSelect").value;
@@ -392,8 +409,9 @@
     }
 
     function addRow() {
-        var medicine_name = document.getElementById("medicine-name").innerText.trim();
+        var medicine_name = document.getElementById("medicine-name").value;
         var medicine_unit = document.getElementById("medicine-unit").innerText.trim();
+        var medicine_dosage = document.getElementById("medicine-dosage").innerText.trim();
         var medicine_use = document.getElementById("medicine-use").innerText.trim();
         var medicine_instruct_M = document.getElementById("medicine-instruct-M").innerText.trim();
         var medicine_instruct_L = document.getElementById("medicine-instruct-L").innerText.trim();
@@ -438,7 +456,7 @@
         }
 
         cell1.innerHTML = medicine_name;
-        cell2.innerHTML = medicine_unit;
+        cell2.innerHTML = medicine_unit + ", " + medicine_dosage;
         cell3.innerHTML = medicine_use;
         cell4.innerHTML = instruct;
 
@@ -460,7 +478,8 @@
     }
 
     function clearMedicineContent() {
-        document.getElementById("medicine-name").innerText = "";
+        document.getElementById("medicine-name").value = "";
+        document.getElementById("medicine-dosage").innerText = "";
         document.getElementById("medicine-unit").innerText = "";
         document.getElementById("medicine-use").innerText = "";
         document.getElementById("medicine-instruct-M").innerText = "";
@@ -492,7 +511,61 @@
             return response.json();
         }).then(function (res) {
             console.log(res.data.totalItems);
-        })
+        });
+    }
+
+    function searchCharacters(keyword) {
+        const searchResults = document.getElementById('searchResults');
+        searchResults.innerHTML = ''; // Clear previous results
+
+        if (keyword.trim() === '') {
+            searchResults.style.display = 'none';
+            return;
+        }
+
+        let search = fetch(URL_SEARCH_MEDICINE, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                "name": keyword,
+                "isPage": 'false',
+                "order": 'ASC',
+                "orderBy": 'name',
+                "pageIndex": '0',
+                "pageSize": '10'
+            })
+        });
+
+        search.then(function (response) {
+            return response.json();
+        }).then(function (res) {
+            console.log(res.data.totalItems);
+            if (res.data.medicines.length > 0) {
+                res.data.medicines.forEach(character => {
+                    const li = document.createElement('li');
+                    li.textContent = character.name;
+                    li.onclick = function() {
+                        // Do something when a character is selected
+                        console.log('Selected character:', character);
+                        selectMedicine(character.name, character.dosageStrength, character.unit);
+                    };
+                    searchResults.appendChild(li);
+                });
+                searchResults.style.display = 'block';
+            } else {
+                searchResults.style.display = 'none';
+            }
+        });
+    }
+
+    function selectMedicine(name, dosage, unit) {
+        document.getElementById("medicine-name").value = name;
+        document.getElementById("medicine-dosage").innerText = dosage;
+        document.getElementById("medicine-unit").innerText = unit;
+        searchResults.style.display = 'none';
     }
 </script>
 </html>

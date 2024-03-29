@@ -130,8 +130,8 @@
         }
 
         .search-input {
-            width: 300px;
-            padding: 10px;
+            width: 250px;
+            padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
             outline: none;
@@ -257,6 +257,7 @@
                             </tr>
                         </table>
 
+                        <input type="hidden" id="resMedicines" th:field="*{resMedicines}" />
                         <div class="card-header">
                             <h2><p>Danh sách thuốc</p></h2>
                         </div>
@@ -266,28 +267,31 @@
                                     <th>Tên thuốc</th>
                                     <th>Liều lượng</th>
                                     <th>Đơn vị</th>
+                                    <th>Đường dùng</th>
                                     <th>Sáng</th>
                                     <th>Trưa</th>
                                     <th>Chiều</th>
                                     <th>Tối</th>
-                                    <th>Đường dùng</th>
                                     <th>Cách dùng</th>
+                                    <th>Số lượng</th>
                                 </tr>
                                 <tr>
                                     <td style="width: 250px;">
                                         <div class="search-container">
+                                            <input type="hidden" class="search-input" id="medicine-id">
                                             <input type="text" class="search-input" id="medicine-name" oninput="searchCharacters(this.value)">
                                             <ul class="search-results" id="searchResults" style="display: none;"></ul>
                                         </div>
                                     </td>
-                                    <td style="width: 100px;" id="medicine-dosage"></td>
-                                    <td style="width: 100px;" id="medicine-unit"></td>
-                                    <td style="width: 50px;" contenteditable="true" id="medicine-instruct-M"></td>
-                                    <td style="width: 50px;" contenteditable="true" id="medicine-instruct-L"></td>
-                                    <td style="width: 50px;" contenteditable="true" id="medicine-instruct-A"></td>
-                                    <td style="width: 50px;" contenteditable="true" id="medicine-instruct-N"></td>
+                                    <td style="width: 100px;" contenteditable="true" id="medicine-dosage"></td>
+                                    <td style="width: 100px;" contenteditable="true" id="medicine-unit"></td>
                                     <td style="width: 100px;" contenteditable="true" id="medicine-use"></td>
+                                    <td style="width: 50px;" contenteditable="true" id="medicine-instruct-M" oninput="calculateQuantity()"></td>
+                                    <td style="width: 50px;" contenteditable="true" id="medicine-instruct-L" oninput="calculateQuantity()"></td>
+                                    <td style="width: 50px;" contenteditable="true" id="medicine-instruct-A" oninput="calculateQuantity()"></td>
+                                    <td style="width: 50px;" contenteditable="true" id="medicine-instruct-N" oninput="calculateQuantity()"></td>
                                     <td style="width: auto;" contenteditable="true" id="medicine-instruct"></td>
+                                    <td style="width: 50px;" contenteditable="true" id="medicine-quantity"></td>
                                 </tr>
                             </table>
                             <br>
@@ -300,37 +304,14 @@
                             <table id="medicine-table">
                                 <tr>
                                     <th style="border: 1px solid;" class="text-center">Tên thuốc</th>
-                                    <th style="border: 1px solid;" class="text-center">Đơn vị</th>
-                                    <th style="border: 1px solid;" class="text-center">Đường dùng</th>
+                                    <th style="border: 1px solid;" class="text-center">Số lượng</th>
                                     <th style="border: 1px solid;" class="text-center">Cách sử dụng</th>
                                     <th style="border: 1px solid; width: 50px;" class="text-center"></th>
                                 </tr>
-<!--                                <tr th:each="history : ${histories}">-->
-<!--                                    <td style="border: 1px solid;" th:text="${history.createdAt}"></td>-->
-<!--                                    <td style="border: 1px solid;" th:text="${history.anamnesis}"></td>-->
-<!--                                    <td style="border: 1px solid;" th:text="${history.symptom}"></td>-->
-<!--                                    <td style="border: 1px solid;" th:text="${history.diagnostic}"></td>-->
-<!--                                    <td style="border: 1px solid;" th:text="${history.patientProfileId}"></td>-->
-<!--                                </tr>-->
-                                <!--                            <tr th:each="history : ${histories}">-->
-                                <!--                                <td class="text-center" th:text="${item.medicalDate.substring(8,10)+'-'+item.medicalDate.substring(5,7)+'-'+item.medicalDate.substring(0,4)}"></td>-->
-                                <!--                                <td class="text-center" th:text="${item.hours} + ':00'"></td>-->
-                                <!--                                <td class="tm-product-name" th:text="${item.patientProfile.name}"></td>-->
-                                <!--                                <td class="text-center"  th:if="${item.patientProfile.sex == 'F'}" >Nữ</td>-->
-                                <!--                                <td class="text-center"  th:if="${item.patientProfile.sex != 'F'}" >Nam</td>-->
-                                <!--                                <td class="tm-product-name" th:text="${item.patientProfile.symptom}"></td>-->
-                                <!--                                <td class="text-center"  th:if="${item.isPay == true}" >Đã thanh toán</td>-->
-                                <!--                                <td class="text-center"  th:if="${item.isPay != true}" >Chưa thanh toán</td>-->
-                                <!--                                <td class="text-center"  th:if="${item.isDone == true}" >Đã khám</td>-->
-                                <!--                                <td class="text-center"  th:if="${item.isDone != true}" >Chưa khám</td>-->
-                                <!--                                <td class="text-center">-->
-                                <!--                                    <a th:href="@{/doctor/schedule/detail(scheduleId=${item.scheduleId})}">-->
-                                <!--                                        <i class="material-icons" style="font-size:24px">edit</i></a></td>-->
-                                <!--                            </tr>-->
                             </table>
                         </div>
                         <br>
-                        <button type="submit" class="btn btn-primary btn-register" style="background-color: #09d066;">
+                        <button type="submit" class="btn btn-primary btn-register" style="background-color: #09d066;" onclick="createListMedicine();">
                             Kết thúc
                         </button>
                     </form>
@@ -345,7 +326,7 @@
 <script th:inline="javascript">
     var message = /*[[${message}]]*/ "";
     var token = /*[[${token}]]*/ "";
-    var url = "http://localhost:8080/api";
+    var listMedicineRes = [];
     if(message != null && message != ""){
         alert(message);
     }
@@ -409,6 +390,7 @@
     }
 
     function addRow() {
+        var medicine_id = document.getElementById("medicine-id").value;
         var medicine_name = document.getElementById("medicine-name").value;
         var medicine_unit = document.getElementById("medicine-unit").innerText.trim();
         var medicine_dosage = document.getElementById("medicine-dosage").innerText.trim();
@@ -418,58 +400,119 @@
         var medicine_instruct_A = document.getElementById("medicine-instruct-A").innerText.trim();
         var medicine_instruct_N = document.getElementById("medicine-instruct-N").innerText.trim();
         var medicine_instruct = document.getElementById("medicine-instruct").innerText.trim();
+        var medicine_quantity = document.getElementById("medicine-quantity").innerText.trim();
 
         var table = document.getElementById("medicine-table");
         var row = table.insertRow(-1); // Insert at the end of the table
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        var cell4 = row.insertCell(3);
+        var cell4 = row.insertCell(2);
 
         var instruct = "";
-        if (medicine_instruct !== null && medicine_instruct !== "") {
+        var instructDB = "";
+        if (medicine_use != null && medicine_use != "") {
+            instruct += medicine_use;
+            instructDB += medicine_use;
+        }
+        if (medicine_instruct != null && medicine_instruct != "") {
+            if (instruct.length > 0){
+                instruct += " - ";
+                instructDB += " - ";
+            }
             instruct += medicine_instruct;
+            instructDB += medicine_instruct;
         }
         if (medicine_instruct_M != null && medicine_instruct_M != "") {
             if (instruct.length > 0){
                 instruct += ", ";
+                instructDB += ", ";
             }
             instruct += "<b>Sáng:</b> " + medicine_instruct_M;
+            instructDB += "Sáng: " + medicine_instruct_M;
         }
         if (medicine_instruct_L != null && medicine_instruct_L != "") {
             if (instruct.length > 0){
                 instruct += ", ";
+                instructDB += ", ";
             }
             instruct += "<b>Trưa:</b> " + medicine_instruct_L;
+            instructDB += "Trưa: " + medicine_instruct_L;
         }
         if (medicine_instruct_A != null && medicine_instruct_A != "") {
             if (instruct.length > 0){
                 instruct += ", ";
+                instructDB += ", ";
             }
             instruct += "<b>Chiều:</b> " + medicine_instruct_A;
+            instructDB += "Chiều: " + medicine_instruct_A;
         }
         if (medicine_instruct_N != null && medicine_instruct_N != "") {
             if (instruct.length > 0){
                 instruct += ", ";
+                instructDB += ", ";
             }
             instruct += "<b>Tối:</b> " + medicine_instruct_N;
+            instructDB += "Tối: " + medicine_instruct_N;
         }
 
-        cell1.innerHTML = medicine_name;
-        cell2.innerHTML = medicine_unit + ", " + medicine_dosage;
-        cell3.innerHTML = medicine_use;
-        cell4.innerHTML = instruct;
+        var medicineName = document.createElement("input");
+        medicineName.setAttribute("type", "hidden");
+        medicineName.setAttribute("value", medicine_name);
 
-        var deleteCell = row.insertCell(4); // Tạo một ô mới cho nút xóa
+        cell1.innerHTML = medicine_name;
+        cell1.appendChild(medicineName);
+
+        var medicineQuantity = document.createElement("input");
+        medicineQuantity.setAttribute("type", "hidden");
+        medicineQuantity.setAttribute("value", medicine_quantity);
+
+        cell2.innerHTML = "<b>" + medicine_quantity + " " + medicine_unit + "</b>" + " - " + medicine_dosage;
+        cell2.appendChild(medicineQuantity);
+
+        var medicineInstruct = document.createElement("input");
+        medicineInstruct.setAttribute("type", "hidden");
+        medicineInstruct.setAttribute("value", instructDB);
+
+        cell4.innerHTML = instruct;
+        cell4.appendChild(medicineInstruct);
+
+        var deleteCell = row.insertCell(3); // Tạo một ô mới cho nút xóa
         var deleteButton = document.createElement("button"); // Tạo một nút xóa
         deleteButton.textContent = "Xóa"; // Thiết lập nội dung của nút
         deleteButton.onclick = function() {
             removeRow(this); // Gọi hàm xóa hàng khi nút được nhấn
         };
-        deleteCell.appendChild(deleteButton); // Thêm nút vào ô mới
+
+        var medicineId = document.createElement("input");
+        medicineId.setAttribute("type", "hidden");
+        medicineId.setAttribute("value", medicine_id);
+
+        deleteCell.appendChild(deleteButton);
+        deleteCell.appendChild(medicineId);
 
         row.classList.add("setBorder");
         clearMedicineContent();
+    }
+
+    function createListMedicine() {
+
+        var table = document.getElementById("medicine-table");
+        for (var i = 1, row; row = table.rows[i]; i++) {
+            var id = row.cells[3].querySelector('input');
+            var name = row.cells[0].querySelector('input');
+            var quantity = row.cells[1].querySelector('input');
+            var instruction = row.cells[2].querySelector('input');
+
+            var newMedicine = {
+                id: id.value,
+                name: name.value,
+                quantity: quantity.value,
+                instruction: instruction.value
+            };
+            listMedicineRes.push(newMedicine);
+        }
+
+        document.getElementById('resMedicines').value = JSON.stringify(listMedicineRes);
     }
 
     function removeRow(button) {
@@ -478,6 +521,7 @@
     }
 
     function clearMedicineContent() {
+        document.getElementById("medicine-id").value = "";
         document.getElementById("medicine-name").value = "";
         document.getElementById("medicine-dosage").innerText = "";
         document.getElementById("medicine-unit").innerText = "";
@@ -487,31 +531,32 @@
         document.getElementById("medicine-instruct-A").innerText = "";
         document.getElementById("medicine-instruct-N").innerText = "";
         document.getElementById("medicine-instruct").innerText = "";
+        document.getElementById("medicine-quantity").innerText = "";
     }
 
-    function fetchData() {
-        var searchMedicine = document.getElementById('inputField').value;
-        let search = fetch(URL_SEARCH_MEDICINE, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            },
-            body: JSON.stringify({
-                "name": searchMedicine,
-                "isPage": 'false',
-                "order": 'ASC',
-                "orderBy": 'name',
-                "pageIndex": '0',
-                "pageSize": '10'
-            })
-        });
+    function calculateQuantity() {
+        function isFloat(value) {
+            return !isNaN(parseFloat(value)) && isFinite(value);
+        }
+        var medicine_instruct_M = document.getElementById("medicine-instruct-M").innerText.trim();
+        var medicine_instruct_L = document.getElementById("medicine-instruct-L").innerText.trim();
+        var medicine_instruct_A = document.getElementById("medicine-instruct-A").innerText.trim();
+        var medicine_instruct_N = document.getElementById("medicine-instruct-N").innerText.trim();
 
-        search.then(function (response) {
-            return response.json();
-        }).then(function (res) {
-            console.log(res.data.totalItems);
-        });
+        var totalQuantity = 0;
+        if (isFloat(medicine_instruct_M)) {
+            totalQuantity += parseFloat(medicine_instruct_M);
+        }
+        if (isFloat(medicine_instruct_L)) {
+            totalQuantity += parseFloat(medicine_instruct_L);
+        }
+        if (isFloat(medicine_instruct_A)) {
+            totalQuantity += parseFloat(medicine_instruct_A);
+        }
+        if (isFloat(medicine_instruct_N)) {
+            totalQuantity += parseFloat(medicine_instruct_N);
+        }
+        document.getElementById("medicine-quantity").innerText = totalQuantity;
     }
 
     function searchCharacters(keyword) {
@@ -544,13 +589,12 @@
         }).then(function (res) {
             console.log(res.data.totalItems);
             if (res.data.medicines.length > 0) {
-                res.data.medicines.forEach(character => {
+                res.data.medicines.forEach(medicine => {
                     const li = document.createElement('li');
-                    li.textContent = character.name;
+                    li.textContent = medicine.name;
                     li.onclick = function() {
-                        // Do something when a character is selected
-                        console.log('Selected character:', character);
-                        selectMedicine(character.name, character.dosageStrength, character.unit);
+                        console.log('Selected: ', medicine);
+                        selectMedicine(medicine.id, medicine.name, medicine.dosageStrength, medicine.unit);
                     };
                     searchResults.appendChild(li);
                 });
@@ -561,7 +605,8 @@
         });
     }
 
-    function selectMedicine(name, dosage, unit) {
+    function selectMedicine(id, name, dosage, unit) {
+        document.getElementById("medicine-id").value = id;
         document.getElementById("medicine-name").value = name;
         document.getElementById("medicine-dosage").innerText = dosage;
         document.getElementById("medicine-unit").innerText = unit;

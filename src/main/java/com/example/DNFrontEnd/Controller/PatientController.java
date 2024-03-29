@@ -217,12 +217,13 @@ public class PatientController {
                         @ModelAttribute(name = "message") String message) throws JsonProcessingException {
 
         medicalPatientRequest = new MedicalPatientRequest();
+//        medicalPatientRequest.getMedicines().add(new MedicineDTO());
         medicalPatientRequest.setPatientId(detailPatientResponse.getPatientDetail().getId());
         PatientInfoUI patientInfoUI = new PatientInfoUI();
         patientInfoUI.setParentDetail(detailPatientResponse.getParentDetail());
         patientInfoUI.setPatientDetail(detailPatientResponse.getPatientDetail());
         medicalPatientRequest.setPatientInfo(patientInfoUI);
-        System.out.println(patientInfoUI);
+//        System.out.println(patientInfoUI);
 //        model.addAttribute("detailPatientResponse", detailPatientResponse);
         model.addAttribute("medicalPatientRequest", medicalPatientRequest);
         model.addAttribute("patientInfoUI", patientInfoUI);
@@ -242,8 +243,6 @@ public class PatientController {
                         @ModelAttribute(name = "message") String message) throws JsonProcessingException {
         ParentDetail parentDetail = new ParentDetail(idP,phoneNumberP,fullNameP,addressP);
         patientInfoUI.setParentDetail(parentDetail);
-        System.out.println(medicalPatientRequest);
-        System.out.println(patientInfoUI);
         DetailPatientProfileResponse detailPatientProfileResponse = new DetailPatientProfileResponse();
         BaseResponse baseResponse = doctorService.updateScheduleDetail(medicalPatientRequest, session.getAttribute("token").toString());
         if (baseResponse.getMessageCode() == null){
@@ -251,13 +250,10 @@ public class PatientController {
         }else{
             message = baseResponse.getMessage();
         }
-//        System.out.println(detailPatientProfileResponse);
         model.addAttribute("detailPatientProfileResponse", detailPatientProfileResponse);
         model.addAttribute("patientInfo", medicalPatientRequest.getPatientInfo());
         model.addAttribute("medicines", detailPatientProfileResponse.getMedicines());
         model.addAttribute("patientInfoUI", patientInfoUI);
-        System.out.println(detailPatientProfileResponse);
-        System.out.println(patientInfoUI);
         return "resultMedicalPatient";
     }
 }
